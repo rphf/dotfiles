@@ -1,0 +1,11 @@
+# This file list the zsh plugins
+# Clones the plugins repos in $HOME/Library/Caches/antidote/
+# generate $HOME/.zsh_plugins.zsh file
+# source $HOME/.zsh_plugins.zsh into .zshrc with antidote autoload
+# for the autoload to load we need to have antidote installed on the machine
+
+romkatv/powerlevel10k
+zsh-users/zsh-completions
+zsh-users/zsh-autosuggestions
+jeffreytse/zsh-vi-mode
+zsh-users/zsh-syntax-highlighting kind:defer

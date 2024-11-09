@@ -1,0 +1,12 @@
+rcmd - a : open -a WezTerm
+rcmd - f : open -a Firefox
+rcmd - d : open -a "Visual Studio Code"
+rcmd - s : open -a Slack
+rcmd - e : open -a Simulator
+rcmd - g : open -a "Google Chrome"
+rcmd - r : open -a Figma
+rcmd - v : open -a Deezer
+rcmd - w : open -a Safari
+
+# Open this file in a new tab of WezTerm
+rcmd - m : wezterm cli spawn -- zsh -c "cd ~/.config/skhd && nvim skhdrc" | open -a WezTerm

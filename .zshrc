@@ -17,18 +17,6 @@ export PATH="$HOME/.rbenv/bin:$PATH"
 export PATH="$HOME/.pyenv/bin:$PATH"
 export PATH="$PATH:/opt/homebrew/bin"
 
-# Aliases
-# alias zm='sh /Users/raphael/Workspace/pro/zenmaid/zenmaid-webapp/zm.sh'
-alias ls='lsd'
-alias l='ls -l'
-alias la='ls -a'
-alias lla='ls -la'
-alias lt='ls --tree'
-
-alias nvl="NVIM_APPNAME=nvim_lazy nvim"
-alias vim="nvim"
-
-
 # Inits
 if command -v pyenv 1>/dev/null 2>&1; then
   eval "$(pyenv init --path)"
@@ -36,6 +24,12 @@ fi
 eval "$(pyenv virtualenv-init -)"
 eval "$(rbenv init - zsh)"
 eval "$(direnv hook zsh)"
+eval "$(zoxide init zsh)"
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 source ~/.p10k.zsh
+
+# Source aliases file
+if [ -f ~/.zsh_aliases ]; then
+  source ~/.zsh_aliases
+fi

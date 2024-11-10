@@ -6,9 +6,10 @@ tap "lencx/chatgpt", "https://github.com/lencx/ChatGPT.git"
 tap "nikitabobko/tap"
 tap "supabase/tap"
 tap "withgraphite/tap"
-
 # Plugin manager for zsh, inspired by antigen and antibody
 brew "antidote"
+# Clone of cat(1) with syntax highlighting and Git integration
+brew "bat"
 # Dependency manager for Cocoa projects
 brew "cocoapods"
 # Load/unload environment variables based on $PWD
@@ -51,6 +52,8 @@ brew "tree"
 brew "utf8proc", args: ["HEAD"]
 # JavaScript toolchain manager for reproducible environments
 brew "volta"
+# Shell extension to navigate your filesystem faster
+brew "zoxide"
 # A simple terminal UI for git commands, written in Go
 brew "jesseduffield/lazygit/lazygit"
 # Simple hotkey-daemon for macOS.
@@ -101,7 +104,6 @@ cask "wezterm"
 cask "zed"
 # Video communication and virtual meeting platform
 cask "zoom"
-
 vscode "bradlc.vscode-tailwindcss"
 vscode "bung87.rails"
 vscode "bung87.vscode-gemfile"

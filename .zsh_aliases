@@ -1,0 +1,26 @@
+# Aliases for ls, replacing with lsd if available
+if command -v lsd &> /dev/null; then
+  alias ls='lsd'            # uses lsd for colorized and enhanced ls output
+  alias l='ls -l'           # long listing format with lsd
+  alias la='ls -a'          # show hidden files with lsd
+  alias lla='ls -la'        # show all files in long format with lsd
+  alias lt='ls --tree'      # tree view with lsd
+fi
+
+# Aliases for Neovim, replacing vim with nvim
+if command -v nvim &> /dev/null; then
+  alias nvl="NVIM_APPNAME=nvim_lazy nvim"  # lazyvim config with Neovim
+  alias vim="nvim"                         # alias vim to use nvim
+fi
+
+# Aliases for bat, replacing cat with bat if available
+if command -v bat &> /dev/null; then
+  alias cat="bat --paging=never"  # use bat as cat with no paging
+  alias catt="bat"                # shortcut for bat with default paging
+fi
+
+# Aliases for zoxide, a jump-around tool for fast directory navigation
+if command -v z &> /dev/null; then
+  alias cd='z'         # jump to recently used directories
+  alias cdd='z -'      # jump back to the previous directory
+fi

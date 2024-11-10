@@ -22,10 +22,10 @@ if command -v brew >/dev/null 2>&1; then
 fi
 
 # Initialize pyenv and pyenv-virtualenv if pyenv is installed
-if command -v pyenv >/dev/null 2>&1; then
-  eval "$(pyenv init --path)"
-  eval "$(pyenv virtualenv-init -)"
-fi
+# if command -v pyenv >/dev/null 2>&1; then
+#   eval "$(pyenv init --path)"
+#   eval "$(pyenv virtualenv-init -)"
+# fi
 
 # Initialize rbenv if it’s installed
 if command -v rbenv >/dev/null 2>&1; then

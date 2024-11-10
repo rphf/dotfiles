@@ -16,6 +16,8 @@ brew "cocoapods"
 brew "direnv"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
+# Command-line fuzzy finder written in Go
+brew "fzf"
 # Distributed revision control system
 brew "git"
 # Syntax-highlighting pager for git and diff output

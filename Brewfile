@@ -78,6 +78,8 @@ cask "datagrip"
 cask "deezer"
 # Voice and text chat software
 cask "discord"
+cask "font-hack-nerd-font"
+cask "font-jetbrains-mono-nerd-font"
 # Web browser
 cask "google-chrome"
 # Open-source video transcoder

@@ -1,3 +1,4 @@
+tap "felixkratz/formulae"
 tap "homebrew/bundle"
 tap "homebrew/services"
 tap "jesseduffield/lazygit"
@@ -8,16 +9,30 @@ tap "supabase/tap"
 tap "withgraphite/tap"
 # Plugin manager for zsh, inspired by antigen and antibody
 brew "antidote"
+# Bourne-Again SHell, a UNIX command interpreter
+brew "bash"
 # Clone of cat(1) with syntax highlighting and Git integration
 brew "bat"
 # Dependency manager for Cocoa projects
 brew "cocoapods"
 # Load/unload environment variables based on $PWD
 brew "direnv"
+# View disk space usage and delete unwanted data, fast
+brew "dua-cli"
+# Like neofetch, but much faster because written mostly in C
+brew "fastfetch"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
 # Command-line fuzzy finder written in Go
 brew "fzf"
+# TIFF library and utilities
+brew "libtiff"
+# Library for JPEG-2000 image manipulation
+brew "openjpeg"
+# Image format providing lossless and lossy compression for web images
+brew "webp"
+# Interpreter for PostScript and PDF
+brew "ghostscript"
 # Distributed revision control system
 brew "git"
 # Syntax-highlighting pager for git and diff output
@@ -28,6 +43,8 @@ brew "imagemagick@6", link: true
 brew "inetutils"
 # Clone of ls with colorful output, file type icons, and more
 brew "lsd"
+# Parser generator tool and incremental parsing library
+brew "tree-sitter"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Object-relational database system
@@ -48,6 +65,8 @@ brew "ripgrep"
 brew "rubyfmt"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
 brew "stow"
+# Official tldr client written in Rust
+brew "tlrc"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
 # Clean C library for processing UTF-8 Unicode data
@@ -56,6 +75,8 @@ brew "utf8proc", args: ["HEAD"]
 brew "volta"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
+# Custom macOS statusbar with shell plugin, interaction and graph support
+brew "felixkratz/formulae/sketchybar"
 # A simple terminal UI for git commands, written in Go
 brew "jesseduffield/lazygit/lazygit"
 # Simple hotkey-daemon for macOS.
@@ -72,8 +93,6 @@ cask "battery"
 cask "chatgpt"
 # Automated testing of webapps for Google Chrome
 cask "chromedriver"
-# Databases and SQL IDE
-cask "datagrip"
 # Music player
 cask "deezer"
 # Voice and text chat software

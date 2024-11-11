@@ -6,9 +6,6 @@ zstyle ':antidote:bundle' use-friendly-names 'yes'
 source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
 antidote load
 
-# Needed for zsh-users/zsh-completions
-# autoload -Uz compinit && compinit
-
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 source ~/.p10k.zsh
 
@@ -18,5 +15,10 @@ if [ -f ~/.zsh_aliases ]; then
 fi
 
 # Source fzf initialization if it exists, enabling fuzzy finder features
-[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+if [ -f ~/.fzf.zsh ]; then
+  source ~/.fzf.zsh
+  # Bind `K` to FZF history search start in normal mode
+  bindkey -M vicmd 'K' fzf-history-widget
+fi
+
 

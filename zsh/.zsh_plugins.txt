@@ -5,7 +5,6 @@
 # for the autoload to load we need to have antidote installed on the machine
 
 romkatv/powerlevel10k
-zsh-users/zsh-completions
 zsh-users/zsh-autosuggestions
 jeffreytse/zsh-vi-mode
 zsh-users/zsh-syntax-highlighting kind:defer

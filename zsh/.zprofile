@@ -10,6 +10,10 @@ export MANPAGER="sh -c 'col -bx | bat -l man -p'"
 # Set the theme for 'bat'
 export BAT_THEME="TwoDark"
 
+# Ignore any suggestion for command beginning with cd 
+# I prefer relying on zoxide for changing directories
+export ZSH_AUTOSUGGEST_HISTORY_IGNORE="cd *"
+
 # Add essential paths to PATH
 export PATH="$HOME/.volta/bin:$PATH"
 export PATH="$HOME/.rbenv/bin:$PATH"
@@ -20,6 +24,9 @@ export PATH="$PATH:/opt/homebrew/bin"
 if command -v brew >/dev/null 2>&1; then
   eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
+
+# Commenting pyenv when not using it because it signicantly decrease the shell performance
+# see https://github.com/romkatv/zsh-bench for benchmarking the shell
 
 # Initialize pyenv and pyenv-virtualenv if pyenv is installed
 # if command -v pyenv >/dev/null 2>&1; then

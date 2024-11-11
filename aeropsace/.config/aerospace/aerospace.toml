@@ -170,3 +170,13 @@ if.app-id = 'com.apple.iphonesimulator'
 check-further-callbacks = true
 run = 'move-node-to-workspace terminal'
 
+[[on-window-detected]]
+if.app-id = 'com.apple.systempreferences'
+check-further-callbacks = true
+run = 'layout floating'
+
+[[on-window-detected]]
+if.app-id = 'com.apple.reminders'
+check-further-callbacks = true
+run = 'layout floating'
+

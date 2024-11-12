@@ -1,3 +1,6 @@
+# Check https://zsh.sourceforge.io/Intro/intro_3.html
+# Discribe which files are automatically loaded at zsh startup, for which purpose, in which condition and in which order.
+
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.

@@ -24,3 +24,8 @@ if command -v z &> /dev/null; then
   alias cd='z'         # jump to recently used directories
   alias cdd='z -'      # jump back to the previous directory
 fi
+
+# call help on a command using tldr
+if command -v tldr &> /dev/null; then
+  alias h="tldr"
+fi

@@ -14,9 +14,5 @@ export BAT_THEME="TwoDark"
 # I prefer relying on zoxide for changing directories
 export ZSH_AUTOSUGGEST_HISTORY_IGNORE="cd *"
 
-# Add binaries to PATH
-export PATH="$HOME/.volta/bin:$PATH"
-export PATH="$HOME/.rbenv/bin:$PATH"
-export PATH="$HOME/.pyenv/bin:$PATH"
 export PATH="$PATH:/opt/homebrew/bin"
-
+# export PATH="$HOME/.pyenv/bin:$PATH"

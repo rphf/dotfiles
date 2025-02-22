@@ -1,5 +1,5 @@
 # Check https://zsh.sourceforge.io/Intro/intro_3.html
-# Discribe which files are automatically loaded at zsh startup, for which purpose, in which condition and in which order.
+# Describe which files are automatically loaded at zsh startup, for which purpose, in which condition and in which order.
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
@@ -19,12 +19,6 @@ zstyle ':antidote:bundle' use-friendly-names 'yes'
 source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
 antidote load
 
-
-# Source aliases file
-if [ -f ~/.zsh_aliases ]; then
-  source ~/.zsh_aliases
-fi
-
 # Source fzf initialization if it exists, enabling fuzzy finder features
 if [ -f ~/.fzf.zsh ]; then
   source ~/.fzf.zsh
@@ -32,4 +26,19 @@ if [ -f ~/.fzf.zsh ]; then
   bindkey -M vicmd 'K' fzf-history-widget
 fi
 
+# Initialize Homebrew environment variables
+eval "$(/opt/homebrew/bin/brew shellenv)"
+# Initialize zoxide, a smarter cd command
+eval "$(zoxide init zsh)"
 
+# Commenting pyenv when not using it because it signicantly decrease the shell performance 
+# see https://github.com/romkatv/zsh-bench for benchmarking the shell 
+# eval "$(pyenv init --path)"
+# eval "$(pyenv virtualenv-init -)"
+
+source ~/.compdef_gt.zsh
+
+# Source aliases file
+if [ -f ~/.zsh_aliases ]; then
+  source ~/.zsh_aliases
+fi

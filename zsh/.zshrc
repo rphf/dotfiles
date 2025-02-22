@@ -39,6 +39,7 @@ eval "$(mise activate zsh)"
 # eval "$(pyenv virtualenv-init -)"
 
 source ~/.compdef_gt.zsh
+source ~/.pls.zsh
 
 # Source aliases file
 if [ -f ~/.zsh_aliases ]; then

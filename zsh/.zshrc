@@ -30,6 +30,8 @@ fi
 eval "$(/opt/homebrew/bin/brew shellenv)"
 # Initialize zoxide, a smarter cd command
 eval "$(zoxide init zsh)"
+# Activate Mise, a polyglot package manager
+eval "$(mise activate zsh)"
 
 # Commenting pyenv when not using it because it signicantly decrease the shell performance 
 # see https://github.com/romkatv/zsh-bench for benchmarking the shell 

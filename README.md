@@ -1,9 +1,7 @@
-<h1 align="center">$HOME, sweet $HOME</h1>
-
-### Brewfile
+## Brewfile
 
 To generate a brewfile run:
 
-```
+```zsh
 brew bundle dump --describe --force
 ```

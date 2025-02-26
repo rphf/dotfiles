@@ -16,3 +16,8 @@ export ZSH_AUTOSUGGEST_HISTORY_IGNORE="cd *"
 
 export PATH="$PATH:/opt/homebrew/bin"
 # export PATH="$HOME/.pyenv/bin:$PATH"
+
+# Source the .secrets.zshenv file if it exists
+if [ -f ~/.secrets.zshenv ]; then
+  source ~/.secrets.zshenv
+fi

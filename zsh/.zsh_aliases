@@ -1,6 +1,6 @@
 # Aliases for ls, replacing with lsd if available
 if command -v lsd &> /dev/null; then
-  alias ls='lsd'            # uses lsd for colorized and enhanced ls output
+  alias ls='lsd --color=always'            # uses lsd for colorized and enhanced ls output
   alias l='ls -l'           # long listing format with lsd
   alias la='ls -a'          # show hidden files with lsd
   alias lla='ls -la'        # show all files in long format with lsd
@@ -29,3 +29,5 @@ fi
 if command -v tldr &> /dev/null; then
   alias h="tldr"
 fi
+
+alias grep="grep --color=always"

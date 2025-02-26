@@ -2,6 +2,6 @@
 
 To generate a brewfile run:
 
-```zsh
+```sh
 brew bundle dump --describe --force
 ```

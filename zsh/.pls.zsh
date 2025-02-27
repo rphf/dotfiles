@@ -2,7 +2,6 @@
 # ~/.pls.zsh - A CLI tool for generating commands, explaining commands, and creating git commits using AI
 
 # Configuration variables
-typeset -g PLS_VERSION="1.0.0"
 typeset -g PLS_VERBOSE=false
 
 # This is the only function that will be publicly available
@@ -11,7 +10,7 @@ pls() {
   # Define all helper functions locally within pls
   # These functions will only be available inside pls
   local _check_dependencies _log_verbose _make_api_request
-  local _cmd_explain _cmd_commit _cmd_generate _show_help _show_version
+  local _cmd_explain _cmd_commit _cmd_generate _show_help
   
   # Check for required dependencies
   function _check_dependencies() {
@@ -193,19 +192,13 @@ Usage:
 Options:
   -h, --help     Show this help message
   -v, --verbose  Enable verbose output
-  --version      Show version information
 
 Examples:
   pls find all png files larger than 1MB
   pls explain tar -xzf archive.tar.gz
-  pls commit fix login button functionality
+  pls commit type fix
   ls -la | pls convert to csv format
 EOF
-  }
-
-  # Show version information
-  function _show_version() {
-    echo "pls v$PLS_VERSION"
   }
 
   # MAIN FUNCTION LOGIC STARTS HERE
@@ -230,10 +223,6 @@ EOF
         PLS_VERBOSE=true
         _log_verbose "Verbose mode enabled"
         shift
-        ;;
-      --version)
-        _show_version
-        return 0
         ;;
       *)
         echo "Unknown option: $1"

@@ -4,7 +4,6 @@
 # Configuration variables
 typeset -g PLS_VERBOSE=false
 
-# This is the only function that will be publicly available
 pls() {
   
   # Define all helper functions locally within pls
@@ -122,7 +121,7 @@ pls() {
       _log_verbose "Additional commit instructions: $additional_instruction"
     fi
     
-    local template="Generate a git commit message based on the following staged changes, commit rules, and additional instructions. The commit message must strictly follow the rules if provided. Don't add any special characters or quotes in the commit message. Only respond with the raw git commit command in the format 'git commit -m \"...\"', no markdown/formatting.\n\nCommit rules:\n$commit_rules\n\nAdditional instructions:\n$additional_instruction\n\nStaged changes:\n$diff"
+    local template="Generate a git commit message based on the following staged changes, commit rules, and additional instructions. The commit message must strictly follow the rules if provided. Don't add any special characters or quotes in the commit message. IMPORTANT! Only output with the raw git commit command in the format 'git commit -m \"...\"', no markdown/formatting.\n\nCommit rules:\n$commit_rules\n\nAdditional instructions:\n$additional_instruction\n\nStaged changes:\n$diff\n\nDon't add any special characters or quotes in the commit message. IMPORTANT! Only output with the raw git commit command in the format 'git commit -m \"...\"', no markdown/formatting"
     
     _log_verbose "Generating git commit message..."
     
@@ -195,9 +194,10 @@ Options:
 
 Examples:
   pls find all png files larger than 1MB
-  pls explain tar -xzf archive.tar.gz
-  pls commit type fix
-  ls -la | pls convert to csv format
+  pls explain chmod 755 script.sh
+  pls commit with type refactor 
+  cat server.log | pls find all errors and count their occurrences
+  man tar | pls extract a gzipped archive to a specific directory
 EOF
   }
 

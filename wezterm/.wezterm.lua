@@ -6,7 +6,7 @@ local config = {}
 
 -- Appearance Settings
 config.font = wezterm.font("JetBrainsMonoNL Nerd Font Mono")
-config.font_size = 14.25
+config.font_size = 12.5
 config.color_scheme = "Tokyo Night Storm"
 config.macos_window_background_blur = 15
 config.window_background_opacity = 0.9
@@ -39,7 +39,6 @@ config.keys = {
 	{ key = "RightArrow", mods = "CMD", action = wezterm.action.AdjustPaneSize({ "Right", 5 }) },
 	{ key = "DownArrow", mods = "CMD", action = wezterm.action.AdjustPaneSize({ "Down", 5 }) },
 	{ key = "UpArrow", mods = "CMD", action = wezterm.action.AdjustPaneSize({ "Up", 5 }) },
-	{ key = "K", mods = "CMD", action = wezterm.action.ClearScrollback("ScrollbackAndViewport") },
 
 	-- ZenMaid workspace launch
 	{

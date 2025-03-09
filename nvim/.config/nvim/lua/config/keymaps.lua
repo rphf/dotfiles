@@ -1,3 +1,4 @@
+-- stylua: ignore start
 -- [[ Basic Keymaps ]]
 --  See `:help vim.keymap.set()`
 
@@ -26,3 +27,4 @@ vim.keymap.set("n", "<C-j>", "<C-w><C-j>", { desc = "Move focus to the lower win
 vim.keymap.set("n", "<C-k>", "<C-w><C-k>", { desc = "Move focus to the upper window" })
 
 vim.keymap.set("n", "<leader>cm", "<cmd>Mason<cr>", { desc = "Mason" })
+-- stylua: ignore end

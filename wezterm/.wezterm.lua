@@ -24,6 +24,7 @@ config.use_fancy_tab_bar = false
 -- General Settings
 config.audible_bell = "Disabled"
 
+-- stylua: ignore
 -- Key Bindings
 config.keys = {
   { key = "p", mods = "CMD", action = wezterm.action.ShowLauncher },
@@ -33,39 +34,15 @@ config.keys = {
   { key = "l", mods = "CMD", action = act.ActivatePaneDirection("Right") },
   { key = "k", mods = "CMD", action = act.ActivatePaneDirection("Up") },
   { key = "j", mods = "CMD", action = act.ActivatePaneDirection("Down") },
-  {
-    key = "w",
-    mods = "CMD",
-    action = act.CloseCurrentPane({ confirm = false }),
-  },
+  { key = "w", mods = "CMD", action = act.CloseCurrentPane({ confirm = false }) },
   { key = "`", mods = "CMD", action = act.SwitchWorkspaceRelative(1) },
-  {
-    key = "LeftArrow",
-    mods = "CMD",
-    action = wezterm.action.AdjustPaneSize({ "Left", 5 }),
-  },
-  {
-    key = "RightArrow",
-    mods = "CMD",
-    action = wezterm.action.AdjustPaneSize({ "Right", 5 }),
-  },
-  {
-    key = "DownArrow",
-    mods = "CMD",
-    action = wezterm.action.AdjustPaneSize({ "Down", 5 }),
-  },
-  {
-    key = "UpArrow",
-    mods = "CMD",
-    action = wezterm.action.AdjustPaneSize({ "Up", 5 }),
-  },
+  { key = "LeftArrow", mods = "CMD", action = wezterm.action.AdjustPaneSize({ "Left", 5 }) },
+  { key = "RightArrow", mods = "CMD", action = wezterm.action.AdjustPaneSize({ "Right", 5 }) },
+  { key = "DownArrow", mods = "CMD", action = wezterm.action.AdjustPaneSize({ "Down", 5 }) },
+  { key = "UpArrow", mods = "CMD", action = wezterm.action.AdjustPaneSize({ "Up", 5 }) },
 
   -- ZenMaid workspace launch
-  {
-    key = "z",
-    mods = "OPT",
-    action = wezterm.action.EmitEvent("launch_zenmaid_workspace"),
-  },
+  { key = "z", mods = "OPT", action = wezterm.action.EmitEvent("launch_zenmaid_workspace") },
 }
 
 -- Workspace Configuration (ZenMaid Workspace)

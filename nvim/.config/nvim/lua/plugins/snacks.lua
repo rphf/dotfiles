@@ -133,6 +133,7 @@ return {
         end
         vim.print = _G.dd -- Override print to use snacks for `:=` command
 
+        -- stylua: ignore start
         -- Create some toggle mappings
         require("snacks").toggle.option("spell", { name = "Spelling" }):map("<leader>us")
         require("snacks").toggle.option("wrap", { name = "Wrap" }):map("<leader>uw")
@@ -149,6 +150,7 @@ return {
         require("snacks").toggle.inlay_hints():map("<leader>uh")
         require("snacks").toggle.indent():map("<leader>ug")
         require("snacks").toggle.dim():map("<leader>uD")
+        -- stylua: ignore end
       end,
     })
   end,

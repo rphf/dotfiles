@@ -11,7 +11,7 @@ return {
         stylua = {
           prepend_args = {
             "--column-width",
-            "120",
+            "80",
             "--indent-type",
             "Spaces",
             "--indent-width",

@@ -21,7 +21,7 @@ vim.opt.showmode = false
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
 --  See `:help 'clipboard'`
 vim.schedule(function()
-	vim.opt.clipboard = "unnamedplus"
+  vim.opt.clipboard = "unnamedplus"
 end)
 
 -- Enable break indent
@@ -70,7 +70,11 @@ vim.opt.inccommand = "split"
 
 -- Show which line your cursor is on
 vim.opt.cursorline = true
-vim.api.nvim_set_hl(0, "CursorLine", { cterm = {}, ctermbg = "none", bg = "none" })
+vim.api.nvim_set_hl(
+  0,
+  "CursorLine",
+  { cterm = {}, ctermbg = "none", bg = "none" }
+)
 
 -- Minimal number of screen lines to keep above and below the cursor.
 -- Keeps the cursor always in the middle

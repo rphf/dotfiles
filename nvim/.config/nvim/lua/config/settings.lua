@@ -19,10 +19,9 @@ vim.opt.showmode = false
 
 -- Sync clipboard between OS and Neovim.
 --  Schedule the setting after `UiEnter` because it can increase startup-time.
---  Remove this option if you want your OS clipboard to remain independent.
 --  See `:help 'clipboard'`
 vim.schedule(function()
-  vim.opt.clipboard = "unnamedplus"
+	vim.opt.clipboard = "unnamedplus"
 end)
 
 -- Enable break indent
@@ -57,12 +56,14 @@ vim.opt.splitbelow = true
 vim.opt.list = true
 vim.opt.listchars = { tab = "» ", trail = "·", nbsp = "␣" }
 
- -- Use spaces instead of tabs
+-- Use spaces instead of tabs
 vim.opt.expandtab = true
- -- Number of spaces for each indentation level
+-- Number of spaces for each indentation level
 vim.opt.shiftwidth = 2
- -- Number of spaces per Tab character
-vim.opt.tabstop = 2
+-- Number of spaces per Tab character (set to 8 for compatibility with other tools)
+vim.opt.tabstop = 8
+-- Number of spaces inserted when pressing <Tab>
+vim.opt.softtabstop = 2
 
 -- Preview substitutions live, as you type
 vim.opt.inccommand = "split"
@@ -74,4 +75,3 @@ vim.api.nvim_set_hl(0, "CursorLine", { cterm = {}, ctermbg = "none", bg = "none"
 -- Minimal number of screen lines to keep above and below the cursor.
 -- Keeps the cursor always in the middle
 vim.opt.scrolloff = 999
-

@@ -77,10 +77,6 @@ return {
         -- If neither exists, fallback to the current working directory
         require("mini.files").open(vim.uv.cwd(), true)
       end
-    end, { desc = "Here File explorer" })
-
-    vim.keymap.set("n", "<leader>E", function()
-      require("mini.files").open(vim.uv.cwd(), true)
-    end, { desc = "File explorer (cwd)" })
+    end, { desc = "Mini file explorer" })
   end,
 }

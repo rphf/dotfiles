@@ -1,3 +1,6 @@
 .git
 .macos
 Brewfile
+README.md
+backup.rayconfig
+commit-rules.txt

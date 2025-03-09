@@ -45,6 +45,7 @@ return {
     dependencies = { "williamboman/mason.nvim" }, -- Ensure mason.nvim is loaded first
     config = function()
       require("mason-lspconfig").setup({
+        automatic_installation = true,
         ensure_installed = {
           "lua_ls",
           "rust_analyzer", -- Needed for rustaceanvim
@@ -54,12 +55,14 @@ return {
   },
   {
     "neovim/nvim-lspconfig",
-    dependencies = { "williamboman/mason-lspconfig.nvim" }, -- Ensure mason-lspconfig.nvim is loaded first
+    dependencies = { "williamboman/mason-lspconfig.nvim", "saghen/blink.cmp" }, -- Ensure mason-lspconfig.nvim is loaded first
     config = function()
       -- Set up LSP servers via lspconfig
       local lspconfig = require("lspconfig")
+      local capabilities = require("blink.cmp").get_lsp_capabilities()
 
       lspconfig.lua_ls.setup({
+        capabilities = capabilities,
         settings = {
           Lua = {
             diagnostics = {

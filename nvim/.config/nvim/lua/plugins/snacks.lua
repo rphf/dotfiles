@@ -2,15 +2,23 @@ return {
   "folke/snacks.nvim",
   priority = 1000,
   lazy = false,
+  dependencies = { "echasnovski/mini.icons" },
   opts = {
-    dashboard = { enabled = true, example = "github" },
+    dashboard = { enabled = true, example = "compact_files" },
     notifier = {
       enabled = true,
       timeout = 3000,
     },
-    picker = { enabled = true },
+    explorer = { enabled = true, replace_netwr = true },
+    picker = {
+      enabled = true,
+      sources = {
+        explorer = {
+          layout = { preset = "sidebar", preview = true },
+        },
+      },
+    },
     -- bigfile = { enabled = true },
-    -- explorer = { enabled = true },
     -- indent = { enabled = true },
     -- input = { enabled = true },
     -- quickfile = { enabled = true },

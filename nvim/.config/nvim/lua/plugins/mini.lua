@@ -1,3 +1,5 @@
+local mini_files_git = require("plugins.modules.mini-files-git")
+
 return {
   "echasnovski/mini.files",
   version = "*",
@@ -19,7 +21,7 @@ return {
       mappings = {
         close = "q",
         go_in = "l",
-        go_in_plus = "L",
+        go_in_plus = "<CR>",
         go_out = "h",
         go_out_plus = "H",
         mark_goto = "'",
@@ -27,7 +29,7 @@ return {
         reset = "<BS>",
         reveal_cwd = "@",
         show_help = "g?",
-        synchronize = "=",
+        synchronize = "s",
         trim_left = "<",
         trim_right = ">",
       },
@@ -45,14 +47,40 @@ return {
         -- Maximum number of windows to show side by side
         max_number = math.huge,
         -- Whether to show preview of file/directory under cursor
-        preview = false,
+        preview = true,
         -- Width of focused window
         width_focus = 50,
         -- Width of non-focused window
         width_nofocus = 15,
         -- Width of preview window
-        width_preview = 25,
+        width_preview = 100,
       },
     })
+
+    -- Load Git integration
+    mini_files_git.setup()
+
+    vim.keymap.set("n", "<leader>e", function()
+      if require("mini.files").close() then
+        return
+      end
+
+      local buf_name = vim.api.nvim_buf_get_name(0)
+      local dir_name = vim.fn.fnamemodify(buf_name, ":p:h")
+      if vim.fn.filereadable(buf_name) == 1 then
+        -- Pass the full file path to highlight the file
+        require("mini.files").open(buf_name, true)
+      elseif vim.fn.isdirectory(dir_name) == 1 then
+        -- If the directory exists but the file doesn't, open the directory
+        require("mini.files").open(dir_name, true)
+      else
+        -- If neither exists, fallback to the current working directory
+        require("mini.files").open(vim.uv.cwd(), true)
+      end
+    end, { desc = "Here File explorer" })
+
+    vim.keymap.set("n", "<leader>E", function()
+      require("mini.files").open(vim.uv.cwd(), true)
+    end, { desc = "File explorer (cwd)" })
   end,
 }

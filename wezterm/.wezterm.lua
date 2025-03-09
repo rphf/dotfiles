@@ -14,7 +14,7 @@ config.inactive_pane_hsb = { brightness = 0.5 }
 config.window_padding = { left = 10, right = 10, top = 10, bottom = 10 }
 config.colors = {
   tab_bar = {
-    background = "rgba(0,0,0,0.5)", 
+    background = "rgba(0,0,0,0.5)",
   },
 }
 config.window_decorations = "RESIZE"
@@ -77,8 +77,12 @@ wezterm.on("launch_zenmaid_workspace", function()
 end)
 
 -- Update the right status bar to show the active workspace
-wezterm.on("update-right-status", function(window, pane)
-  window:set_right_status(window:active_workspace())
+wezterm.on("update-right-status", function(window)
+  local workspace_name = window:active_workspace()
+  window:set_right_status(wezterm.format({
+    { Attribute = { Intensity = "Bold" } },
+    { Text = workspace_name .. " " },
+  }))
 end)
 
 -- GUI Startup Settings

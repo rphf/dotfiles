@@ -1,5 +1,4 @@
-# Format: type(scope): message
-# Example: feat(zsh): add new alias
-# Types: feat, fix, refactor, docs, chore, perf, revert
-# Scopes: zsh, wezterm, skhd, mise, git, scripts, general
+# Format: scope: message
+# Example: zsh: add new alias
+# Scopes: zsh, wezterm, skhd, mise, git, scripts, macos, docs ... (it can any stow package name) 
 # Rules: Use imperative mood, be concise, no periods

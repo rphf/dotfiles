@@ -9,35 +9,59 @@ return {
       enabled = true,
       timeout = 3000,
     },
-    explorer = { enabled = true, replace_netwr = true },
+    explorer = { enabled = true, replace_netwr = false },
     picker = {
       enabled = true,
       sources = {
         explorer = {
-          layout = { preset = "sidebar", preview = true },
+          auto_close = true,
+          layout = {
+            preset = "ivy",
+            preview = true,
+            fullscreen = true,
+          },
         },
       },
     },
+    indent = {
+      animate = { duration = { step = 20, total = 200 } },
+    },
+    -- statuscolumn = { enabled = true },
+    -- git = { enabled = true },
     -- bigfile = { enabled = true },
-    -- indent = { enabled = true },
     -- input = { enabled = true },
     -- quickfile = { enabled = true },
     -- scope = { enabled = true },
     -- scroll = { enabled = true },
-    -- statuscolumn = { enabled = true },
     -- words = { enabled = true },
   },
   -- stylua: ignore
+  -- TODO: Refactor this table to only keep what I actually use
   keys = {
     -- Top Pickers & Explorer
     { "<leader><space>", function() require("snacks").picker.smart() end, desc = "Smart Find Files" },
     { "<leader>,", function() require("snacks").picker.buffers() end, desc = "Buffers" },
-    { "<leader>/", function() require("snacks").picker.grep() end, desc = "Grep" },
+    { "<leader>/", function() require("snacks").picker.grep({hidden = true}) end, desc = "Grep" },
     { "<leader>:", function() require("snacks").picker.command_history() end, desc = "Command History" },
     { "<leader>n", function() require("snacks").picker.notifications() end, desc = "Notification History" },
-    { "<leader>e", function() require("snacks").explorer() end, desc = "File Explorer" },
+    { "<leader>e", function() require("snacks").explorer( { hidden = true } ) end, desc = "File Explorer" },
     -- find
-    { "<leader>fb", function() require("snacks").picker.buffers() end, desc = "Buffers" },
+    { "<leader>fb", function() require("snacks").picker.buffers(
+      {
+        on_show = function()
+          vim.cmd.stopinsert()
+        end,
+        win = {
+          input = {
+            keys = {
+              ["d"] = "bufdelete",
+            },
+          },
+          list = { keys = { ["d"] = "bufdelete" } },
+        },
+        layout = {fullscreen= true},
+      }
+      ) end, desc = "Buffers" },
     { "<leader>fc", function() require("snacks").picker.files({ cwd = vim.fn.stdpath("config") }) end, desc = "Find Config File" },
     { "<leader>ff", function() require("snacks").picker.files() end, desc = "Find Files" },
     { "<leader>fg", function() require("snacks").picker.git_files() end, desc = "Find Git Files" },

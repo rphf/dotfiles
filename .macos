@@ -5,16 +5,24 @@
 osascript -e 'tell application "System Preferences" to quit'
 
 # Ask for the administrator password upfront
-sudo -v
+# sudo -v
 
 # Keep-alive: update existing `sudo` time stamp until `.macos` has finished
-while true; do
-  sudo -n true
-  sleep 60
-  kill -0 "$$" || exit
-done 2>/dev/null &
+# while true; do
+#   sudo -n true
+#   sleep 60
+#   kill -0 "$$" || exit
+# done 2>/dev/null &
 
 # Group windows by application in mission control
 # It helps fixing an issue with aeropsace tilling windows manager
 # See: https://nikitabobko.github.io/AeroSpace/guide#a-note-on-mission-control
-defaults write com.apple.dock expose-group-apps -bool true && killall Dock
+# defaults write com.apple.dock expose-group-apps -bool true && killall Dock
+
+# Set a blazingly fast keyboard repeat rate
+defaults write NSGlobalDomain KeyRepeat -int 1
+defaults write NSGlobalDomain InitialKeyRepeat -int 10
+
+# Determines whether holding down a key triggers the character accent menu
+# (e.g., holding e to show é, è...) or whether it simply repeats the key.
+defaults write -g ApplePressAndHoldEnabled -bool false 

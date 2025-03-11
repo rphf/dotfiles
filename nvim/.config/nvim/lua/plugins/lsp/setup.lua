@@ -6,6 +6,7 @@ return {
     opts = {
       ensure_installed = {
         "stylua",
+        "rubyfmt",
       },
     },
 
@@ -49,6 +50,8 @@ return {
         ensure_installed = {
           "lua_ls",
           "rust_analyzer", -- Needed for rustaceanvim
+          "ruby_lsp",
+          "ts_ls",
         },
       })
     end,
@@ -68,8 +71,21 @@ return {
             diagnostics = {
               globals = { "vim" }, -- Ignore "vim" global warnings
             },
+            telemetry = {
+              enable = false, -- Disable telemetry
+            },
           },
         },
+      })
+
+      lspconfig.ruby_lsp.setup({
+        capabilities = capabilities,
+        settings = {},
+      })
+
+      lspconfig.ts_ls.setup({
+        capabilities = capabilities,
+        settings = {},
       })
     end,
   },

@@ -5,6 +5,7 @@ return {
       formatters_by_ft = {
         lua = { "stylua" },
         rust = { "rustfmt" },
+        ruby = { "rubyfmt" },
       },
       formatters = {
         -- Custom configuration for stylua

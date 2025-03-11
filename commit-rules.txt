@@ -1,4 +1,4 @@
 # Format: scope: message
 # Example: zsh: add new alias
 # Scopes: zsh, wezterm, skhd, mise, git, scripts, macos, docs ... (it can any stow package name) 
-# Rules: Use imperative mood, be concise, no periods
+# Rules: Use imperative mood, be concise

@@ -78,4 +78,4 @@ vim.api.nvim_set_hl(
 
 -- Minimal number of screen lines to keep above and below the cursor.
 -- Keeps the cursor always in the middle
-vim.opt.scrolloff = 999
+vim.opt.scrolloff = 30

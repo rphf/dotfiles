@@ -1,5 +1,6 @@
-# Set default editor
 export EDITOR='nvim'
+
+export XDG_CONFIG_HOME="$HOME/.config"
 
 # Set Golang flags
 export GOFLAGS="-mod=vendor"
@@ -17,10 +18,17 @@ export ZSH_AUTOSUGGEST_HISTORY_IGNORE="cd *"
 export PATH="$PATH:/opt/homebrew/bin"
 # export PATH="$HOME/.pyenv/bin:$PATH"
 
-source "$HOME/.cargo/env"
+# Will refuse to execute a commands if there is an alternative alias for it (zsh-you-should-use)
+# export YSU_HARDCORE=1
 
+# Detach from the terminal instead of waiting for the Neovide process to terminate
+export NEOVIDE_FORK=1
+
+source "$HOME/.cargo/env"
 # Source the .secrets.zshenv file if it exists
 if [ -f ~/.secrets.zshenv ]; then
   source ~/.secrets.zshenv
 fi
+
+
 

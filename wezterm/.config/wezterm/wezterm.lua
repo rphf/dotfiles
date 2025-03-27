@@ -1,3 +1,4 @@
+require("tab-renamer") -- Load nvim tab renaming automation
 local wezterm = require("wezterm") -- --[[@as Wezterm]] TODO: Fix type anotation for weztem (using lazydev)
 local mux = wezterm.mux
 local act = wezterm.action
@@ -12,6 +13,7 @@ config.color_scheme = "Tokyo Night Storm"
 -- config.window_background_opacity = 0.9
 config.inactive_pane_hsb = { brightness = 0.5 }
 config.window_padding = { left = 10, right = 10, top = 10, bottom = 10 }
+config.tab_max_width = 40
 config.colors = {
   -- cursor_bg = "7aa2f7",
   -- cursor_border = "7aa2f7",

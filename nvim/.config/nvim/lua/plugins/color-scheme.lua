@@ -1,3 +1,15 @@
+local opts = {}
+
+if vim.g.neovide == nil then
+  opts = {
+    transparent = true,
+    styles = {
+      sidebars = "transparent",
+      floats = "transparent",
+    },
+  }
+end
+
 return {
   -- To see what colorschemes are already installed, use `:Telescope colorscheme`.
   "folke/tokyonight.nvim",
@@ -11,11 +23,5 @@ return {
     -- You can configure highlights by doing something like:
     vim.cmd.hi("Comment gui=none")
   end,
-  opts = {
-    transparent = true,
-    styles = {
-      sidebars = "transparent",
-      floats = "transparent",
-    },
-  },
+  opts = opts,
 }

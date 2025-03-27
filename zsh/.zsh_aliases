@@ -10,7 +10,7 @@ fi
 # Aliases for Neovim, replacing vim with nvim
 if command -v nvim &> /dev/null; then
   alias nvl="NVIM_APPNAME=nvim_lazy nvim"  # lazyvim config with Neovim
-  alias vim="nvim"                         # alias vim to use nvim
+  alias nvd="neovide"
 fi
 
 # Aliases for bat, replacing cat with bat if available
@@ -25,9 +25,5 @@ if command -v z &> /dev/null; then
   alias cdd='z -'      # jump back to the previous directory
 fi
 
-# call help on a command using tldr
-if command -v tldr &> /dev/null; then
-  alias h="tldr"
-fi
-
 alias grep="grep --color=always"
+alias lg="lazygit"

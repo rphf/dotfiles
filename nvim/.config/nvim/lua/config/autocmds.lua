@@ -42,11 +42,14 @@ vim.api.nvim_create_autocmd("LspProgress", {
 
     local spinner =
       { "⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏" }
-    vim.notify(table.concat(msg, "\n"), "info", {
+
+    -- 2 is for INFO level, see :h vim.log.levels
+    vim.notify(table.concat(msg, "\n"), 2, {
       id = "lsp_progress",
       title = client.name,
       opts = function(notif)
         notif.icon = #progress[client.id] == 0 and " "
+          ---@diagnostic disable-next-line: undefined-field
           or spinner[math.floor(vim.uv.hrtime() / (1e6 * 80)) % #spinner + 1]
       end,
     })

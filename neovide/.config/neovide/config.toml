@@ -1,0 +1,7 @@
+frame="transparent"
+title-hidden = true 
+
+[font]
+normal = ["JetBrainsMonoNL Nerd Font Mono"] 
+size = 12.5
+

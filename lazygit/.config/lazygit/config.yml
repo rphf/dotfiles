@@ -1,0 +1,27 @@
+# full config reference: https://github.com/jesseduffield/lazygit/blob/master/docs/Config.md
+gui:
+  # The number of lines you scroll by when scrolling the main window
+  scrollHeight: 2
+  # How the window is split when in half screen mode (i.e. after hitting '+' once).
+  # Possible values:
+  # - 'left': split the window horizontally (side panel on the left, main view on the right)
+  # - 'top': split the window vertically (side panel on top, main view below)
+  enlargedSideViewLocation: top
+  # If true, increase the height of the focused side window; creating an accordion effect.
+  expandFocusedSidePanel: true
+  # The weight of the expanded side panel, relative to the other panels. 2 means
+  # twice as tall as the other panels. Only relevant if `expandFocusedSidePanel` is true.
+  expandedSidePanelWeight: 10
+  # Nerd fonts version to use.
+  # One of: '2' | '3' | empty string (default)
+  # If empty, do not show icons.
+  nerdFontsVersion: '3'
+  # If true (default), file icons are shown in the file views. Only relevant if NerdFontsVersion is not empty.
+  showFileIcons: true
+  # Default size for focused window. Can be changed from within Lazygit with '+' and '_' (but this won't change the default).
+  # One of: 'normal' (default) | 'half' | 'full'
+  screenMode: normal
+git:
+  paging:
+    colorArg: always
+    pager: delta --paging=never

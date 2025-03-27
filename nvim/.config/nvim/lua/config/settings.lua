@@ -1,5 +1,3 @@
-vim.g.mapleader = " "
-vim.g.maplocalleader = " "
 vim.g.have_nerd_font = true
 
 -- [[ Setting options ]]
@@ -9,10 +7,13 @@ vim.opt.swapfile = false
 
 -- Make line numbers default
 vim.opt.number = true
-vim.opt.relativenumber = true
+vim.opt.relativenumber = false
 
 -- Enable mouse mode, can be useful for resizing splits
 vim.opt.mouse = "a"
+
+-- Disable the line, column and % position of the cursor
+vim.opt.ruler = false
 
 -- Don't show the mode, since it's already in the status line
 vim.opt.showmode = false
@@ -70,15 +71,23 @@ vim.opt.inccommand = "split"
 
 -- Show which line your cursor is on
 vim.opt.cursorline = true
-vim.api.nvim_set_hl(
-  0,
-  "CursorLine",
-  { cterm = {}, ctermbg = "none", bg = "none" }
-)
+vim.api.nvim_set_hl(0, "CursorLine", { cterm = {}, ctermbg = "", bg = "none" })
 
 -- Minimal number of screen lines to keep above and below the cursor.
 -- Keeps the cursor always in the middle
 vim.opt.scrolloff = 30
+
+vim.opt.fillchars:append("diff:╱")
+
+-- NOTE: I don't actually know what it does, it was required by auto-session.nvim
+vim.o.sessionoptions = "blank,buffers,curdir,folds,help,tabpages,winsize,winpos,terminal,localoptions"
+
+vim.filetype.add({
+  extension = {
+    jsonjbuilder = "ruby", -- Treat .json.builder as Ruby for treesitter to highlight them correctly
+  },
+})
+
 -- Only run if we are inside neovide GUI
 if vim.g.neovide then
   vim.g.neovide_theme = "tokyonight"

@@ -79,3 +79,32 @@ vim.api.nvim_set_hl(
 -- Minimal number of screen lines to keep above and below the cursor.
 -- Keeps the cursor always in the middle
 vim.opt.scrolloff = 30
+-- Only run if we are inside neovide GUI
+if vim.g.neovide then
+  vim.g.neovide_theme = "tokyonight"
+  vim.o.guifont = "JetBrainsMonoNL Nerd Font Mono"
+  vim.g.neovide_scale_factor = 0.9
+  -- vim.g.neovide_normal_opacity = 1
+  -- vim.g.neovide_transparency = 1
+  vim.g.neovide_padding_left = 8
+  vim.g.experimental_layer_grouping = true
+  vim.g.neovide_floating_blur_amount_x = 15.0
+  vim.g.neovide_floating_blur_amount_y = 15.0
+  vim.g.neovide_window_blurred = true
+  vim.g.neovide_refresh_rate = 120
+  vim.g.neovide_refresh_rate_idle = 1
+  vim.g.neovide_profiler = false
+  vim.g.neovide_input_macos_option_key_is_meta = "only_left"
+  vim.g.neovide_cursor_animation_length = 0.01
+  vim.g.neovide_cursor_trail_size = 0.85
+
+  -- -- Doesn't seem to work
+  -- vim.g.neovide_text_gamma = 0.1
+  -- vim.g.neovide_text_contrast = 0.0
+
+  vim.keymap.set("n", "<D-s>", ":w<CR>") -- Save
+  vim.keymap.set("v", "<D-c>", '"+y') -- Copy
+  vim.keymap.set({ "n", "v" }, "<D-v>", '"+P') -- Paste normal and visual mode
+  vim.keymap.set({ "i", "c" }, "<D-v>", "<C-R>+") -- Paste insert and command mode
+  vim.keymap.set("t", "<D-v>", [[<C-\><C-N>"+P]]) -- Paste terminal mode
+end

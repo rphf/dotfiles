@@ -30,6 +30,8 @@ return {
       endwise = { enabled = true },
       highlight = { enable = true },
       indent = { enable = false },
+      additional_vim_regex_highlighting = { "ruby" },
+      auto_install = true,
       ensure_installed = {
         "bash",
         "diff",

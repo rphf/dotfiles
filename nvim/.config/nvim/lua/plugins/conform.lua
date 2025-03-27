@@ -1,3 +1,15 @@
+-- Create an autocommand to run commands before saving TypeScript/TSX files
+-- vim.api.nvim_create_autocmd("BufWritePre", {
+--   pattern = { "*.ts", "*.tsx" }, -- Only for TypeScript and TypeScript React files
+--   callback = function()
+--     -- Execute the commands in sequence
+--
+--     -- vim.cmd("AddMissingImports")
+--     vim.cmd("RemoveUnusedImports")
+--     vim.cmd("OrganizeImports")
+--   end,
+-- })
+
 return {
   "stevearc/conform.nvim",
   config = function()
@@ -6,27 +18,14 @@ return {
         lua = { "stylua" },
         rust = { "rustfmt" },
         ruby = { "rubyfmt" },
-      },
-      formatters = {
-        -- Custom configuration for stylua
-        stylua = {
-          prepend_args = {
-            "--column-width",
-            "80",
-            "--indent-type",
-            "Spaces",
-            "--indent-width",
-            "2",
-            "--line-endings",
-            "Unix",
-            "--quote-style",
-            "AutoPreferDouble",
-          },
-        },
+        javascript = { "prettierd" },
+        javascriptreact = { "prettierd" },
+        typescript = { "prettierd" },
+        typescriptreact = { "prettierd" },
       },
       format_on_save = {
         timeout_ms = 500, -- Timeout for formatting
-        lsp_fallback = true, -- Fallback to LSP if formatter fails
+        lsp_fallback = false, -- Fallback to LSP if formatter fails
       },
     })
   end,

@@ -2,6 +2,16 @@ require("tab-renamer") -- Load nvim tab renaming automation
 local wezterm = require("wezterm") -- --[[@as Wezterm]] TODO: Fix type anotation for weztem (using lazydev)
 local mux = wezterm.mux
 local act = wezterm.action
+local log = wezterm.log_info
+
+-- Add this near the top of your config, with your other event handlers
+wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
+  local title = tab.tab_title
+  if not title or #title == 0 then
+    title = tab.active_pane.title
+  end
+  return " " .. tab.tab_index + 1 .. ". " .. title .. " "
+end)
 
 local config = {}
 
@@ -42,11 +52,14 @@ config.keys = {
   { key = "H", mods = "CMD", action = act.ActivateTabRelative(-1) },
   { key = "L", mods = "CMD", action = act.ActivateTabRelative(1) },
   { key = "o", mods = "CMD", action = act.TogglePaneZoomState },
+  -- Move tabs
+  { key = "LeftArrow", mods = "CMD", action = wezterm.action({ MoveTabRelative = -1 }) },
+  { key = "RightArrow", mods = "CMD", action = wezterm.action({ MoveTabRelative = 1 }) },
   -- Rezize panes
-  { key = "LeftArrow", mods = "CMD", action = act.AdjustPaneSize({ "Left", 5 }) },
-  { key = "RightArrow", mods = "CMD", action = act.AdjustPaneSize({ "Right", 5 }) },
-  { key = "DownArrow", mods = "CMD", action = act.AdjustPaneSize({ "Down", 5 }) },
-  { key = "UpArrow", mods = "CMD", action = act.AdjustPaneSize({ "Up", 5 }) },
+  { key = "LeftArrow", mods = "CMD|SHIFT", action = act.AdjustPaneSize({ "Left", 5 }) },
+  { key = "RightArrow", mods = "CMD|SHIFT", action = act.AdjustPaneSize({ "Right", 5 }) },
+  { key = "DownArrow", mods = "CMD|SHIFT", action = act.AdjustPaneSize({ "Down", 5 }) },
+  { key = "UpArrow", mods = "CMD|SHIFT", action = act.AdjustPaneSize({ "Up", 5 }) },
   -- ZenMaid workspace launch
   { key = "z", mods = "OPT", action = act.EmitEvent("launch_zenmaid_workspace") },
 }
@@ -56,7 +69,7 @@ wezterm.on("launch_zenmaid_workspace", function()
   local project_dir = wezterm.home_dir .. "/Workspace/pro/zenmaid"
 
   -- Set up tabs and panes for ZenMaid webapp
-  local _, webapp_pane_1, zenmaid_window = mux.spawn_window({
+  local webapp_tab, webapp_pane_1, zenmaid_window = mux.spawn_window({
     workspace = "zenmaid",
     cwd = project_dir .. "/zenmaid-webapp",
   })
@@ -72,18 +85,20 @@ wezterm.on("launch_zenmaid_workspace", function()
     direction = "Bottom",
     cwd = project_dir .. "/zenmaid-webapp",
   })
+  webapp_tab:set_title("term: webapp")
 
   webapp_pane_1:send_text("OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES bundle exec rails s\n")
-  webapp_pane_2:send_text("yarn dev\n")
+  webapp_pane_2:send_text("yarn run dev\n")
   webapp_pane_3:send_text("bundle exec rails c\n")
   webapp_pane_4:send_text("bundle exec sidekiq\n")
 
   -- Set up tab for ZenMaid mobile project
-  local _, mobile_pane_1 = zenmaid_window:spawn_tab({ cwd = project_dir .. "/zenmaid-mobile" })
+  local mobile_tab, mobile_pane_1 = zenmaid_window:spawn_tab({ cwd = project_dir .. "/zenmaid-mobile" })
   local _ = mobile_pane_1:split({
     direction = "Right",
     cwd = project_dir .. "/zenmaid-mobile",
   })
+  mobile_tab:set_title("term: mobile")
   mobile_pane_1:send_text("yarn run start:local\n")
 
   mux.set_active_workspace("zenmaid")
@@ -91,11 +106,23 @@ wezterm.on("launch_zenmaid_workspace", function()
   zenmaid_window:gui_window():maximize()
 end)
 
--- Update the right status bar to show the active workspace
 wezterm.on("update-right-status", function(window)
   local workspace_name = window:active_workspace()
+  local workspace_count = #wezterm.mux.get_workspace_names()
+  local tab = window:active_tab()
+  local panes = tab:panes_with_info()
+
+  local zoomed = false
+  for _, pane_info in ipairs(panes) do
+    if pane_info.is_zoomed then
+      zoomed = true
+      break
+    end
+  end
+
   window:set_right_status(wezterm.format({
-    { Attribute = { Intensity = "Bold" } },
+    { Text = zoomed and "● · " or "" }, --FIXME: Zoom status doesn't work
+    { Text = workspace_count .. " workspaces · " },
     { Text = workspace_name .. " " },
   }))
 end)

@@ -2,16 +2,7 @@ require("tab-renamer") -- Load nvim tab renaming automation
 local wezterm = require("wezterm") -- --[[@as Wezterm]] TODO: Fix type anotation for weztem (using lazydev)
 local mux = wezterm.mux
 local act = wezterm.action
-local log = wezterm.log_info
-
--- Add this near the top of your config, with your other event handlers
-wezterm.on("format-tab-title", function(tab, tabs, panes, config, hover, max_width)
-  local title = tab.tab_title
-  if not title or #title == 0 then
-    title = tab.active_pane.title
-  end
-  return " " .. tab.tab_index + 1 .. ". " .. title .. " "
-end)
+-- local log = wezterm.log_info
 
 local config = {}
 
@@ -122,7 +113,7 @@ wezterm.on("update-right-status", function(window)
 
   window:set_right_status(wezterm.format({
     { Text = zoomed and "● · " or "" }, --FIXME: Zoom status doesn't work
-    { Text = workspace_count .. " workspaces · " },
+    { Text = workspace_count .. " workspaces · " }, --FIXME: do pluralization
     { Text = workspace_name .. " " },
   }))
 end)

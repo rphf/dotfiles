@@ -43,9 +43,6 @@ gui:
     searchingActiveBorderColor:
       - '#e5c890'
 
-  authorColors:
-    '*': '#babbf1'
-
 git:
   paging:
     colorArg: always

@@ -112,9 +112,9 @@ wezterm.on("update-right-status", function(window)
   end
 
   window:set_right_status(wezterm.format({
-    { Text = zoomed and "● · " or "" }, --FIXME: Zoom status doesn't work
-    { Text = workspace_count .. " workspaces · " }, --FIXME: do pluralization
+    { Text = zoomed and "📌 · " or "" },
     { Text = workspace_name .. " " },
+    { Text = workspace_count > 1 and ("· " .. workspace_count .. " 󰕰 ") or "" },
   }))
 end)
 

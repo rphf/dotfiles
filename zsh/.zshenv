@@ -6,10 +6,10 @@ export XDG_CONFIG_HOME="$HOME/.config"
 export GOFLAGS="-mod=vendor"
 
 # Set the pager for viewing man pages, using 'bat' for syntax highlighting
-export MANPAGER="sh -c 'col -bx | bat -l man -p'"
+export MANPAGER="sh -c 'col -bx | bat --paging=always -l man -p'"
 
-# Set the theme for 'bat'
-export BAT_THEME="TwoDark"
+export BAT_THEME="tokyonight_storm"
+export BAT_PAGING="never"
 
 # Ignore any suggestion for command beginning with cd 
 # I prefer relying on zoxide for changing directories

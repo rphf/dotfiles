@@ -11,9 +11,6 @@ return {
     explorer = { enabled = true, replace_netwr = false },
     picker = {
       enabled = true,
-      layout = {
-        fullscreen = true,
-      },
       formatters = {
         file = {
           truncate = 100, -- truncate the file path to (roughly) this length
@@ -26,17 +23,18 @@ return {
       },
       sources = {
         explorer = {
-          auto_close = true,
-          layout = {
-            preset = "ivy",
-            preview = true,
-            fullscreen = true,
-          },
+          auto_close = false,
           -- layout = {
-          --   layout = {
-          --     width = 0.4,
-          --   },
+          --   preset = "ivy",
+          --   preview = true,
+          --   fullscreen = true,
           -- },
+          layout = {
+            layout = {
+              width = 0.35,
+              position = "right",
+            },
+          },
         },
       },
     },
@@ -59,11 +57,12 @@ return {
   keys = {
     -- Top Pickers & Explorer
     -- { "<leader>f", function() require("snacks").picker.files( { hidden = true }) end, desc = "find files" },
-    { "<leader>f", function() require("snacks").picker.smart( { filter = { cwd = true }, hidden = true } ) end, desc = "Smart Find Files" },
-    { "<leader>/", function() require("snacks").picker.grep( { hidden = true } ) end, desc = "Grep" },
+    { "<leader>f", function() require("snacks").picker.smart( { filter = { cwd = true }, hidden = true, layout = { fullscreen = true } } ) end, desc = "Smart Find Files" },
+    { "<leader>/", function() require("snacks").picker.grep( { hidden = true, layout = { fullscreen = true } } ) end, desc = "Grep" },
     { "<leader>:", function() require("snacks").picker.command_history() end, desc = "Command History" },
     { "<leader>n", function() require("snacks").picker.notifications() end, desc = "Notification History" },
     { "<leader>e", function() require("snacks").explorer( { hidden = true } ) end, desc = "File Explorer" },
+    { "<leader>E", function() require("snacks").explorer( { hidden = true, layout = { fullscreen = true, preset = "ivy", preview = true } } ) end, desc = "File Explorer Fullscreen" },
     { "<leader>b", function() require("snacks").picker.buffers(
       {
         -- Open directly in normal mode

@@ -69,8 +69,12 @@ vim.opt.softtabstop = 2
 -- Preview substitutions live, as you type
 vim.opt.inccommand = "split"
 
--- Show which line your cursor is on
-vim.opt.cursorline = true
+-- Hide command bar
+vim.opt.cmdheight = 0
+
+-- Show diagnostic inline
+vim.diagnostic.config({ virtual_text = true })
+
 vim.api.nvim_set_hl(0, "CursorLine", { cterm = {}, ctermbg = "", bg = "none" })
 
 -- Minimal number of screen lines to keep above and below the cursor.

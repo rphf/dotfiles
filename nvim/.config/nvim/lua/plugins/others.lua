@@ -44,4 +44,10 @@ return {
       vim.api.nvim_set_hl(0, "TreesitterContext", { bg = "None" })
     end,
   },
+  {
+    "norcalli/nvim-colorizer.lua",
+    config = function()
+      require("colorizer").setup()
+    end,
+  },
 }

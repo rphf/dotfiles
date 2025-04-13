@@ -13,7 +13,7 @@ return {
       enabled = true,
       formatters = {
         file = {
-          truncate = 100, -- truncate the file path to (roughly) this length
+          truncate = 100,
         },
       },
       matcher = {
@@ -24,11 +24,6 @@ return {
       sources = {
         explorer = {
           auto_close = false,
-          -- layout = {
-          --   preset = "ivy",
-          --   preview = true,
-          --   fullscreen = true,
-          -- },
           layout = {
             layout = {
               width = 0.35,
@@ -37,11 +32,21 @@ return {
           },
         },
       },
+      toggles = {
+        regex = { icon = "R", value = true },
+      },
     },
     indent = {
       animate = { duration = { step = 20, total = 200 } },
     },
     input = { enabled = true },
+
+    styles = {
+      lazygit = {
+        width = 0.99,
+        height = 0.99,
+      },
+    },
 
     -- statuscolumn = { enabled = true },
     -- git = { enabled = true },
@@ -52,13 +57,15 @@ return {
     -- words = { enabled = true },
   },
 
+
   -- stylua: ignore
   -- TODO: Refactor this table to only keep what I actually use
   keys = {
     -- Top Pickers & Explorer
     -- { "<leader>f", function() require("snacks").picker.files( { hidden = true }) end, desc = "find files" },
     { "<leader>f", function() require("snacks").picker.smart( { filter = { cwd = true }, hidden = true, layout = { fullscreen = true } } ) end, desc = "Smart Find Files" },
-    { "<leader>/", function() require("snacks").picker.grep( { hidden = true, layout = { fullscreen = true } } ) end, desc = "Grep" },
+    { "<leader>/", function() require("snacks").picker.grep( { hidden = true, layout = { fullscreen = true }, regex = false } ) end, desc = "Grep fixed string" },
+    { "<leader>ss", function() require("snacks").picker.grep( { hidden = true, layout = { fullscreen = true }, regex = true } ) end, desc = "Grep regex" },
     { "<leader>:", function() require("snacks").picker.command_history() end, desc = "Command History" },
     { "<leader>n", function() require("snacks").picker.notifications() end, desc = "Notification History" },
     { "<leader>e", function() require("snacks").explorer( { hidden = true } ) end, desc = "File Explorer" },
@@ -80,7 +87,6 @@ return {
       }
       ) end, desc = "Buffers" },
     { "<leader>p", function() vim.cmd("SessionSearch") end, desc = "Projects" },
-    { "<leader>sr", function() require("snacks").picker.recent() end, desc = "Recent" },
     -- git
     { "<leader>gb", function() require("snacks").picker.git_branches() end, desc = "Git Branches" },
     { "<leader>gl", function() require("snacks").picker.git_log() end, desc = "Git Log" },
@@ -89,7 +95,7 @@ return {
     { "<leader>gS", function() require("snacks").picker.git_stash() end, desc = "Git Stash" },
     { "<leader>gf", function() require("snacks").picker.git_log_file() end, desc = "Git Log File" },
     { "<leader>gB", function() require("snacks").gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
-    { "<leader>gg", function() require("snacks").lazygit() end, desc = "Lazygit" },
+    { "<leader>gd", function() require("snacks").lazygit() end, desc = "Lazygit" },
     -- search
     { '<leader>s"', function() require("snacks").picker.registers() end, desc = "Registers" },
     { '<leader>s/', function() require("snacks").picker.search_history() end, desc = "Search History" },
@@ -107,7 +113,7 @@ return {
     { "<leader>sM", function() require("snacks").picker.man() end, desc = "Man Pages" },
     { "<leader>sp", function() require("snacks").picker.lazy() end,desc = "Search for Plugin Spec" },
     { "<leader>sq", function() require("snacks").picker.qflist() end, desc = "Quickfix List" },
-    { "<leader>sR", function() require("snacks").picker.resume() end, desc = "Resume" },
+    { "<leader><leader>", function() require("snacks").picker.resume() end, desc = "Resume" },
     { "<leader>su", function() require("snacks").picker.undo() end, desc = "Undo History" },
     { "<leader>uC", function() require("snacks").picker.colorschemes() end, desc = "Colorschemes" },
     -- LSP

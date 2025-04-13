@@ -24,6 +24,7 @@ return {
       sources = {
         explorer = {
           auto_close = false,
+          ignored = true,
           layout = {
             layout = {
               width = 0.35,

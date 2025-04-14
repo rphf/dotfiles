@@ -40,13 +40,13 @@ return {
       },
       tabline = {
         lualine_a = {},
-        lualine_b = { "branch", "diff" },
+        lualine_b = { { "branch", color = { fg = "#7aa2f7", bg = "#3b4261" } }, "diff" },
         lualine_c = { { "filename", path = 1 } },
         lualine_x = { "lsp_status" },
       },
       winbar = {},
       inactive_winbar = {},
-      extensions = { "mason" },
+      extensions = {},
     })
   end,
 }

@@ -168,6 +168,9 @@ return {
           },
         },
       })
+      lspconfig.tailwindcss.setup({
+        capabilities = capabilities,
+      })
     end,
   },
 }

@@ -11,6 +11,7 @@ return {
         -- "ts_ls",
         "vtsls",
         "eslint",
+        "tailwindcss",
       },
     })
   end,

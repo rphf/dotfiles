@@ -51,7 +51,6 @@ return {
           row = 0,
           col = 1,
         },
-        -- TODO: add description to all gitsigns keymaps so that it shows in which key
         on_attach = function(bufnr)
           local gitsigns = require("gitsigns")
 
@@ -88,11 +87,11 @@ return {
 
           map("v", "<leader>hs", function()
             gitsigns.stage_hunk({ vim.fn.line("."), vim.fn.line("v") })
-          end)
+          end, { desc = "Stage hunk (selected lines)" })
 
           map("v", "<leader>hr", function()
             gitsigns.reset_hunk({ vim.fn.line("."), vim.fn.line("v") })
-          end)
+          end, { desc = "Reset hunk " })
 
           map("n", "<leader>hb", function()
             gitsigns.blame_line()

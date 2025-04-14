@@ -69,7 +69,32 @@ return {
     { "<leader>ss", function() require("snacks").picker.grep( { hidden = true, layout = { fullscreen = true }, regex = true } ) end, desc = "Grep regex" },
     { "<leader>:", function() require("snacks").picker.command_history() end, desc = "Command History" },
     { "<leader>n", function() require("snacks").picker.notifications() end, desc = "Notification History" },
-    { "<leader>e", function() require("snacks").explorer( { hidden = true } ) end, desc = "File Explorer" },
+    {
+      "<leader>e",
+      function()
+        local snacks = require("snacks")
+        -- Check if current buffer is the explorer
+        if vim.bo.filetype == "snacks_picker_list" then
+          -- Close the explorer if we're already in it
+          vim.api.nvim_buf_delete(0, { force = true })
+          return
+        end
+        -- Check if there's already an explorer buffer
+        for _, buf in ipairs(vim.api.nvim_list_bufs()) do
+          if vim.bo[buf].filetype == "snacks_picker_list" then
+            -- Switch to the explorer window
+            local win = vim.fn.bufwinid(buf)
+            if win ~= -1 then  -- if the buffer is visible in a window
+              vim.api.nvim_set_current_win(win)
+              return
+            end
+          end
+        end
+        -- If no existing explorer found, open a new one
+        snacks.explorer({ hidden = true })
+      end,
+      desc = "File Explorer (toggle/focus/close)"
+    },
     { "<leader>E", function() require("snacks").explorer( { hidden = true, layout = { fullscreen = true, preset = "ivy", preview = true } } ) end, desc = "File Explorer Fullscreen" },
     { "<leader>b", function() require("snacks").picker.buffers(
       {

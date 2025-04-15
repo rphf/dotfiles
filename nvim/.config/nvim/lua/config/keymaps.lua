@@ -8,10 +8,6 @@ vim.g.maplocalleader = "\\"
 vim.keymap.set("v", "J", ":m '>+1<CR>gv=gv", { desc = "Move line down", silent = true })
 vim.keymap.set("v", "K", ":m '<-2<CR>gv=gv", { desc = "Move line up", silent = true })
 
--- Navigate open buffers
-vim.keymap.set("n", "H", "<cmd>bprev<cr>", { desc = "Move to previous buffer" })
-vim.keymap.set("n", "L", "<cmd>bnext<cr>", { desc = "Move to next buffer" })
-
 -- Redo with U instead of <C-r>
 vim.keymap.set("n", "U", function()
   vim.cmd("redo")

@@ -101,10 +101,6 @@ return {
           map("n", "<leader>hQ", function()
             gitsigns.setqflist("all")
           end, { desc = "Folder changes in trouble" })
-
-          -- Toggles
-          map("n", "<leader>tb", gitsigns.toggle_current_line_blame, { desc = "Toggle current line blame" })
-          map("n", "<leader>tw", gitsigns.toggle_word_diff, { desc = "Toggle word diff" })
         end,
       })
     end,

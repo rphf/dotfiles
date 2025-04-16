@@ -40,11 +40,7 @@ vim.keymap.set("n", "<C-d>", "<C-d>zz")
 vim.keymap.set("n", "<C-u>", "<C-u>zz")
 vim.keymap.set("n", "n", "nzzzv")
 vim.keymap.set("n", "N", "Nzzzv")
--- vim.keymap.set("n", "j", "jzz")
--- vim.keymap.set("n", "k", "kzz")
 
--- Source the current file, handy to apply nvim configuration without restarting it
-vim.keymap.set("n", "<leader>0", "<cmd>source %<CR>", { desc = "source the current file" })
 vim.keymap.set("n", "<leader>mr", "<cmd>CellularAutomaton make_it_rain<CR>", { desc = "Make it rain" })
 vim.keymap.set("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", { desc = "Code actions" })
 

@@ -114,7 +114,7 @@ return {
     { "<leader>sM", function() require("snacks").picker.man() end, desc = "Man Pages" },
     { "<leader>sp", function() require("snacks").picker.lazy() end,desc = "Search for Plugin Spec" },
     { "<leader>sq", function() require("snacks").picker.qflist() end, desc = "Quickfix List" },
-    { "<leader><leader>", function() require("snacks").picker.resume() end, desc = "Resume" },
+    { "<leader><leader>", function() require("snacks").picker.resume() end, desc = "Resume picker" },
     { "<leader>su", function() require("snacks").picker.undo() end, desc = "Undo History" },
     { "<leader>uC", function() require("snacks").picker.colorschemes() end, desc = "Colorschemes" },
     -- LSP

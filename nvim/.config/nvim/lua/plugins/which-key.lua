@@ -5,6 +5,12 @@ return {
     preset = "helix",
     spec = {
       { "<leader>c", group = "Code & Config" },
+      { "<leader>g", group = "Git" },
+      { "<leader>h", group = "Git hunks" },
+      { "<leader>m", group = "Misc" },
+      { "<leader>s", group = "Search" },
+      { "<leader>u", group = "UI" },
+      { "<leader>x", group = "Trouble" },
     },
   },
   keys = {

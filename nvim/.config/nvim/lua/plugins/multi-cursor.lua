@@ -10,48 +10,42 @@ return {
     -- Add or skip cursor above/below the main cursor.
     set({ "n", "x" }, "<up>", function()
       mc.lineAddCursor(-1)
-    end)
+    end, { desc = "Multi cursor: add cursor to line below" })
+
     set({ "n", "x" }, "<down>", function()
       mc.lineAddCursor(1)
-    end)
+    end, { desc = "Multi cursor: add cursor to line above" })
+
     set({ "n", "x" }, "<leader><up>", function()
       mc.lineSkipCursor(-1)
-    end)
+    end, { desc = "Multi cursor: skip cursor to line below" })
+
     set({ "n", "x" }, "<leader><down>", function()
       mc.lineSkipCursor(1)
-    end)
+    end, { desc = "Multi cursor: skip cursor to line above" })
 
     -- Add or skip adding a new cursor by matching word/selection
     set({ "n", "x" }, "<M-d>", function()
       mc.matchAddCursor(1)
-    end)
-    set({ "n", "x" }, "<leader>s", function()
+    end, { desc = "Multi cursor: select next occurence" })
+    set({ "n", "x" }, "<M-n>", function()
       mc.matchSkipCursor(1)
-    end)
-    set({ "n", "x" }, "<leader>N", function()
-      mc.matchAddCursor(-1)
-    end)
-    set({ "n", "x" }, "<leader>S", function()
-      mc.matchSkipCursor(-1)
-    end)
+    end, { desc = "Multi cursor: skip next occurence" })
 
     -- Add and remove cursors with control + left click.
     set("n", "<c-leftmouse>", mc.handleMouse)
     set("n", "<c-leftdrag>", mc.handleMouseDrag)
     set("n", "<c-leftrelease>", mc.handleMouseRelease)
 
-    -- Disable and enable cursors.
-    set({ "n", "x" }, "<c-q>", mc.toggleCursor)
-
     -- Mappings defined in a keymap layer only apply when there are
     -- multiple cursors. This lets you have overlapping mappings.
     mc.addKeymapLayer(function(layerSet)
       -- Select a different cursor as the main one.
-      layerSet({ "n", "x" }, "<left>", mc.prevCursor)
-      layerSet({ "n", "x" }, "<right>", mc.nextCursor)
+      layerSet({ "n", "x" }, "<left>", mc.prevCursor, { desc = "Multi cursor: navigate prev cusor" })
+      layerSet({ "n", "x" }, "<right>", mc.nextCursor, { desc = "Multi cursor: navigate next cusor" })
 
       -- Delete the main cursor.
-      layerSet({ "n", "x" }, "<leader>x", mc.deleteCursor)
+      layerSet({ "n", "x" }, "<leader>x", mc.deleteCursor, { desc = "Multi cursor: delete cursor" })
 
       -- Enable and clear cursors using escape.
       layerSet("n", "<esc>", function()

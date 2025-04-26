@@ -69,7 +69,7 @@ vim.opt.softtabstop = 2
 -- Preview substitutions live, as you type
 vim.opt.inccommand = "split"
 
--- Hide command bar
+-- Hide command bar (also done by noice.nvim)
 vim.opt.cmdheight = 0
 
 -- Show diagnostic inline

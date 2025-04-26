@@ -96,7 +96,7 @@ return {
     { "<leader>gS", function() require("snacks").picker.git_stash() end, desc = "Git Stash" },
     { "<leader>gf", function() require("snacks").picker.git_log_file() end, desc = "Git Log File" },
     { "<leader>gB", function() require("snacks").gitbrowse() end, desc = "Git Browse", mode = { "n", "v" } },
-    { "<leader>gd", function() require("snacks").lazygit() end, desc = "Lazygit" },
+    { "<leader>lg", function() require("snacks").lazygit() end, desc = "Lazygit" },
     -- search
     { '<leader>s"', function() require("snacks").picker.registers() end, desc = "Registers" },
     { '<leader>s/', function() require("snacks").picker.search_history() end, desc = "Search History" },

@@ -29,7 +29,7 @@ return {
           transient = true,
           prefills = {
             filesFilter = ext and ext ~= "" and "*." .. ext or nil,
-            flags = "--fixed-strings --hidden -i",
+            flags = "--fixed-strings --hidden --glob=!**/.git/*",
           },
         })
       end,

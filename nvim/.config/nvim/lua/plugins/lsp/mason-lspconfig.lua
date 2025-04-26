@@ -12,6 +12,7 @@ return {
         "vtsls",
         "eslint",
         "tailwindcss",
+        -- "gopls", -- FIXME: fail for some reason
       },
     })
   end,

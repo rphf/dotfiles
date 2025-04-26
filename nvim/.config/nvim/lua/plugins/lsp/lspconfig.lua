@@ -168,7 +168,12 @@ return {
           },
         },
       })
+
       lspconfig.tailwindcss.setup({
+        capabilities = capabilities,
+      })
+
+      lspconfig.gopls.setup({
         capabilities = capabilities,
       })
     end,

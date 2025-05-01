@@ -3,14 +3,21 @@ return {
   event = "VeryLazy",
   version = false, -- form avante doc: Never set this value to "*"! Never!
   opts = {
-    provider = "openai",
-    openai = {
-      endpoint = "https://api.openai.com/v1",
-      model = "gpt-4o", -- your desired model (or use gpt-4o, etc.)
-      timeout = 30000, -- Timeout in milliseconds, increase this for reasoning models
-      temperature = 0,
-      max_completion_tokens = 8192, -- Increase this to include reasoning tokens (for reasoning models)
-      --reasoning_effort = "medium", -- low|medium|high, only used for reasoning models
+    behavior = {
+      auto_suggestions = false,
+    },
+    provider = "deepseek",
+    vendors = {
+      deepseek = {
+        __inherited_from = "openai",
+        api_key_name = "DEEPSEEK_API_KEY",
+        endpoint = "https://api.deepseek.com",
+        model = "deepseek-coder",
+        max_tokens = 8192,
+      },
+    },
+    windows = {
+      position = "right",
     },
   },
   -- if you want to build from source then do `make BUILD_FROM_SOURCE=true`

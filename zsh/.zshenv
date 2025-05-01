@@ -25,6 +25,7 @@ export PATH="$PATH:/opt/homebrew/bin"
 export NEOVIDE_FORK=1
 
 source "$HOME/.cargo/env"
+
 # Source the .secrets.zshenv file if it exists
 if [ -f ~/.secrets.zshenv ]; then
   source ~/.secrets.zshenv

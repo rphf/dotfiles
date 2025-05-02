@@ -28,7 +28,6 @@ return {
         grug.open({
           transient = true,
           prefills = {
-            filesFilter = ext and ext ~= "" and "*." .. ext or nil,
             flags = "--fixed-strings --hidden --glob=!**/.git/*",
           },
         })
@@ -44,7 +43,6 @@ return {
         grug.open({
           transient = true,
           prefills = {
-            filesFilter = ext and ext ~= "" and "*." .. ext or nil,
             flags = "--fixed-strings --hidden -i",
             paths = vim.fn.expand("%"),
           },

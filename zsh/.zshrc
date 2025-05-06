@@ -22,6 +22,7 @@ antidote load
 # Source fzf initialization if it exists, enabling fuzzy finder features
 if [ -f ~/.fzf.zsh ]; then
   source ~/.fzf.zsh
+  export FZF_DEFAULT_OPTS='--height 40% --tmux bottom,40% --layout reverse'
   # Bind `K` to FZF history search start in normal mode
   bindkey -M vicmd 'K' fzf-history-widget
 fi

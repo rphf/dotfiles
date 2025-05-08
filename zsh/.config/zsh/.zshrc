@@ -1,15 +1,13 @@
-# Check https://zsh.sourceforge.io/Intro/intro_3.html
-# Describe which files are automatically loaded at zsh startup, for which purpose, in which condition and in which order.
 
 # Enable Powerlevel10k instant prompt. Should stay close to the top of ~/.zshrc.
 # Initialization code that may require console input (password prompts, [y/n]
 # confirmations, etc.) must go above this block; everything else may go below.
-if [[ -r "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh" ]]; then
-  source "${XDG_CACHE_HOME:-$HOME/.cache}/p10k-instant-prompt-${(%):-%n}.zsh"
-fi
+source "$XDG_CACHE_HOME/p10k-instant-prompt-${(%):-%n}.zsh"
+# To clean up stale files (keep the latest `.zsh` and `.zwc`):
+# rm -f "$XDG_CACHE_HOME"/p10k-*.tmp.*
 
-# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
-source ~/.p10k.zsh
+# To customize prompt, run `p10k configure` or edit $XDG_CONFIG_HOME/zsh/.p10k.zsh.
+source "$XDG_CONFIG_HOME/zsh/.p10k.zsh"
 
 # In antidote home folder (check with `antidote home`), this will use friendly names for the git repositories cloned
 # e.g. `zsh-users__zsh-autosuggestions` instead of `https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-autosuggestions`
@@ -19,13 +17,11 @@ zstyle ':antidote:bundle' use-friendly-names 'yes'
 source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
 antidote load
 
-# Source fzf initialization if it exists, enabling fuzzy finder features
-if [ -f ~/.fzf.zsh ]; then
-  source ~/.fzf.zsh
-  export FZF_DEFAULT_OPTS='--height 40% --tmux bottom,40% --layout reverse'
-  # Bind `K` to FZF history search start in normal mode
-  bindkey -M vicmd 'K' fzf-history-widget
-fi
+# FZF for enabling fuzzy finder features (needs fzf installed with brew)
+source <(fzf --zsh)
+export FZF_DEFAULT_OPTS='--height 40% --tmux bottom,40% --layout reverse'
+# Bind `K` to FZF history search start in normal mode
+bindkey -M vicmd 'K' fzf-history-widget
 
 # Initialize Homebrew environment variables
 eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -39,10 +35,10 @@ eval "$(mise activate zsh)"
 # eval "$(pyenv init --path)"
 # eval "$(pyenv virtualenv-init -)"
 
-source ~/.compdef_gt.zsh
-source ~/.pls.zsh
+source "$XDG_CONFIG_HOME/zsh/.compdef_gt.zsh"
+source "$XDG_CONFIG_HOME/zsh/.pls.zsh"
+source "$XDG_CONFIG_HOME/zsh/.zsh_aliases"
 
-# Source aliases file
-if [ -f ~/.zsh_aliases ]; then
-  source ~/.zsh_aliases
-fi
+# Needs to set in .zshrc because .zshenv is loaded before /etc/zshrc default config load which
+# overwrites to HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history (and ZDOTDIR is set to $HOME/.config/zsh)
+export HISTFILE="$HOME/.zsh_history"

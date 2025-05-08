@@ -1,35 +1,16 @@
-export EDITOR='nvim'
+#!/bin/zsh
+#
+# .zshenv: Zsh environment file, always loaded at shell startup
+#
+# Check https://zsh.sourceforge.io/Intro/intro_3.html
+# Describe which files are automatically loaded at zsh startup, for which purpose, in which condition and in which order.
 
-export XDG_CONFIG_HOME="$HOME/.config"
+# If not set, change the path for the Zsh DOTfiles DIRectory
+export ZDOTDIR=${ZDOTDIR:-$HOME/.config/zsh}
 
-# Set Golang flags
-export GOFLAGS="-mod=vendor"
-
-# Set the pager for viewing man pages, using 'bat' for syntax highlighting
-export MANPAGER="sh -c 'col -bx | bat --paging=always -l man -p'"
-
-export BAT_THEME="tokyonight_storm"
-export BAT_PAGING="never"
-
-# Ignore any suggestion for command beginning with cd 
-# I prefer relying on zoxide for changing directories
-export ZSH_AUTOSUGGEST_HISTORY_IGNORE="cd *"
-
-export PATH="$PATH:/opt/homebrew/bin"
-# export PATH="$HOME/.pyenv/bin:$PATH"
-
-# Will refuse to execute a commands if there is an alternative alias for it (zsh-you-should-use)
-# export YSU_HARDCORE=1
-
-# Detach from the terminal instead of waiting for the Neovide process to terminate
-export NEOVIDE_FORK=1
-
-source "$HOME/.cargo/env"
-
-# Source the .secrets.zshenv file if it exists
-if [ -f ~/.secrets.zshenv ]; then
-  source ~/.secrets.zshenv
-fi
-
+export XDG_CONFIG_HOME=${XDG_CONFIG_HOME:-$HOME/.config}
+export XDG_CACHE_HOME=${XDG_CACHE_HOME:-$HOME/.cache}
+export XDG_DATA_HOME=${XDG_DATA_HOME:-$HOME/.local/share}
+export XDG_STATE_HOME=${XDG_STATE_HOME:-$HOME/.local/state}
 
 

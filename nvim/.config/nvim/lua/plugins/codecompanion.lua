@@ -29,6 +29,17 @@ return {
           adapter = "deepseek",
         },
       },
+      adapters = {
+        deepseek = function()
+          return require("codecompanion.adapters").extend("deepseek", {
+            schema = {
+              model = {
+                default = "deepseek-chat",
+              },
+            },
+          })
+        end,
+      },
       display = {
         chat = {
           show_settings = false, -- Show LLM settings at the top of the chat buffer?

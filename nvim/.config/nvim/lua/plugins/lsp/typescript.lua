@@ -3,8 +3,6 @@ return {
   event = "VeryLazy",
   -- PERF: look how to load this plugin only for typescript and typescriptreact filetypes.
   config = function()
-    local utils = require("tsc.utils")
-
     local function find_tsc_bin()
       local cwd = vim.fn.getcwd()
       local dir = cwd

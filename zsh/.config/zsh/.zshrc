@@ -17,11 +17,10 @@ zstyle ':antidote:bundle' use-friendly-names 'yes'
 source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
 antidote load
 
-# FZF for enabling fuzzy finder features (needs fzf installed with brew)
+# fzf for enabling fuzzy finder features (needs fzf installed with brew)
 source <(fzf --zsh)
-export FZF_DEFAULT_OPTS='--height 40% --tmux bottom,40% --layout reverse'
-# Bind `K` to FZF history search start in normal mode
-bindkey -M vicmd 'K' fzf-history-widget
+# Custom widget for searching command history 
+source "$XDG_CONFIG_HOME/zsh/.fzf-history-search.zsh"
 
 # Initialize Homebrew environment variables
 eval "$(/opt/homebrew/bin/brew shellenv)"
@@ -39,6 +38,19 @@ source "$XDG_CONFIG_HOME/zsh/.compdef_gt.zsh"
 source "$XDG_CONFIG_HOME/zsh/.pls.zsh"
 source "$XDG_CONFIG_HOME/zsh/.zsh_aliases"
 
+# HISTORY
+#
 # Needs to set in .zshrc because .zshenv is loaded before /etc/zshrc default config load which
 # overwrites to HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history (and ZDOTDIR is set to $HOME/.config/zsh)
 export HISTFILE="$HOME/.zsh_history"
+export HISTSIZE=10000
+export SAVEHIST=50000
+
+# Exhaustive list with more detailed descriptions here: https://zsh.sourceforge.io/Doc/Release/Options.html#History
+# setopt HIST_IGNORE_ALL_DUPS     # Remove older duplicates of a command from history.
+setopt HIST_IGNORE_DUPS         # Do not enter command lines into the history list if they are duplicates of the previous event.
+setopt HIST_REDUCE_BLANKS       # Remove superfluous blanks from each command line being added to the history list.
+setopt INC_APPEND_HISTORY       # Append history lines from all sessions.
+setopt EXTENDED_HISTORY         # Include timestamp
+setopt HIST_EXPIRE_DUPS_FIRST   # Expire the duplicates first when trimming history
+

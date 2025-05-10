@@ -43,6 +43,8 @@ brew "ghostscript"
 brew "git"
 # Syntax-highlighting pager for git and diff output
 brew "git-delta"
+# Audit git repos for secrets
+brew "gitleaks"
 # GNU typing tutor
 brew "gnu-typist"
 # GNU Pretty Good Privacy (PGP) package
@@ -53,12 +55,16 @@ brew "imagemagick@6", link: true
 brew "inetutils"
 # Lazier way to manage everything docker
 brew "lazydocker"
+# Simple terminal UI for git commands
+brew "lazygit"
 # Clone of ls with colorful output, file type icons, and more
 brew "lsd"
 # Polyglot runtime manager (asdf rust clone)
 brew "mise"
 # Parser generator tool and incremental parsing library
 brew "tree-sitter"
+# Clean C library for processing UTF-8 Unicode data
+brew "utf8proc", args: ["HEAD"]
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Command-line Git information tool
@@ -81,24 +87,22 @@ brew "stow"
 brew "tlrc"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
-# Clean C library for processing UTF-8 Unicode data
-brew "utf8proc", args: ["HEAD"]
+# Maintained ctags implementation
+brew "universal-ctags"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
-# A simple terminal UI for git commands, written in Go
-brew "jesseduffield/lazygit/lazygit"
 # Simple hotkey-daemon for macOS.
 brew "koekeishiya/formulae/skhd"
 # Supabase CLI
 brew "supabase/tap/supabase"
 # Allows you to manage your stacked changes and submit them for review on GitHub
 brew "withgraphite/tap/graphite"
-# AeroSpace is an i3-like tiling window manager for macOS
-cask "aerospace"
+# GraphQL client
+cask "altair-graphql-client"
+# Tools for building Android applications
+cask "android-studio"
 # App for managing battery charging. (Also installs a CLI on first use.)
 cask "battery"
-# Automated testing of webapps for Google Chrome
-cask "chromedriver"
 # Music player
 cask "deezer"
 # Voice and text chat software
@@ -111,14 +115,20 @@ cask "google-chrome"
 cask "handbrake"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
+# Keyboard customiser
+cask "karabiner-elements"
 # Customise mouse behavior
 cask "linearmouse"
 # Screen and video recording software
 cask "loom"
 # VPN client
 cask "mullvadvpn"
+# Neovim Client
+cask "neovide"
 # Control your tools with a few keystrokes
 cask "raycast"
+# Desktop app for inspecting React JS and React Native projects
+cask "reactotron"
 # Simple menu bar app to view and interact with reminders
 cask "reminders-menubar"
 # Team communication and collaboration software

@@ -3,7 +3,7 @@ return {
   dependencies = { "williamboman/mason.nvim" }, -- Ensure mason.nvim is loaded first
   config = function()
     require("mason-lspconfig").setup({
-      automatic_installation = true,
+      automatic_enable = false,
       ensure_installed = {
         "lua_ls",
         "rust_analyzer", -- Needed for rustaceanvim

@@ -13,7 +13,7 @@ config.color_scheme = "Tokyo Night Storm"
 -- config.macos_window_background_blur = 15
 -- config.window_background_opacity = 0.9
 config.inactive_pane_hsb = { brightness = 0.5 }
-config.window_padding = { left = 0, right = 0, top = 0, bottom = 0 }
+config.window_padding = { left = 10, right = 10, top = 0, bottom = 0 }
 config.tab_max_width = 40
 config.colors = {
   cursor_bg = "7aa2f7",

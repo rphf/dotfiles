@@ -19,7 +19,7 @@ antidote load
 
 # fzf for enabling fuzzy finder features (needs fzf installed with brew)
 source <(fzf --zsh)
-# Custom widget for searching command history 
+# Custom widget for searching command history
 source "$XDG_CONFIG_HOME/zsh/.fzf-history-search.zsh"
 
 # Initialize Homebrew environment variables
@@ -29,8 +29,10 @@ eval "$(zoxide init zsh)"
 # Activate Mise, a polyglot package manager
 eval "$(mise activate zsh)"
 
-# Commenting pyenv when not using it because it signicantly decrease the shell performance 
-# see https://github.com/romkatv/zsh-bench for benchmarking the shell 
+export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
+
+# Commenting pyenv when not using it because it signicantly decrease the shell performance
+# see https://github.com/romkatv/zsh-bench for benchmarking the shell
 # eval "$(pyenv init --path)"
 # eval "$(pyenv virtualenv-init -)"
 
@@ -53,4 +55,3 @@ setopt HIST_REDUCE_BLANKS       # Remove superfluous blanks from each command li
 setopt INC_APPEND_HISTORY       # Append history lines from all sessions.
 setopt EXTENDED_HISTORY         # Include timestamp
 setopt HIST_EXPIRE_DUPS_FIRST   # Expire the duplicates first when trimming history
-

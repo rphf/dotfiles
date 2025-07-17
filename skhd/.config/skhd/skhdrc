@@ -1,6 +1,6 @@
 rcmd - a : open -a WezTerm
 rcmd - f : open -a "Zen Browser"
-rcmd - d : open -a neovide 
+rcmd - d : open -a Zed
 # rcmd - d : bash ~/.config/skhd/nvim-focus.sh
 rcmd - s : open -a Slack
 rcmd - e : open -a Simulator
@@ -8,13 +8,15 @@ rcmd - g : open -a "Google Chrome"
 rcmd - r : open -a Figma
 rcmd - v : open -a Deezer
 rcmd - w : open -a Safari
-# rcmd - c : open -a Calendar 
-rcmd - c : open -a "Visual Studio Code" 
-rcmd - i : open -a Obsidian 
-rcmd - t : open -a "DeepSeek - Into the Unknown" 
+# rcmd - c : open -a Calendar
+rcmd - c : open -a "Visual Studio Code"
+rcmd - i : open -a Obsidian
+rcmd - t : open -a "chatgpt"
 
 # Open this file in a new tab of WezTerm
 rcmd - m : wezterm cli spawn -- zsh -c "cd ~/.config/skhd && nvim skhdrc" | open -a WezTerm
 
 # `skhd --reload`
 # `pkill skhd && rm /tmp/skhd_raphael.pid`
+# `skhd --stop-service`
+# `skhd --start-service`

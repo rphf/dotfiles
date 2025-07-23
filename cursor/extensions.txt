@@ -1,0 +1,17 @@
+asvetliakov.vscode-neovim
+dbaeumer.vscode-eslint
+bradlc.vscode-tailwindcss
+chakrounanas.turbo-console-log
+eamodio.gitlens
+esbenp.prettier-vscode
+formulahendry.auto-close-tag
+formulahendry.auto-rename-tag
+github.github-vscode-theme
+github.vscode-pull-request-github
+golang.go
+kaiwood.endwise
+naumovs.color-highlight
+shopify.ruby-lsp
+streetsidesoftware.code-spell-checker
+usernamehw.errorlens
+yoavbls.pretty-ts-errors

@@ -1,0 +1,11 @@
+{
+  "vscode-neovim.NVIM_APPNAME": "nvim-vscode",
+  "window.commandCenter": false,
+  "workbench.colorTheme": "GitHub Dark Default",
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+  "editor.defaultFormatter": "esbenp.prettier-vscode",
+  "githubPullRequests.pullBranch": "never",
+  "files.autoSave": "onFocusChange"
+}

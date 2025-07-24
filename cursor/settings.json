@@ -10,7 +10,15 @@
   "files.autoSave": "onFocusChange",
   "cursor.diffs.useCharacterLevelDiffs": true,
   "cursor.cpp.enablePartialAccepts": true,
-  "editor.cursorSmoothCaretAnimation": "on"
+  "editor.cursorSmoothCaretAnimation": "on",
+
+  "editor.formatOnSave": true,
+  "editor.formatOnPaste": false,
+  "editor.formatOnType": false,
+  "editor.formatOnSaveMode": "file",
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+  "editor.codeActionsOnSave": {
+    "source.organizeImports": "explicit",
+    "source.fixAll": "always"
+  }
 }
-
-

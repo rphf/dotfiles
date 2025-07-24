@@ -20,3 +20,4 @@ fi
 
 alias grep="grep --color=always"
 alias lg="lazygit"
+alias code="cursor"

@@ -1,7 +1,8 @@
+aaron-bond.better-comments
 asvetliakov.vscode-neovim
-dbaeumer.vscode-eslint
 bradlc.vscode-tailwindcss
 chakrounanas.turbo-console-log
+dbaeumer.vscode-eslint
 eamodio.gitlens
 esbenp.prettier-vscode
 formulahendry.auto-close-tag

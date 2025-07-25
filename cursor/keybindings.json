@@ -34,5 +34,21 @@
   {
     "key": "shift+cmd+]",
     "command": "-workbench.action.nextEditor"
+  },
+  {
+    "key": "alt+l",
+    "command": "turboConsoleLog.deleteAllLogMessages"
+  },
+ {
+    "key": "shift+alt+d",
+    "command": "-turboConsoleLog.deleteAllLogMessages"
+  },
+  {
+    "key": "cmd+l",
+    "command": "turboConsoleLog.displayLogMessage"
+  },
+  {
+    "key": "ctrl+alt+l",
+    "command": "-turboConsoleLog.displayLogMessage"
   }
 ]

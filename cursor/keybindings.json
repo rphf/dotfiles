@@ -1,4 +1,5 @@
 [
+  // ===== WORKBENCH NAVIGATION =====
   {
     "key": "cmd+e",
     "command": "workbench.view.explorer",
@@ -9,16 +10,8 @@
     "command": "-workbench.view.explorer",
     "when": "viewContainer.workbench.view.explorer.enabled"
   },
-  {
-    "key": "shift+cmd+e",
-    "command": "composer.showBackgroundAgentHistory",
-    "when": "backgroundComposerEnabled || showBackgroundAgentHistoryAction"
-  },
-  {
-    "key": "cmd+e",
-    "command": "-composer.showBackgroundAgentHistory",
-    "when": "backgroundComposerEnabled || showBackgroundAgentHistoryAction"
-  },
+
+  // ===== EDITOR NAVIGATION =====
   {
     "key": "ctrl+h",
     "command": "workbench.action.previousEditor"
@@ -35,11 +28,25 @@
     "key": "shift+cmd+]",
     "command": "-workbench.action.nextEditor"
   },
+
+  // ===== CURSOR COMPOSER =====
+  {
+    "key": "shift+cmd+e",
+    "command": "composer.showBackgroundAgentHistory",
+    "when": "backgroundComposerEnabled || showBackgroundAgentHistoryAction"
+  },
+  {
+    "key": "cmd+e",
+    "command": "-composer.showBackgroundAgentHistory",
+    "when": "backgroundComposerEnabled || showBackgroundAgentHistoryAction"
+  },
+
+  // ===== TURBO CONSOLE LOG =====
   {
     "key": "alt+l",
     "command": "turboConsoleLog.deleteAllLogMessages"
   },
- {
+  {
     "key": "shift+alt+d",
     "command": "-turboConsoleLog.deleteAllLogMessages"
   },

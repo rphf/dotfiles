@@ -1,23 +1,71 @@
 {
-  "vscode-neovim.NVIM_APPNAME": "nvim-vscode",
-  "extensions.experimental.affinity": {
-    "asvetliakov.vscode-neovim": 1
-  },
-  "window.commandCenter": false,
-  "workbench.colorTheme": "GitHub Dark Default",
-  "cursor.diffs.useCharacterLevelDiffs": true,
-  "cursor.cpp.enablePartialAccepts": true,
-
-  "githubPullRequests.pullBranch": "never",
-
+  // ===== EDITOR CORE SETTINGS =====
+  "editor.semanticHighlighting.enabled": true,
+  "editor.rulers": [80],
+  "editor.insertSpaces": true,
+  "editor.renderWhitespace": "all",
   "editor.cursorSmoothCaretAnimation": "on",
+  "editor.accessibilitySupport": "off",
+  "editor.fontLigatures": false,
+  "editor.linkedEditing": true,
 
-  "files.autoSave": "onFocusChange",
+  // ===== FORMATTING SETTINGS =====
   "editor.defaultFormatter": "esbenp.prettier-vscode",
   "editor.formatOnSave": true,
   "editor.formatOnPaste": false,
   "editor.formatOnType": false,
   "editor.formatOnSaveMode": "file",
+
+  // ===== FILE HANDLING =====
+  "files.trimFinalNewlines": true,
+  "files.insertFinalNewline": true,
+  "files.trimTrailingWhitespace": true,
+  "files.autoSave": "onFocusChange",
+
+  // ===== DIFF EDITOR =====
+  "diffEditor.ignoreTrimWhitespace": true,
+  "cursor.diffs.useCharacterLevelDiffs": true,
+
+  // ===== WORKBENCH & UI =====
+  "workbench.tree.enableStickyScroll": true,
+  "workbench.colorTheme": "GitHub Dark Default",
+  "window.commandCenter": false,
+  "update.showReleaseNotes": true,
+
+  // ===== SEARCH =====
+  "search.mode": "newEditor",
+
+  // ===== GIT =====
+  "git.confirmSync": false,
+
+  // ===== JAVASCRIPT/TYPESCRIPT =====
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "typescript.updateImportsOnFileMove.enabled": "always",
+  "javascript.preferences.renameMatchingJsxTags": true,
+  "typescript.preferences.renameMatchingJsxTags": true,
+
+  // ===== HTML =====
+  "html.format.indentInnerHtml": true,
+
+  // ===== CURSOR-SPECIFIC =====
+  "cursor.cpp.enablePartialAccepts": true,
+
+  // ===== GITHUB =====
+  "githubPullRequests.pullBranch": "never",
+
+  // ===== VSCode-NEOVIM =====
+  "vscode-neovim.NVIM_APPNAME": "nvim-vscode",
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  },
+
+  // ===== ESLINT =====
+  "eslint.workingDirectories": [{ "mode": "auto" }],
+
+  // ===== TELEMETRY =====
+  "telemetry.telemetryLevel": "crash",
+
+  // ===== LANGUAGE-SPECIFIC SETTINGS =====
   "[javascriptreact]": {
     "editor.codeActionsOnSave": {
       "source.organizeImports": "explicit",
@@ -41,15 +89,5 @@
       "source.organizeImports": "explicit",
       "source.fixAll": "always"
     }
-  },
-
-  "editor.renderWhitespace": "all",
-  "eslint.workingDirectories": [{ "mode": "auto" }],
-  "editor.linkedEditing": true,
-  "javascript.preferences.renameMatchingJsxTags": true,
-  "typescript.preferences.renameMatchingJsxTags": true,
-
-  "telemetry.telemetryLevel": "crash",
-
-  "editor.fontLigatures": false
+  }
 }

@@ -6,6 +6,7 @@ tap "homebrew/services"
 tap "jesseduffield/lazygit"
 tap "koekeishiya/formulae"
 tap "lencx/chatgpt", "https://github.com/lencx/ChatGPT.git"
+tap "mobile-dev-inc/tap"
 tap "nikitabobko/tap"
 tap "supabase/tap"
 tap "withgraphite/tap"
@@ -93,6 +94,8 @@ brew "universal-ctags"
 brew "zoxide"
 # Simple hotkey-daemon for macOS.
 brew "koekeishiya/formulae/skhd"
+# The easiest way to automate UI testing for your mobile app
+brew "mobile-dev-inc/tap/maestro"
 # Supabase CLI
 brew "supabase/tap/supabase"
 # Allows you to manage your stacked changes and submit them for review on GitHub
@@ -111,8 +114,6 @@ cask "font-hack-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
 # Web browser
 cask "google-chrome"
-# Open-source video transcoder
-cask "handbrake"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
 # Keyboard customiser
@@ -122,9 +123,9 @@ cask "linearmouse"
 # Screen and video recording software
 cask "loom"
 # VPN client
-cask "mullvadvpn"
+cask "mullvad-vpn"
 # Neovim Client
-cask "neovide"
+cask "neovide-app"
 # Control your tools with a few keystrokes
 cask "raycast"
 # Desktop app for inspecting React JS and React Native projects
@@ -141,33 +142,20 @@ cask "wezterm"
 cask "zed"
 # Video communication and virtual meeting platform
 cask "zoom"
+vscode "aaron-bond.better-comments"
+vscode "asvetliakov.vscode-neovim"
 vscode "bradlc.vscode-tailwindcss"
 vscode "chakrounanas.turbo-console-log"
 vscode "dbaeumer.vscode-eslint"
 vscode "eamodio.gitlens"
-vscode "enkia.tokyo-night"
 vscode "esbenp.prettier-vscode"
-vscode "fooo.ruby-spec-runner"
-vscode "formulahendry.auto-close-tag"
-vscode "formulahendry.auto-rename-tag"
-vscode "github.copilot"
-vscode "github.copilot-chat"
 vscode "github.github-vscode-theme"
 vscode "github.vscode-pull-request-github"
 vscode "golang.go"
-vscode "graphite.gti-vscode"
 vscode "kaiwood.endwise"
-vscode "mquandalle.graphql"
 vscode "naumovs.color-highlight"
-vscode "orta.vscode-jest"
-vscode "panicbit.cargo"
-vscode "pkief.material-icon-theme"
-vscode "rust-lang.rust-analyzer"
 vscode "shopify.ruby-lsp"
 vscode "streetsidesoftware.code-spell-checker"
 vscode "svelte.svelte-vscode"
-vscode "tauri-apps.tauri-vscode"
 vscode "usernamehw.errorlens"
-vscode "vintharas.learn-vim"
-vscode "vscodevim.vim"
 vscode "yoavbls.pretty-ts-errors"

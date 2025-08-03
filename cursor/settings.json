@@ -32,6 +32,9 @@
   "window.commandCenter": false,
   "update.showReleaseNotes": true,
 
+  // ===== EXTENTIONS SETTINGS =====
+  "extensions.ignoreRecommendations": true,
+
   // ===== SEARCH =====
   "search.mode": "newEditor",
 

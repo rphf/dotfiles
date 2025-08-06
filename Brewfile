@@ -58,6 +58,8 @@ brew "inetutils"
 brew "lazydocker"
 # Simple terminal UI for git commands
 brew "lazygit"
+# Postgres C API library
+brew "libpq"
 # Clone of ls with colorful output, file type icons, and more
 brew "lsd"
 # Polyglot runtime manager (asdf rust clone)
@@ -154,6 +156,5 @@ vscode "kaiwood.endwise"
 vscode "naumovs.color-highlight"
 vscode "shopify.ruby-lsp"
 vscode "streetsidesoftware.code-spell-checker"
-vscode "svelte.svelte-vscode"
 vscode "usernamehw.errorlens"
 vscode "yoavbls.pretty-ts-errors"

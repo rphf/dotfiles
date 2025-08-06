@@ -2,3 +2,6 @@
 go = "latest"
 node = "lts"
 yarn = "4.9.1"
+
+[settings]
+idiomatic_version_file_enable_tools = ["ruby"]

@@ -62,7 +62,7 @@ brew "lazygit"
 brew "lsd"
 # Polyglot runtime manager (asdf rust clone)
 brew "mise"
-# Parser generator tool and incremental parsing library
+# Incremental parsing library
 brew "tree-sitter"
 # Clean C library for processing UTF-8 Unicode data
 brew "utf8proc", args: ["HEAD"]
@@ -70,14 +70,10 @@ brew "utf8proc", args: ["HEAD"]
 brew "neovim"
 # Command-line Git information tool
 brew "onefetch"
-# Object-relational database system
-brew "postgresql@13", restart_service: :changed, link: true
 # Python version management
 brew "pyenv"
 # Pyenv plugin to manage virtualenv
 brew "pyenv-virtualenv"
-# Persistent key-value database, with built-in net interface
-brew "redis", restart_service: :changed
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Ruby autoformatter
@@ -126,6 +122,8 @@ cask "loom"
 cask "mullvad-vpn"
 # Neovim Client
 cask "neovide-app"
+# Get up and running with large language models locally
+cask "ollama-app"
 # Control your tools with a few keystrokes
 cask "raycast"
 # Desktop app for inspecting React JS and React Native projects

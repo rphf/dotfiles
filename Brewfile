@@ -122,8 +122,6 @@ cask "linearmouse"
 cask "loom"
 # VPN client
 cask "mullvad-vpn"
-# Neovim Client
-cask "neovide-app"
 # Get up and running with large language models locally
 cask "ollama-app"
 # Control your tools with a few keystrokes
@@ -138,8 +136,6 @@ cask "slack"
 cask "visual-studio-code"
 # GPU-accelerated cross-platform terminal emulator and multiplexer
 cask "wezterm"
-# Multiplayer code editor
-cask "zed"
 # Video communication and virtual meeting platform
 cask "zoom"
 vscode "aaron-bond.better-comments"

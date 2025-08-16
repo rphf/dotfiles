@@ -1,4 +1,5 @@
 tap "beeftornado/rmtree"
+tap "f/mcptools"
 tap "felixkratz/formulae"
 tap "ggozad/formulas"
 tap "homebrew/bundle"
@@ -90,6 +91,8 @@ brew "tree"
 brew "universal-ctags"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
+# Command-line interface for interacting with MCP (Model Context Protocol) servers
+brew "f/mcptools/mcp"
 # Simple hotkey-daemon for macOS.
 brew "koekeishiya/formulae/skhd"
 # The easiest way to automate UI testing for your mobile app
@@ -110,6 +113,8 @@ cask "deezer"
 cask "discord"
 cask "font-hack-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
+# Terminal emulator that uses platform-native UI and GPU acceleration
+cask "ghostty"
 # Web browser
 cask "google-chrome"
 # Terminal emulator as alternative to Apple's Terminal app

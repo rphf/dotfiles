@@ -1,6 +1,7 @@
 {
   "cSpell.ignorePaths": ["skhd/.config/skhd/skhdrc", ".vscode"],
   "cSpell.words": [
+    "DEEPSEEK",
     "getchar",
     "habamax",
     "hlsearch",

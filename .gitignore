@@ -1,2 +1,3 @@
 config.local
 **/.secrets.zshenv
+**/.env.shipyard

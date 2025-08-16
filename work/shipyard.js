@@ -2,7 +2,6 @@
 
 /**
  * shipyard.js — Weekly "Shipyard update" prompt generator (Reminders + GitHub)
- * A clean JavaScript rewrite that's easier to understand and modify
  */
 
 const { execSync, spawn } = require("child_process");

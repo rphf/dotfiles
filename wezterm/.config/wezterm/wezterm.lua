@@ -1,5 +1,6 @@
 require("tab-renamer")
-local wezterm = require("wezterm") -- --[[@as Wezterm]] TODO: Fix type anotation for weztem (using lazydev)
+require("zm-workspace").setup()
+local wezterm = require("wezterm") -- --[[@as Wezterm]] TODO: Fix type annotation for wezterm (using lazydev)
 local mux = wezterm.mux
 local act = wezterm.action
 -- local log = wezterm.log_info
@@ -46,56 +47,18 @@ config.keys = {
     -- Move tabs
     { key = "LeftArrow",  mods = "CMD",       action = wezterm.action({ MoveTabRelative = -1 }) },
     { key = "RightArrow", mods = "CMD",       action = wezterm.action({ MoveTabRelative = 1 }) },
-    -- Rezize panes
+    -- Resize panes
     { key = "LeftArrow",  mods = "CMD|SHIFT", action = act.AdjustPaneSize({ "Left", 5 }) },
     { key = "RightArrow", mods = "CMD|SHIFT", action = act.AdjustPaneSize({ "Right", 5 }) },
     { key = "DownArrow",  mods = "CMD|SHIFT", action = act.AdjustPaneSize({ "Down", 5 }) },
     { key = "UpArrow",    mods = "CMD|SHIFT", action = act.AdjustPaneSize({ "Up", 5 }) },
-    -- ZenMaid workspace launch
-    { key = "z",          mods = "OPT",       action = act.EmitEvent("launch_zenmaid_workspace") },
+    -- ZM workspace launch
+    { key = "z",          mods = "OPT",       action = act.EmitEvent("launch_zm_workspace") },
+    -- ZM workspace shutdown
+    { key = "z",          mods = "OPT|SHIFT", action = act.EmitEvent("shutdown_zm_workspace") },
 }
 
--- Workspace Configuration (ZenMaid Workspace)
-wezterm.on("launch_zenmaid_workspace", function()
-    local project_dir = wezterm.home_dir .. "/Workspace/pro/zenmaid"
 
-    -- Set up tabs and panes for ZenMaid webapp
-    local webapp_tab, webapp_pane_1, zenmaid_window = mux.spawn_window({
-        workspace = "zenmaid",
-        cwd = project_dir .. "/zenmaid-webapp",
-    })
-    local webapp_pane_2 = webapp_pane_1:split({
-        direction = "Right",
-        cwd = project_dir .. "/zenmaid-webapp/frontend",
-    })
-    local webapp_pane_3 = webapp_pane_1:split({
-        direction = "Bottom",
-        cwd = project_dir .. "/zenmaid-webapp",
-    })
-    local webapp_pane_4 = webapp_pane_2:split({
-        direction = "Bottom",
-        cwd = project_dir .. "/zenmaid-webapp",
-    })
-    webapp_tab:set_title("term: webapp")
-
-    webapp_pane_1:send_text("OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES bundle exec rails s\n")
-    webapp_pane_2:send_text("yarn run dev\n")
-    webapp_pane_3:send_text("bundle exec rails c\n")
-    webapp_pane_4:send_text("bundle exec sidekiq\n")
-
-    -- Set up tab for ZenMaid mobile project
-    local mobile_tab, mobile_pane_1 = zenmaid_window:spawn_tab({ cwd = project_dir .. "/zenmaid-mobile" })
-    local _ = mobile_pane_1:split({
-        direction = "Right",
-        cwd = project_dir .. "/zenmaid-mobile",
-    })
-    mobile_tab:set_title("term: mobile")
-    mobile_pane_1:send_text("yarn run start:local\n")
-
-    mux.set_active_workspace("zenmaid")
-    zenmaid_window:gui_window():perform_action(act.ActivateTab(0), webapp_pane_1)
-    zenmaid_window:gui_window():maximize()
-end)
 
 wezterm.on("update-right-status", function(window)
     local workspace_name = window:active_workspace()

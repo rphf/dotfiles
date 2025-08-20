@@ -32,7 +32,7 @@
   "window.commandCenter": false,
   "update.showReleaseNotes": true,
 
-  // ===== EXTENTIONS SETTINGS =====
+  // ===== EXTENSIONS SETTINGS =====
   "extensions.ignoreRecommendations": true,
 
   // ===== SEARCH =====
@@ -92,5 +92,13 @@
       "source.organizeImports": "explicit",
       "source.fixAll": "always"
     }
-  }
+  },
+  "cSpell.dictionaryDefinitions": [
+    {
+      "name": "custom-words",
+      "path": "~/dotfiles/cursor/cspell-custom-words.txt",
+      "addWords": true
+    }
+  ],
+  "cSpell.dictionaries": ["custom-words"]
 }

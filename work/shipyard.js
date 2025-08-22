@@ -26,15 +26,14 @@ class ShipyardGenerator {
       since: "",
       until: "",
       lastWeek: false,
-      showEmpty: false,
       copyToClipboard: false,
       enableReminders: true,
       enableGitHub: true,
       remindersList: "Work",
       remindersServer: "mcp-server-apple-reminders",
-      outputFormat: "markdown",
       verbose: false,
       useAI: false,
+      targetAuthor: "@me",
       repos: [],
     };
 
@@ -117,33 +116,14 @@ class ShipyardGenerator {
         case "--last-week":
           this.config.lastWeek = true;
           break;
-        case "--show-empty":
-          this.config.showEmpty = true;
-          break;
         case "--copy":
           this.config.copyToClipboard = true;
-          break;
-        case "--reminders":
-          this.config.enableReminders = true;
           break;
         case "--no-reminders":
           this.config.enableReminders = false;
           break;
-        case "--github":
-          this.config.enableGitHub = true;
-          break;
         case "--no-github":
           this.config.enableGitHub = false;
-          break;
-        case "--reminders-list":
-          this.config.remindersList = args[++i] || "Work";
-          break;
-        case "--reminders-server":
-          this.config.remindersServer =
-            args[++i] || "mcp-server-apple-reminders";
-          break;
-        case "--format":
-          this.config.outputFormat = args[++i] || "markdown";
           break;
         case "--verbose":
         case "-v":
@@ -151,6 +131,10 @@ class ShipyardGenerator {
           break;
         case "--ai":
           this.config.useAI = true;
+          break;
+        case "--author":
+        case "--target-author":
+          this.config.targetAuthor = args[++i] || "@me";
           break;
         case "--help":
         case "-h":
@@ -176,19 +160,16 @@ Time Range Options:
   --until YYYY-MM-DD[THH:MM]     End date/time (default: Sunday 23:59)
 
 Data Source Options:
-  --reminders                    Enable Apple Reminders (default: enabled)
   --no-reminders                 Disable Apple Reminders
-  --github                       Enable GitHub activity (default: enabled if repos provided)
   --no-github                    Disable GitHub activity
-  --reminders-list NAME          Reminders list name (default: "Work")
-  --reminders-server NAME        MCP server name (default: "mcp-server-apple-reminders")
 
 Output Options:
-  --format FORMAT                Output format: markdown, slack (default: markdown)
   --copy                         Copy output to clipboard (macOS only)
-  --show-empty                   Show sections even when empty
   --verbose, -v                  Show verbose output
   --ai                           Send prompt to DeepSeek AI for processing (requires .env.shipyard)
+
+GitHub Options:
+  --author, --target-author USERNAME  GitHub username to fetch activity for (default: @me)
 
 General Options:
   --help, -h                     Show this help message
@@ -203,29 +184,31 @@ Examples:
   # Only GitHub for specific repos, no reminders
   node shipyard.js --no-reminders my-org owner/repo
 
-  # Last week with custom reminders list
-  node shipyard.js --last-week --reminders-list "Personal Tasks" my-org
-
-  # Custom date range with Slack-friendly output
-  node shipyard.js --since 2025-01-01 --until 2025-01-07 --format slack my-org
+  # Custom date range
+  node shipyard.js --since 2025-01-01 --until 2025-01-07 my-org
 
   # Copy to clipboard for immediate use
   node shipyard.js my-org --copy
 
   # Process with AI and copy AI response
   node shipyard.js my-org --ai --copy
+
+  # Generate report for a specific coworker
+  node shipyard.js --author coworker-username my-org
+
+  # Generate report for a coworker with custom date range
+  node shipyard.js --author coworker-username --since 2025-01-01 --until 2025-01-07 my-org
+
+  # The report will include:
+  # - PRs authored and merged by the coworker
+  # - PRs authored by the coworker that are still open
+  # - PRs reviewed by the coworker
+  # - Issues opened by the coworker that are still open
 `);
   }
 
   // Validate configuration
   validate() {
-    // Validate output format
-    if (!["markdown", "slack"].includes(this.config.outputFormat)) {
-      this.error(
-        `Invalid format '${this.config.outputFormat}'. Supported: markdown, slack`
-      );
-    }
-
     // Validate date formats
     const dateRegex = /^\d{4}-\d{2}-\d{2}(T\d{2}:\d{2})?$/;
     if (this.config.since && !dateRegex.test(this.config.since)) {
@@ -476,7 +459,7 @@ Examples:
 
     try {
       // PRs merged this week
-      const prMergedCmd = `gh pr list -R "${repo}" --state merged --limit 1000 --search "author:@me is:pr is:merged merged:${this.config.dateRange}" --json number,title,url,mergedAt --jq '.[] | [.number, .title, .url, .mergedAt] | @tsv'`;
+      const prMergedCmd = `gh pr list -R "${repo}" --state merged --limit 1000 --search "author:${this.config.targetAuthor} is:pr is:merged merged:${this.config.dateRange}" --json number,title,url,mergedAt --jq '.[] | [.number, .title, .url, .mergedAt] | @tsv'`;
       const prMerged = execSync(prMergedCmd, {
         encoding: "utf8",
         stdio: ["pipe", "pipe", "ignore"],
@@ -484,15 +467,23 @@ Examples:
       activities.prMerged = this.parseTsvOutput(prMerged, "PR");
 
       // PRs opened this week and still open
-      const prOpenedCmd = `gh pr list -R "${repo}" --state open --limit 1000 --search "author:@me is:pr state:open created:${this.config.dateRange}" --json number,title,url,createdAt --jq '.[] | [.number, .title, .url, .createdAt] | @tsv'`;
+      const prOpenedCmd = `gh pr list -R "${repo}" --state open --limit 1000 --search "author:${this.config.targetAuthor} is:pr state:open created:${this.config.dateRange}" --json number,title,url,createdAt --jq '.[] | [.number, .title, .url, .createdAt] | @tsv'`;
       const prOpened = execSync(prOpenedCmd, {
         encoding: "utf8",
         stdio: ["pipe", "pipe", "ignore"],
       });
       activities.prOpenedOpen = this.parseTsvOutput(prOpened, "PR");
 
+      // PRs reviewed this week
+      const prReviewedCmd = `gh pr list -R "${repo}" --limit 1000 --search "reviewed-by:${this.config.targetAuthor} is:pr updated:${this.config.dateRange}" --json number,title,url,updatedAt --jq '.[] | [.number, .title, .url, .updatedAt] | @tsv'`;
+      const prReviewed = execSync(prReviewedCmd, {
+        encoding: "utf8",
+        stdio: ["pipe", "pipe", "ignore"],
+      });
+      activities.prReviewed = this.parseTsvOutput(prReviewed, "PR");
+
       // Issues opened this week and still open
-      const issueOpenedCmd = `gh issue list -R "${repo}" --state open --limit 1000 --search "author:@me is:issue state:open created:${this.config.dateRange}" --json number,title,url,createdAt --jq '.[] | [.number, .title, .url, .createdAt] | @tsv'`;
+      const issueOpenedCmd = `gh issue list -R "${repo}" --state open --limit 1000 --search "author:${this.config.targetAuthor} is:issue state:open created:${this.config.dateRange}" --json number,title,url,createdAt --jq '.[] | [.number, .title, .url, .createdAt] | @tsv'`;
       const issueOpened = execSync(issueOpenedCmd, {
         encoding: "utf8",
         stdio: ["pipe", "pipe", "ignore"],
@@ -522,12 +513,18 @@ Examples:
           date,
         };
       })
-      .filter((item) => item.number);
+      .filter((item) => item.number)
+      .sort((a, b) => {
+        // Sort by date from oldest to newest
+        const dateA = new Date(a.date);
+        const dateB = new Date(b.date);
+        return dateA - dateB;
+      });
   }
 
   // Render a section
   renderSection(header, items) {
-    if (items.length === 0 && !this.config.showEmpty) {
+    if (items.length === 0) {
       return "";
     }
 
@@ -565,6 +562,7 @@ Examples:
         "PRs — Opened & still open",
         activities.prOpenedOpen
       );
+      githubText += this.renderSection("PRs — Reviewed", activities.prReviewed);
       githubText += this.renderSection(
         "Issues — Opened & still open",
         activities.issueOpenedOpen
@@ -621,22 +619,6 @@ Below are my raw items for this week:
     }
 
     return prompt;
-  }
-
-  // Format output
-  formatOutput(prompt) {
-    switch (this.config.outputFormat) {
-      case "slack":
-        return prompt
-          .replace(/\*\*([^*]+)\*\*/g, "*$1*")
-          .replace(/### /g, "\n*")
-          .replace(/#### /g, "*")
-          .replace(/^- /gm, "• ")
-          .replace(/^  - /gm, "    ◦ ");
-      case "markdown":
-      default:
-        return prompt;
-    }
   }
 
   // Send prompt to DeepSeek AI
@@ -722,9 +704,7 @@ Below are my raw items for this week:
         const proc = spawn("pbcopy", [], { stdio: "pipe" });
         proc.stdin.write(text);
         proc.stdin.end();
-        console.log(
-          `✅ Shipyard prompt (${this.config.outputFormat}) copied to clipboard.`
-        );
+        console.log(`✅ Shipyard prompt copied to clipboard.`);
       } else {
         this.warning(
           "--copy requested, but pbcopy not found. Printing to stdout instead."
@@ -755,7 +735,7 @@ Below are my raw items for this week:
     this.log(`  Time range: ${this.config.since} → ${this.config.until}`);
     this.log(`  Reminders enabled: ${this.config.enableReminders}`);
     this.log(`  GitHub enabled: ${this.config.enableGitHub}`);
-    this.log(`  Output format: ${this.config.outputFormat}`);
+    this.log(`  Target author: ${this.config.targetAuthor}`);
     this.log(
       `  GitHub repos: ${
         this.config.repos.length > 0 ? this.config.repos.join(", ") : "none"
@@ -765,9 +745,8 @@ Below are my raw items for this week:
     const remindersText = await this.fetchReminders();
     const githubText = await this.generateGitHubText();
     const prompt = this.buildPrompt(remindersText, githubText);
-    const formattedOutput = this.formatOutput(prompt);
 
-    let finalOutput = formattedOutput;
+    let finalOutput = prompt;
 
     // Process with AI if requested
     if (this.config.useAI) {

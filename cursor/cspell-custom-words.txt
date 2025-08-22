@@ -8,6 +8,7 @@ Automigrate
 Barbee
 behaviour
 betterer
+Breakrooms
 Brite
 callees
 CHOZEN
@@ -40,6 +41,8 @@ haspopup
 hookform
 HUGUES
 initdb
+initialise
+initialised
 Invoiceable
 isequal
 Iterm
@@ -75,6 +78,7 @@ rubyfmt
 Scheel
 Signout
 skhd
+sqft
 summernote
 tableview
 tanstack

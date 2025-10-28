@@ -10,8 +10,8 @@ local config = {}
 config.font = wezterm.font("JetBrainsMonoNL Nerd Font Mono")
 config.font_size = 12.5
 config.color_scheme = "Tokyo Night Storm"
--- config.macos_window_background_blur = 15
--- config.window_background_opacity = 0.9
+config.macos_window_background_blur = 15
+config.window_background_opacity = 0.9
 config.inactive_pane_hsb = { brightness = 0.5 }
 config.window_padding = { left = 10, right = 10, top = 0, bottom = 0 }
 config.tab_max_width = 40

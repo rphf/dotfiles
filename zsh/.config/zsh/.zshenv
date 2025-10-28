@@ -16,6 +16,7 @@ export BAT_PAGING="never"
 export ZSH_AUTOSUGGEST_HISTORY_IGNORE="cd *"
 
 export PATH="$PATH:/opt/homebrew/bin"
+export PATH="$PATH:$HOME/.local/bin"
 # export PATH="$HOME/.pyenv/bin:$PATH"
 
 # Will refuse to execute a commands if there is an alternative alias for it (zsh-you-should-use)

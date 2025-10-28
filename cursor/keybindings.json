@@ -67,5 +67,21 @@
     "key": "ctrl+shift+g",
     "command": "-workbench.view.scm",
     "when": "workbench.scm.active"
+  },
+
+  // ===== VSCODE-NEOVIM MULTI-CURSOR =====
+  // Send Cmd+D to Neovim (following official README implementation)
+  {
+    "key": "cmd+d",
+    "command": "vscode-neovim.send",
+    "when": "editorTextFocus && neovim.init",
+    "args": "<D-d>"
+  },
+  // Send Ctrl+D to Neovim as alternative
+  {
+    "key": "ctrl+d",
+    "command": "vscode-neovim.send",
+    "when": "editorTextFocus && neovim.init",
+    "args": "<C-d>"
   }
 ]

@@ -37,10 +37,16 @@ if vim.g.vscode then
     end
     vim.opt.rtp:prepend(lazypath)
 
-    -- Setup lazy.nvim with no plugins for VS Code
+    -- Setup lazy.nvim with VSCode-specific plugins
     require("lazy").setup({
         spec = {
-            -- Add your plugins here
+            -- Official vscode-multi-cursor plugin
+            {
+                'vscode-neovim/vscode-multi-cursor.nvim',
+                event = 'VeryLazy',
+                cond = not not vim.g.vscode,
+                opts = {},
+            },
         },
         -- Configure settings
         install = { colorscheme = { "habamax" } },
@@ -60,6 +66,30 @@ if vim.g.vscode then
             },
         },
     })
+    -- Multi-cursor support using official vscode-multi-cursor.nvim plugin
+    -- Using the "Wrapped VSCode commands" approach from the official docs
+
+    -- Ctrl+D implementation using the wrapped command
+    vim.keymap.set({ "n", "x", "i" }, "<C-d>", function()
+        require("vscode-multi-cursor").addSelectionToNextFindMatch()
+    end, { desc = "Add selection to next find match" })
+
+    -- Cmd+D for Mac users
+    vim.keymap.set({ "n", "x", "i" }, "<D-d>", function()
+        require("vscode-multi-cursor").addSelectionToNextFindMatch()
+    end, { desc = "Add selection to next find match" })
+
+    -- Additional useful multi-cursor commands from the plugin
+    vim.keymap.set({ "n", "x", "i" }, "<C-S-d>", function()
+        require("vscode-multi-cursor").addSelectionToPreviousFindMatch()
+    end, { desc = "Add selection to previous find match" })
+
+    vim.keymap.set({ "n", "x", "i" }, "<C-S-l>", function()
+        require("vscode-multi-cursor").selectHighlights()
+    end, { desc = "Select all highlights (Ctrl+Shift+L)" })
+
+    -- Notification to confirm config is loaded
+    vim.notify("vscode-multi-cursor.nvim plugin loaded!", vim.log.levels.INFO)
 else
     -- Regular Neovim (fallback, should not be used in VS Code context)
     print("This config is designed for VS Code integration only")

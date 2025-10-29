@@ -1,9 +1,8 @@
 tap "beeftornado/rmtree"
 tap "f/mcptools"
+tap "facebook/fb"
 tap "felixkratz/formulae"
 tap "ggozad/formulas"
-tap "homebrew/bundle"
-tap "homebrew/services"
 tap "jesseduffield/lazygit"
 tap "koekeishiya/formulae"
 tap "lencx/chatgpt", "https://github.com/lencx/ChatGPT.git"
@@ -15,6 +14,8 @@ tap "withgraphite/tap"
 brew "act"
 # Plugin manager for zsh, inspired by antigen and antibody
 brew "antidote"
+# Portable library for importing many well-known 3D model formats
+brew "assimp"
 # Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
 # Clone of cat(1) with syntax highlighting and Git integration
@@ -25,22 +26,12 @@ brew "bottom"
 brew "cocoapods"
 # View disk space usage and delete unwanted data, fast
 brew "dua-cli"
-# Like neofetch, but much faster because written mostly in C
-brew "fastfetch"
 # Simple, fast and user-friendly alternative to find
 brew "fd"
 # Command-line fuzzy finder written in Go
 brew "fzf"
 # GitHub command-line tool
 brew "gh"
-# TIFF library and utilities
-brew "libtiff"
-# Library for JPEG-2000 image manipulation
-brew "openjpeg"
-# Image format providing lossless and lossy compression for web images
-brew "webp"
-# Interpreter for PostScript and PDF
-brew "ghostscript"
 # Distributed revision control system
 brew "git"
 # Syntax-highlighting pager for git and diff output
@@ -51,8 +42,6 @@ brew "gitleaks"
 brew "gnu-typist"
 # GNU Pretty Good Privacy (PGP) package
 brew "gnupg"
-# Tools and libraries to manipulate images in many formats
-brew "imagemagick@6", link: true
 # GNU utilities for networking
 brew "inetutils"
 # Lazier way to manage everything docker
@@ -61,6 +50,8 @@ brew "lazydocker"
 brew "lazygit"
 # Postgres C API library
 brew "libpq"
+# TIFF library and utilities
+brew "libtiff"
 # Clone of ls with colorful output, file type icons, and more
 brew "lsd"
 # Polyglot runtime manager (asdf rust clone)
@@ -73,6 +64,10 @@ brew "utf8proc", args: ["HEAD"]
 brew "neovim"
 # Command-line Git information tool
 brew "onefetch"
+# AI coding agent, built for the terminal
+brew "opencode"
+# Library for JPEG-2000 image manipulation
+brew "openjpeg"
 # Python version management
 brew "pyenv"
 # Pyenv plugin to manage virtualenv
@@ -89,6 +84,10 @@ brew "tlrc"
 brew "tree"
 # Maintained ctags implementation
 brew "universal-ctags"
+# Image format providing lossless and lossy compression for web images
+brew "webp"
+# Feature-rich command-line audio/video downloader
+brew "yt-dlp"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
 # Command-line interface for interacting with MCP (Model Context Protocol) servers
@@ -121,12 +120,18 @@ cask "google-chrome"
 cask "iterm2"
 # Keyboard customiser
 cask "karabiner-elements"
+# Free cross-platform office suite, fresh version
+cask "libreoffice"
 # Customise mouse behavior
 cask "linearmouse"
 # Screen and video recording software
 cask "loom"
 # VPN client
 cask "mullvad-vpn"
+# Free and open-source RSS reader
+cask "netnewswire"
+# Reverse proxy, secure introspectable tunnels to localhost
+cask "ngrok"
 # Get up and running with large language models locally
 cask "ollama-app"
 # Control your tools with a few keystrokes
@@ -137,8 +142,12 @@ cask "reactotron"
 cask "reminders-menubar"
 # Team communication and collaboration software
 cask "slack"
+# System monitor for the menu bar
+cask "stats"
 # Open-source code editor
 cask "visual-studio-code"
+# Multimedia player
+cask "vlc"
 # GPU-accelerated cross-platform terminal emulator and multiplexer
 cask "wezterm"
 # Video communication and virtual meeting platform
@@ -155,7 +164,13 @@ vscode "github.vscode-pull-request-github"
 vscode "golang.go"
 vscode "kaiwood.endwise"
 vscode "naumovs.color-highlight"
+vscode "prisma.prisma"
 vscode "shopify.ruby-lsp"
 vscode "streetsidesoftware.code-spell-checker"
 vscode "usernamehw.errorlens"
+vscode "wasp-lang.wasp"
 vscode "yoavbls.pretty-ts-errors"
+go "cmd/go"
+go "cmd/gofmt"
+go "golang.org/x/tools/gopls"
+go "honnef.co/go/tools/cmd/staticcheck"

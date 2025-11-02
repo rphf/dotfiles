@@ -15,35 +15,33 @@ gui:
   # Nerd fonts version to use.
   # One of: '2' | '3' | empty string (default)
   # If empty, do not show icons.
-  nerdFontsVersion: '3'
+  nerdFontsVersion: "3"
   # If true (default), file icons are shown in the file views. Only relevant if NerdFontsVersion is not empty.
   showFileIcons: true
   # Default size for focused window. Can be changed from within Lazygit with '+' and '_' (but this won't change the default).
   # One of: 'normal' (default) | 'half' | 'full'
   screenMode: normal
-
   theme:
     activeBorderColor:
-      - '#a6d189'
+      - "#a6d189"
       - bold
     inactiveBorderColor:
-      - '#a5adce'
+      - "#a5adce"
     optionsTextColor:
-      - '#8caaee'
+      - "#8caaee"
     selectedLineBgColor:
-      - '#414559'
+      - "#414559"
     cherryPickedCommitBgColor:
-      - '#51576d'
+      - "#51576d"
     cherryPickedCommitFgColor:
-      - '#a6d189'
+      - "#a6d189"
     unstagedChangesColor:
-      - '#e78284'
+      - "#e78284"
     defaultFgColor:
-      - '#c6d0f5'
+      - "#c6d0f5"
     searchingActiveBorderColor:
-      - '#e5c890'
-
+      - "#e5c890"
 git:
-  paging:
-    colorArg: always
-    pager: delta --paging=never
+  pagers:
+    - colorArg: always
+      pager: delta --paging=never

@@ -1,4 +1,5 @@
 tap "beeftornado/rmtree"
+tap "ejoffe/tap"
 tap "f/mcptools"
 tap "facebook/fb"
 tap "felixkratz/formulae"
@@ -90,6 +91,8 @@ brew "webp"
 brew "yt-dlp"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
+# Stacked Pull Requests on GitHub
+brew "ejoffe/tap/spr"
 # Command-line interface for interacting with MCP (Model Context Protocol) servers
 brew "f/mcptools/mcp"
 # Simple hotkey-daemon for macOS.
@@ -159,6 +162,7 @@ vscode "chakrounanas.turbo-console-log"
 vscode "dbaeumer.vscode-eslint"
 vscode "eamodio.gitlens"
 vscode "esbenp.prettier-vscode"
+vscode "firsttris.vscode-jest-runner"
 vscode "github.github-vscode-theme"
 vscode "github.vscode-pull-request-github"
 vscode "golang.go"

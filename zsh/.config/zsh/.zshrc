@@ -6,6 +6,10 @@ source "$XDG_CACHE_HOME/p10k-instant-prompt-${(%):-%n}.zsh"
 # To clean up stale files (keep the latest `.zsh` and `.zwc`):
 # rm -f "$XDG_CACHE_HOME"/p10k-*.tmp.*
 
+# Initialize Homebrew environment variables early
+# This ensures brew, fzf, and other Homebrew-installed tools are available
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 # To customize prompt, run `p10k configure` or edit $XDG_CONFIG_HOME/zsh/.p10k.zsh.
 source "$XDG_CONFIG_HOME/zsh/.p10k.zsh"
 
@@ -21,9 +25,6 @@ antidote load
 source <(fzf --zsh)
 # Custom widget for searching command history
 source "$XDG_CONFIG_HOME/zsh/.fzf-history-search.zsh"
-
-# Initialize Homebrew environment variables
-eval "$(/opt/homebrew/bin/brew shellenv)"
 # Initialize zoxide, a smarter cd command
 eval "$(zoxide init zsh)"
 # Activate Mise, a polyglot package manager

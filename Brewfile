@@ -1,5 +1,4 @@
 tap "beeftornado/rmtree"
-tap "ejoffe/tap"
 tap "f/mcptools"
 tap "facebook/fb"
 tap "felixkratz/formulae"
@@ -25,6 +24,8 @@ brew "bat"
 brew "bottom"
 # Dependency manager for Cocoa projects
 brew "cocoapods"
+# TIFF library and utilities
+brew "libtiff"
 # View disk space usage and delete unwanted data, fast
 brew "dua-cli"
 # Simple, fast and user-friendly alternative to find
@@ -37,12 +38,16 @@ brew "gh"
 brew "git"
 # Syntax-highlighting pager for git and diff output
 brew "git-delta"
+# Manage stacked Git branches
+brew "git-spice"
 # Audit git repos for secrets
 brew "gitleaks"
 # GNU typing tutor
 brew "gnu-typist"
 # GNU Pretty Good Privacy (PGP) package
 brew "gnupg"
+# Configurable static site generator
+brew "hugo"
 # GNU utilities for networking
 brew "inetutils"
 # Lazier way to manage everything docker
@@ -51,8 +56,6 @@ brew "lazydocker"
 brew "lazygit"
 # Postgres C API library
 brew "libpq"
-# TIFF library and utilities
-brew "libtiff"
 # Clone of ls with colorful output, file type icons, and more
 brew "lsd"
 # Polyglot runtime manager (asdf rust clone)
@@ -83,6 +86,8 @@ brew "stow"
 brew "tlrc"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Cozy typing speed tester in terminal
+brew "typioca"
 # Maintained ctags implementation
 brew "universal-ctags"
 # Image format providing lossless and lossy compression for web images
@@ -91,8 +96,6 @@ brew "webp"
 brew "yt-dlp"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
-# Stacked Pull Requests on GitHub
-brew "ejoffe/tap/spr"
 # Command-line interface for interacting with MCP (Model Context Protocol) servers
 brew "f/mcptools/mcp"
 # Simple hotkey-daemon for macOS.
@@ -135,8 +138,6 @@ cask "mullvad-vpn"
 cask "netnewswire"
 # Reverse proxy, secure introspectable tunnels to localhost
 cask "ngrok"
-# Get up and running with large language models locally
-cask "ollama-app"
 # Control your tools with a few keystrokes
 cask "raycast"
 # Desktop app for inspecting React JS and React Native projects

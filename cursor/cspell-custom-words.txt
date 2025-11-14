@@ -54,6 +54,7 @@ frontends
 fullcalendar
 GLTF
 Gmcc
+GOFLAGS
 gorhom
 Groupon
 haspopup
@@ -88,6 +89,7 @@ migratecmd
 minmax
 Muli
 mvcp
+NEOVIDE
 netinfo
 NGROK
 notif
@@ -113,6 +115,7 @@ precompilation
 Preloadable
 Presign
 Procfile
+pyenv
 quickbooks
 railtie
 RAPH
@@ -140,12 +143,14 @@ tanstack
 tealish
 Textable
 timegrid
+tokyonight
 UNCOLLECTIBLE
 unicity
 unionpay
 unstaged
 uppy
 usehooks
+uuidv
 vaul
 venmo
 Viewability

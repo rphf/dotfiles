@@ -5,12 +5,16 @@ chakrounanas.turbo-console-log
 dbaeumer.vscode-eslint
 eamodio.gitlens
 esbenp.prettier-vscode
+firsttris.vscode-jest-runner
 github.github-vscode-theme
 github.vscode-pull-request-github
 golang.go
 kaiwood.endwise
 naumovs.color-highlight
+prisma.prisma
 shopify.ruby-lsp
 streetsidesoftware.code-spell-checker
+tamasfe.even-better-toml
 usernamehw.errorlens
+wasp-lang.wasp
 yoavbls.pretty-ts-errors

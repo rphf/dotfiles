@@ -67,6 +67,7 @@ initialise
 initialised
 Invoiceable
 isequal
+isset
 Iterm
 javascripts
 katex

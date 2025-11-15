@@ -15,6 +15,9 @@
   "editor.formatOnPaste": false,
   "editor.formatOnType": false,
   "editor.formatOnSaveMode": "file",
+  "[toml]": {
+    "editor.defaultFormatter": "tamasfe.even-better-toml"
+  },
 
   // ===== FILE HANDLING =====
   "files.trimFinalNewlines": true,

@@ -69,6 +69,7 @@ Invoiceable
 isequal
 Iterm
 javascripts
+katex
 KOLKATA
 KUALA
 languagedetector
@@ -84,6 +85,7 @@ MAGADAN
 maiddesk
 Mailchimp
 Mamimo
+mathjax
 metalness
 migratecmd
 minmax
@@ -116,6 +118,7 @@ Preloadable
 Presign
 Procfile
 pyenv
+pygmentsstyle
 quickbooks
 railtie
 RAPH

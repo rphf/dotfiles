@@ -2,24 +2,36 @@ require("tab-renamer")
 require("zm-workspace").setup()
 local wezterm = require("wezterm") -- --[[@as Wezterm]] TODO: Fix type annotation for wezterm (using lazydev)
 local act = wezterm.action
--- local log = wezterm.log_info
 
 local config = {}
 
 -- Appearance Settings
 config.font = wezterm.font("JetBrainsMonoNL Nerd Font Mono")
 config.font_size = 12.5
-config.color_scheme = "Tokyo Night Storm"
+config.color_scheme = "Github Dark (Gogh)"
 config.macos_window_background_blur = 15
 config.window_background_opacity = 0.9
 config.inactive_pane_hsb = { brightness = 0.5 }
 config.window_padding = { left = 10, right = 10, top = 0, bottom = 0 }
 config.tab_max_width = 40
 config.colors = {
+  foreground = "#e8e8e8",
   cursor_bg = "7aa2f7",
   cursor_border = "7aa2f7",
   tab_bar = {
     background = "rgba(0,0,0,0.5)",
+    active_tab = {
+      bg_color = "rgba(0,0,0,0.5)",
+      fg_color = "#c6d0f5",
+    },
+    inactive_tab = {
+      bg_color = "rgba(0,0,0,0.5)",
+      fg_color = "#575757",
+    },
+    new_tab = {
+      bg_color = "rgba(0,0,0,0.5)",
+      fg_color = "#575757",
+    },
   },
 }
 config.window_decorations = "RESIZE"

@@ -1,46 +1,46 @@
 [include]
-	path = config.local
+    path = config.local
 [url "ssh://git@github.com/"]
-	insteadOf = https://github.com/
+    insteadOf = https://github.com/
 [init]
-	defaultBranch = main
+    defaultBranch = main
 [color]
-	ui = true
+    ui = true
 [pull]
-	rebase = false
+    rebase = false
 [push]
-	autoSetupRemote = true
+    autoSetupRemote = true
 [merge]
-	conflictstyle = diff3
+    conflictstyle = diff3
 [diff]
-	colorMoved = default
+    colorMoved = default
 [commit]
-	gpgsign = true
+    gpgsign = true
 [gpg]
-	format = ssh
+    format = ssh
 [core]
-	pager = delta
+    pager = delta
 [interactive]
-	diffFilter = delta
+    diffFilter = delta
 [delta]
-	dark = true
-	hyperlinks = true
-	navigate = true # use n and N to move between diff sections
-	side-by-side = true 
-	minus-style = "syntax #422C3E"
-	minus-emph-style = "syntax #724c6b"
-	plus-style = "syntax #223C4F"
-	plus-emph-style = "syntax #3a6686"
-	file-modified-label = "modified:"
-	line-numbers-minus-style = "bold #724c6b"
-	line-numbers-zero-style = "white"
-	line-numbers-plus-style = "bold #3a6686" 
-	line-numbers-left-format = "{nm:^5}│"
-	line-numbers-right-format = "{np:^5}│"
+    dark = true
+    hyperlinks = true
+    navigate = true # use n and N to move between diff sections
+    side-by-side = true
+    minus-style = "syntax #422C3E"
+    minus-emph-style = "syntax #724c6b"
+    plus-style = "syntax #223C4F"
+    plus-emph-style = "syntax #3a6686"
+    file-modified-label = "modified:"
+    line-numbers-minus-style = "bold #724c6b"
+    line-numbers-zero-style = "white"
+    line-numbers-plus-style = "bold #3a6686"
+    line-numbers-left-format = "{nm:^5}│"
+    line-numbers-right-format = "{np:^5}│"
 [filter "lfs"]
-	clean = git-lfs clean -- %f
-	smudge = git-lfs smudge -- %f
-	process = git-lfs filter-process
-	required = true
+    clean = git-lfs clean -- %f
+    smudge = git-lfs smudge -- %f
+    process = git-lfs filter-process
+    required = true
 [alias]
-	fix = "!git log -n 50 --pretty=format:\"%h %s\" --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
+    fix = "!git log -n 50 --pretty=format:\"%h %s\" --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"

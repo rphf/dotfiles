@@ -21,3 +21,7 @@ fi
 alias grep="grep --color=always"
 alias lg="lazygit"
 alias code="cursor"
+
+
+# Prevent accidental using graphite instead of git-spice
+alias gt="echo 'Use git-spice (gs) instead of graphite (gt)'; false"

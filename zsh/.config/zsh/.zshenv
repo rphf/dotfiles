@@ -18,6 +18,7 @@ export ZSH_AUTOSUGGEST_HISTORY_IGNORE="cd *"
 export PATH="$PATH:/opt/homebrew/bin"
 export PATH="$PATH:$HOME/.local/bin"
 # export PATH="$HOME/.pyenv/bin:$PATH"
+export PATH="$PATH:$HOME/.antigravity/antigravity/bin"
 
 # Will refuse to execute a commands if there is an alternative alias for it (zsh-you-should-use)
 # export YSU_HARDCORE=1

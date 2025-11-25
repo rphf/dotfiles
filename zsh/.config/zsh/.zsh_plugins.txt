@@ -7,7 +7,6 @@
 romkatv/powerlevel10k
 zsh-users/zsh-autosuggestions
 jeffreytse/zsh-vi-mode
-MichaelAquilina/zsh-you-should-use
 
 # Completions
 mattmc3/ez-compinit

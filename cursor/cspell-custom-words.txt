@@ -1,13 +1,16 @@
 APPNAME
 appt
 appts
+Artiom
 asvetliakov
 attributors
 Aujourd'hui
 Authorizable
 authorizenet
 Authorizisation
+automatable
 Automigrate
+Avenir
 Barbee
 behaviour
 betterer
@@ -81,6 +84,7 @@ libpq
 lightningcss
 lintable
 Lngs
+lockfiles
 LUMPUR
 MAGADAN
 maiddesk
@@ -142,6 +146,7 @@ streetview
 Subnavigation
 summernote
 Suomalainen
+swipeable
 tableview
 tanstack
 tealish

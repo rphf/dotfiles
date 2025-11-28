@@ -8,6 +8,7 @@ Aujourd'hui
 Authorizable
 authorizenet
 Authorizisation
+autocmd
 automatable
 Automigrate
 Avenir
@@ -36,6 +37,7 @@ DCBN
 Deezer
 DHABI
 dismissable
+dollarsign
 dompurify
 DONT
 dpage
@@ -50,6 +52,7 @@ esbenp
 Español
 extralight
 Financials
+fkirc
 fontawesome
 fortawesome
 Français
@@ -65,6 +68,7 @@ HEIWUY
 hookform
 HUGUES
 Ical
+imagebutton
 initdb
 initialise
 initialised
@@ -73,7 +77,9 @@ isequal
 isset
 Iterm
 javascripts
+jpgs
 katex
+keymap
 KOLKATA
 KUALA
 languagedetector
@@ -90,6 +96,7 @@ MAGADAN
 maiddesk
 Mailchimp
 Mamimo
+mappin
 mathjax
 metalness
 migratecmd
@@ -112,6 +119,7 @@ pgadmin
 pghero
 pkill
 plpgsql
+pngs
 pocketbase
 Polskie
 populator
@@ -121,6 +129,7 @@ preauthorize
 precompilation
 Preloadable
 Presign
+Pressable
 Procfile
 pyenv
 pygmentsstyle
@@ -141,8 +150,10 @@ rubyfmt
 Scheel
 Signout
 skhd
+smushed
 sqft
 streetview
+subheadline
 Subnavigation
 summernote
 Suomalainen
@@ -161,6 +172,7 @@ uppy
 usehooks
 uuidv
 vaul
+vcpu
 venmo
 Viewability
 VITE

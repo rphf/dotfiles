@@ -88,6 +88,17 @@ if vim.g.vscode then
         require("vscode-multi-cursor").selectHighlights()
     end, { desc = "Select all highlights (Ctrl+Shift+L)" })
 
+    -- Add autocmd for markdown wrapped line navigation
+    vim.api.nvim_create_autocmd("FileType", {
+      pattern = "markdown",
+      callback = function()
+        vim.keymap.set("n", "j", "gj", { buffer = true, remap = true })
+        vim.keymap.set("n", "k", "gk", { buffer = true, remap = true })
+        vim.keymap.set("v", "j", "gj", { buffer = true, remap = true })
+        vim.keymap.set("v", "k", "gk", { buffer = true, remap = true })
+      end,
+    })
+
     -- Notification to confirm config is loaded
     vim.notify("vscode-multi-cursor.nvim plugin loaded!", vim.log.levels.INFO)
 else

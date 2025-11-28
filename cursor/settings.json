@@ -43,13 +43,16 @@
 
   // ===== GIT =====
   "git.confirmSync": false,
+  "gitlens.currentLine.enabled": true,
+  "gitlens.codeLens.authors.enabled": false,
+  "gitlens.codeLens.recentChange.enabled": false,
 
   // ===== JAVASCRIPT/TYPESCRIPT =====
   "javascript.updateImportsOnFileMove.enabled": "always",
   "typescript.updateImportsOnFileMove.enabled": "always",
   "javascript.preferences.renameMatchingJsxTags": true,
   "typescript.preferences.renameMatchingJsxTags": true,
-  "typescript.tsserver.experimental.enableProjectDiagnostics": true,
+  // "typescript.tsserver.experimental.enableProjectDiagnostics": true,
 
   // ===== HTML =====
   "html.format.indentInnerHtml": true,

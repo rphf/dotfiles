@@ -4,7 +4,7 @@
   "editor.rulers": [80],
   "editor.insertSpaces": true,
   "editor.renderWhitespace": "all",
-  "editor.cursorSmoothCaretAnimation": "on",
+  "editor.cursorSmoothCaretAnimation": "off",
   "editor.accessibilitySupport": "off",
   "editor.fontLigatures": false,
   "editor.linkedEditing": true,
@@ -65,11 +65,11 @@
 
   // ===== VSCode-NEOVIM =====
   "vscode-neovim.NVIM_APPNAME": "nvim-vscode",
+  "vscode-neovim.useWSL": false,
+  "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
   "extensions.experimental.affinity": {
     "asvetliakov.vscode-neovim": 1
   },
-  "vscode-neovim.useWSL": false,
-  "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
 
   // ===== ESLINT =====
   "eslint.workingDirectories": [{ "mode": "auto" }],
@@ -111,6 +111,5 @@
   ],
   "cSpell.dictionaries": ["custom-words"],
   "git.openRepositoryInParentFolders": "never",
-  "cursor.composer.usageSummaryDisplay": "always",
-  "cursor.composer.shouldAllowCustomModes": true
+  "cursor.composer.usageSummaryDisplay": "always"
 }

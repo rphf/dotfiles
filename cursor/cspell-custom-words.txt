@@ -34,6 +34,7 @@ cweek
 dasherize
 datetimepicker
 DCBN
+dedup
 Deezer
 DHABI
 dismissable
@@ -50,6 +51,8 @@ emailable
 Errorish
 esbenp
 Español
+exclamationmark
+existant
 extralight
 Financials
 fkirc
@@ -67,6 +70,7 @@ haspopup
 HEIWUY
 hookform
 HUGUES
+Hyperlegible
 Ical
 imagebutton
 initdb
@@ -82,6 +86,7 @@ katex
 keymap
 KOLKATA
 KUALA
+kwargs
 languagedetector
 latlng
 lazydev
@@ -136,10 +141,12 @@ pygmentsstyle
 quickbooks
 railtie
 RAPH
+Raphaël
 rcmd
 rdjpalmer
 reactotron
 refetched
+Refreshable
 renamer
 rnpm
 Rollbar
@@ -155,6 +162,7 @@ sqft
 streetview
 subheadline
 Subnavigation
+Subviews
 summernote
 Suomalainen
 swipeable

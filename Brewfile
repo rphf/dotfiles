@@ -44,7 +44,7 @@ brew "git-spice"
 brew "gitleaks"
 # GNU typing tutor
 brew "gnu-typist"
-# GNU Pretty Good Privacy (PGP) package
+# GNU Privacy Guard (OpenPGP)
 brew "gnupg"
 # Configurable static site generator
 brew "hugo"
@@ -60,14 +60,14 @@ brew "libpq"
 brew "lsd"
 # Polyglot runtime manager (asdf rust clone)
 brew "mise"
-# Incremental parsing library
-brew "tree-sitter"
 # Clean C library for processing UTF-8 Unicode data
 brew "utf8proc", args: ["HEAD"]
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Command-line Git information tool
 brew "onefetch"
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
 # AI coding agent, built for the terminal
 brew "opencode"
 # Library for JPEG-2000 image manipulation
@@ -76,8 +76,6 @@ brew "openjpeg"
 brew "pyenv"
 # Pyenv plugin to manage virtualenv
 brew "pyenv-virtualenv"
-# Search tool like grep and The Silver Searcher
-brew "ripgrep"
 # Ruby autoformatter
 brew "rubyfmt"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
@@ -86,6 +84,8 @@ brew "stow"
 brew "tlrc"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Incremental parsing library
+brew "tree-sitter"
 # Cozy typing speed tester in terminal
 brew "typioca"
 # Maintained ctags implementation
@@ -106,16 +106,18 @@ brew "mobile-dev-inc/tap/maestro"
 brew "supabase/tap/supabase"
 # Allows you to manage your stacked changes and submit them for review on GitHub
 brew "withgraphite/tap/graphite"
-# GraphQL client
-cask "altair-graphql-client"
 # Tools for building Android applications
 cask "android-studio"
 # App for managing battery charging. (Also installs a CLI on first use.)
 cask "battery"
+# Configuration tool for the Betaflight firmware
+cask "betaflight-configurator"
 # Music player
 cask "deezer"
 # Voice and text chat software
 cask "discord"
+# App to build and share containerised applications and microservices
+cask "docker-desktop"
 cask "font-hack-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
 # Terminal emulator that uses platform-native UI and GPU acceleration
@@ -130,8 +132,6 @@ cask "karabiner-elements"
 cask "libreoffice"
 # Customise mouse behavior
 cask "linearmouse"
-# Screen and video recording software
-cask "loom"
 # VPN client
 cask "mullvad-vpn"
 # Free and open-source RSS reader
@@ -164,3 +164,4 @@ go "cmd/go"
 go "cmd/gofmt"
 go "golang.org/x/tools/gopls"
 go "honnef.co/go/tools/cmd/staticcheck"
+cargo "gelatyx"

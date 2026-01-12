@@ -53,6 +53,6 @@ export SAVEHIST=50000
 # setopt HIST_IGNORE_ALL_DUPS     # Remove older duplicates of a command from history.
 setopt HIST_IGNORE_DUPS         # Do not enter command lines into the history list if they are duplicates of the previous event.
 setopt HIST_REDUCE_BLANKS       # Remove superfluous blanks from each command line being added to the history list.
-setopt INC_APPEND_HISTORY       # Append history lines from all sessions.
 setopt EXTENDED_HISTORY         # Include timestamp
 setopt HIST_EXPIRE_DUPS_FIRST   # Expire the duplicates first when trimming history
+# setopt INC_APPEND_HISTORY       # Append history lines from all sessions.

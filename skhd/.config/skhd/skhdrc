@@ -10,7 +10,7 @@ rcmd - w: open -a Safari
 rcmd - c: open -a Calendar
 rcmd - z: open -a Reminders
 rcmd - i: open -a Obsidian
-rcmd - t: open -a "chatgpt"
+rcmd - t: open -a NetNewsWire
 # `skhd --reload`
 # `pkill skhd && rm /tmp/skhd_raphael.pid`
 # `skhd --stop-service`

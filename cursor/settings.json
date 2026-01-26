@@ -67,9 +67,6 @@
   "vscode-neovim.NVIM_APPNAME": "nvim-vscode",
   "vscode-neovim.useWSL": false,
   "vscode-neovim.neovimExecutablePaths.darwin": "/opt/homebrew/bin/nvim",
-  "extensions.experimental.affinity": {
-    "asvetliakov.vscode-neovim": 1
-  },
 
   // ===== ESLINT =====
   "eslint.workingDirectories": [{ "mode": "auto" }],
@@ -111,5 +108,13 @@
   ],
   "cSpell.dictionaries": ["custom-words"],
   "git.openRepositoryInParentFolders": "never",
-  "cursor.composer.usageSummaryDisplay": "always"
+  "cursor.composer.usageSummaryDisplay": "always",
+  "cursor.cpp.disabledLanguages": [
+    "plaintext"
+  ],
+  "update.releaseTrack": "dev",
+  "update.mode": "silentlyApplyOnQuit",
+  "extensions.experimental.affinity": {
+    "asvetliakov.vscode-neovim": 1
+  }
 }

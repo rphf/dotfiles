@@ -20,6 +20,9 @@ export PATH="$PATH:$HOME/.local/bin"
 # export PATH="$HOME/.pyenv/bin:$PATH"
 export PATH="$PATH:$HOME/.antigravity/antigravity/bin"
 
+# Ensure your PATH prefers pg18 tools, needs to match the version in the Brewfile
+export PATH="$PATH:/opt/homebrew/opt/postgresql@18/bin"
+
 # Will refuse to execute a commands if there is an alternative alias for it (zsh-you-should-use)
 # export YSU_HARDCORE=1
 

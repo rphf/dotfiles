@@ -72,10 +72,14 @@ brew "ripgrep"
 brew "opencode"
 # Library for JPEG-2000 image manipulation
 brew "openjpeg"
+# Object-relational database system
+brew "postgresql@18", restart_service: :changed
 # Python version management
 brew "pyenv"
 # Pyenv plugin to manage virtualenv
 brew "pyenv-virtualenv"
+# Persistent key-value database, with built-in net interface
+brew "redis", restart_service: :changed
 # Ruby autoformatter
 brew "rubyfmt"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
@@ -150,6 +154,8 @@ cask "reminders-menubar"
 cask "slack"
 # System monitor for the menu bar
 cask "stats"
+# Open-source BitTorrent client
+cask "transmission"
 # Open-source code editor
 cask "visual-studio-code"
 # Multimedia player

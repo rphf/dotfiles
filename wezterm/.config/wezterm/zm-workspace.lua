@@ -64,11 +64,8 @@ function M.setup()
     webapp_pane_1:send_text("OBJC_DISABLE_INITIALIZE_FORK_SAFETY=YES bundle exec rails s\n")
     webapp_pane_2:send_text("yarn run dev\n")
     webapp_pane_3:send_text("bundle exec rails c\n")
-    -- Sidekiq pane: Start Docker, run docker-compose, then start sidekiq
-    webapp_pane_4:send_text(
-      "if ! docker info >/dev/null 2>&1; then open -a Docker >/dev/null 2>&1 & while ! docker info >/dev/null 2>&1; do sleep 1; done; fi\n"
-    )
-    webapp_pane_4:send_text("docker-compose -f docker-compose.dev.yml up -d && bundle exec sidekiq\n")
+    -- Sidekiq pane: Start postgresql@18 + redis via brew services, then sidekiq
+    webapp_pane_4:send_text("brew services start postgresql@18 && brew services start redis && bundle exec sidekiq\n")
 
     mux.set_active_workspace("zm")
     zm_window:gui_window():perform_action(act.ActivateTab(webapp_tab:tab_id()), webapp_pane_1)
@@ -137,7 +134,7 @@ function M.setup()
   wezterm.on("shutdown_zm_workspace", function()
     local project_dir = wezterm.home_dir .. "/Workspace/pro/zenmaid/zenmaid-webapp"
 
-    -- Temporary shutdown window to stop app + docker
+    -- Temporary shutdown window to stop app + brew services
     local shutdown_tab, shutdown_pane, shutdown_window = mux.spawn_window({
       workspace = "shutdown",
       cwd = project_dir,
@@ -145,7 +142,6 @@ function M.setup()
     shutdown_tab:set_title("Shutting down ZM...")
 
     shutdown_pane:send_text("cd " .. project_dir .. "\n")
-    shutdown_pane:send_text("echo 'Stopping ZM processes...'\n")
     shutdown_pane:send_text("pkill -f 'zenmaid.*rails' || true\n")
     shutdown_pane:send_text("pkill -f 'sidekiq.*zenmaid' || true\n")
     shutdown_pane:send_text("pkill -f 'zenmaid.*yarn.*dev' || true\n")
@@ -153,10 +149,8 @@ function M.setup()
     shutdown_pane:send_text("pkill -f 'zenmaid-webapp' || true\n")
     shutdown_pane:send_text("pkill -f 'zenmaid-mobile' || true\n")
     shutdown_pane:send_text("pkill -f 'bin/rails c' || true\n")
-    shutdown_pane:send_text("echo 'Stopping docker-compose services...'\n")
-    -- if you use the plugin form, swap to: docker compose -f docker-compose.dev.yml down
-    shutdown_pane:send_text("docker-compose -f docker-compose.dev.yml down\n")
-    shutdown_pane:send_text("echo 'Closing ZM workspace...'\n")
+    shutdown_pane:send_text("brew services stop postgresql@18\n")
+    shutdown_pane:send_text("brew services stop redis\n")
     shutdown_pane:send_text("sleep 1\n")
     shutdown_pane:send_text("exit\n")
 

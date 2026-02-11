@@ -7,7 +7,7 @@
 [color]
     ui = true
 [pull]
-    rebase = false
+    rebase = true
 [push]
     autoSetupRemote = true
 [merge]
@@ -43,6 +43,6 @@
     process = git-lfs filter-process
     required = true
 [alias]
-    fix = "!git log -n 50 --pretty=format:\"%h %s\" --no-merges | fzf | cut -c -7 | xargs -o git commit --fixup"
+    fix = "!f() { git log -n 500 --pretty=format:\"%h %s\" --no-merges | fzf | cut -c -7 | xargs -o git commit \"$@\" --fixup; }; f"
 [rebase]
 	updateRefs = true

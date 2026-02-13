@@ -108,8 +108,6 @@ brew "koekeishiya/formulae/skhd"
 brew "mobile-dev-inc/tap/maestro"
 # Supabase CLI
 brew "supabase/tap/supabase"
-# Allows you to manage your stacked changes and submit them for review on GitHub
-brew "withgraphite/tap/graphite"
 # Tools for building Android applications
 cask "android-studio"
 # App for managing battery charging. (Also installs a CLI on first use.)
@@ -124,8 +122,6 @@ cask "discord"
 cask "docker-desktop"
 cask "font-hack-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
-# Terminal emulator that uses platform-native UI and GPU acceleration
-cask "ghostty"
 # Web browser
 cask "google-chrome"
 # Terminal emulator as alternative to Apple's Terminal app
@@ -140,8 +136,6 @@ cask "linearmouse"
 cask "mullvad-vpn"
 # Free and open-source RSS reader
 cask "netnewswire"
-# Reverse proxy, secure introspectable tunnels to localhost
-cask "ngrok"
 # Knowledge base that works on top of a local folder of plain text Markdown files
 cask "obsidian"
 # Control your tools with a few keystrokes

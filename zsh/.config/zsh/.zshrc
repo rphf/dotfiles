@@ -37,7 +37,6 @@ export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
 # eval "$(pyenv init --path)"
 # eval "$(pyenv virtualenv-init -)"
 
-source "$XDG_CONFIG_HOME/zsh/.compdef_gt.zsh"
 source "$XDG_CONFIG_HOME/zsh/.pls.zsh"
 source "$XDG_CONFIG_HOME/zsh/.zsh_aliases"
 

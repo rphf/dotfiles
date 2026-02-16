@@ -18,10 +18,6 @@ if command -v z &> /dev/null; then
   alias cdd='z -'      # jump back to the previous directory
 fi
 
-alias grep="grep --color=always"
-alias lg="lazygit"
-alias code="cursor"
-
-
-# Prevent accidental using graphite instead of git-spice
-alias gt="echo 'Use git-spice (gs) instead of graphite (gt)'; false"
+if command -v lazygit &> /dev/null; then
+  alias lg="lazygit"
+fi

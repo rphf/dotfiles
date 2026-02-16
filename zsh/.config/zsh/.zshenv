@@ -11,6 +11,8 @@ export MANPAGER="sh -c 'col -bx | bat --paging=always -l man -p'"
 export BAT_THEME="tokyonight_storm"
 export BAT_PAGING="never"
 
+export GREP_OPTIONS='--color=always'
+
 # Ignore any suggestion for command beginning with cd
 # I prefer relying on zoxide for changing directories
 export ZSH_AUTOSUGGEST_HISTORY_IGNORE="cd *"

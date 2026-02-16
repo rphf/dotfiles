@@ -73,13 +73,13 @@ brew "opencode"
 # Library for JPEG-2000 image manipulation
 brew "openjpeg"
 # Object-relational database system
-brew "postgresql@18", restart_service: :changed
+brew "postgresql@18"
 # Python version management
 brew "pyenv"
 # Pyenv plugin to manage virtualenv
 brew "pyenv-virtualenv"
 # Persistent key-value database, with built-in net interface
-brew "redis", restart_service: :changed
+brew "redis"
 # Ruby autoformatter
 brew "rubyfmt"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
@@ -114,6 +114,8 @@ cask "android-studio"
 cask "battery"
 # Configuration tool for the Betaflight firmware
 cask "betaflight-configurator"
+# Write, edit, and chat about your code with AI
+cask "cursor"
 # Music player
 cask "deezer"
 # Voice and text chat software
@@ -150,8 +152,6 @@ cask "slack"
 cask "stats"
 # Open-source BitTorrent client
 cask "transmission"
-# Open-source code editor
-cask "visual-studio-code"
 # Multimedia player
 cask "vlc"
 # GPU-accelerated cross-platform terminal emulator and multiplexer
@@ -160,6 +160,27 @@ cask "wezterm"
 cask "zen"
 # Video communication and virtual meeting platform
 cask "zoom"
+vscode "aaron-bond.better-comments"
+vscode "astro-build.astro-vscode"
+vscode "asvetliakov.vscode-neovim"
+vscode "bradlc.vscode-tailwindcss"
+vscode "chakrounanas.turbo-console-log"
+vscode "dbaeumer.vscode-eslint"
+vscode "eamodio.gitlens"
+vscode "esbenp.prettier-vscode"
+vscode "firsttris.vscode-jest-runner"
+vscode "github.github-vscode-theme"
+vscode "github.vscode-pull-request-github"
+vscode "golang.go"
+vscode "kaiwood.endwise"
+vscode "naumovs.color-highlight"
+vscode "prisma.prisma"
+vscode "shopify.ruby-lsp"
+vscode "streetsidesoftware.code-spell-checker"
+vscode "tamasfe.even-better-toml"
+vscode "usernamehw.errorlens"
+vscode "wasp-lang.wasp"
+vscode "yoavbls.pretty-ts-errors"
 go "cmd/go"
 go "cmd/gofmt"
 go "golang.org/x/tools/gopls"

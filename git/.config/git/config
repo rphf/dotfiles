@@ -45,4 +45,4 @@
 [alias]
     fix = "!f() { git log -n 500 --pretty=format:\"%h %s\" --no-merges | fzf | cut -c -7 | xargs -o git commit \"$@\" --fixup; }; f"
 [rebase]
-	updateRefs = true
+    updateRefs = true

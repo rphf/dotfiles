@@ -63,6 +63,7 @@ fortawesome
 Français
 frontends
 fullcalendar
+getifaddr
 GLTF
 Gmcc
 GOFLAGS
@@ -93,6 +94,7 @@ languagedetector
 latlng
 lazydev
 lerp
+libphonenumber
 libpq
 lightningcss
 lintable
@@ -100,6 +102,7 @@ Lngs
 lockfiles
 LUMPUR
 MAGADAN
+magnifyingglass
 maiddesk
 Mailchimp
 Mamimo
@@ -178,6 +181,7 @@ UNCOLLECTIBLE
 unicity
 unionpay
 unstaged
+untrunc
 uppy
 usehooks
 uuidv

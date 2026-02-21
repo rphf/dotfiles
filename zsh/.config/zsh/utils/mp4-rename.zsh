@@ -1,5 +1,5 @@
 #!/usr/bin/env zsh
-# utils/mp4-rename.zsh - Rename MP4 files to DD-MM-YYYY_NNN_SLUG format based on creation date
+# utils/mp4-rename.zsh - Rename MP4 and TS video files to DD-MM-YYYY_NNN_SLUG format based on creation date
 #
 # Usage:
 #   mp4rename <folder> [slug] [options]
@@ -33,7 +33,7 @@ mp4rename() {
         ;;
       -h|--help)
         cat << 'EOF'
-mp4rename - Rename MP4 files to DD-MM-YYYY_NNN_SLUG format
+mp4rename - Rename MP4 and TS video files to DD-MM-YYYY_NNN_SLUG format
 
 Usage:
   mp4rename <folder> [slug] [options]
@@ -44,7 +44,7 @@ Options:
   -n, --dry-run         Show what would be done without making changes
   -h, --help            Show this help
 
-The format is: DD-MM-YYYY_NNN_SLUG.mp4
+The format is: DD-MM-YYYY_NNN_SLUG.<ext>  (.mp4 or .ts)
   - DD-MM-YYYY: creation date from file metadata (or filesystem)
   - NNN: 3-digit counter (001, 002...) for files with same date
   - SLUG: custom string or parent folder name
@@ -121,26 +121,26 @@ EOF
     fi
   }
 
-  # Collect mp4 files with their creation date and birth timestamp
-  local -a mp4_files
+  # Collect .mp4 and .ts video files with their creation date and birth timestamp
+  local -a video_files
   local -A file_dates
   local f date_key ts
 
-  for f in "$folder"/*.mp4(N); do
+  for f in "$folder"/*.mp4(N) "$folder"/*.ts(N); do
     date_key=$(_mp4rename_get_date "$f")
     [[ -z "$date_key" ]] && date_key="00-00-0000"
     file_dates[$f]="$date_key"
-    mp4_files+=("$f")
+    video_files+=("$f")
   done
 
-  if [[ ${#mp4_files[@]} -eq 0 ]]; then
-    echo "No .mp4 files found in $folder"
+  if [[ ${#video_files[@]} -eq 0 ]]; then
+    echo "No .mp4 or .ts video files found in $folder"
     return 0
   fi
 
   # Sort by creation timestamp (birth time) for deterministic order
   local -a with_ts
-  for f in $mp4_files; do
+  for f in $video_files; do
     if [[ "$(uname)" == "Darwin" ]]; then
       ts=$(stat -f "%B" "$f" 2>/dev/null || echo 0)
     else
@@ -149,22 +149,23 @@ EOF
     with_ts+=("${ts}_${f}")
   done
   with_ts=(${(o)with_ts})
-  mp4_files=()
+  video_files=()
   for w in $with_ts; do
-    mp4_files+=("${w#*_}")
+    video_files+=("${w#*_}")
   done
 
   # Build date -> count map for NNN
   local -A date_count
   local -a renames
-  local new_name date_part num
+  local new_name date_part num ext
 
-  for f in $mp4_files; do
+  for f in $video_files; do
     date_part="${file_dates[$f]:-}"
     [[ -z "$date_part" ]] && date_part="00-00-0000"
     date_count[$date_part]=$((${date_count[$date_part]:-0} + 1))
     num=$date_count[$date_part]
-    new_name="${date_part}_$(printf "%03d" $num)_${slug}.mp4"
+    ext="${f:e}"
+    new_name="${date_part}_$(printf "%03d" $num)_${slug}.${ext}"
     new_name="$folder/$new_name"
 
     if [[ "$f" != "$new_name" ]]; then

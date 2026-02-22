@@ -13,6 +13,7 @@ automatable
 Automigrate
 Avenir
 Barbee
+beeftornado
 behaviour
 betterer
 Breakrooms
@@ -46,6 +47,7 @@ DONT
 dpage
 drei
 Duplicatable
+DUPS
 easein
 ejemplo
 ellipsize
@@ -54,6 +56,7 @@ Errorish
 esbenp
 Español
 exclamationmark
+exiftool
 existant
 extralight
 Financials
@@ -63,6 +66,7 @@ fortawesome
 Français
 frontends
 fullcalendar
+fzfcmd
 getifaddr
 GLTF
 Gmcc
@@ -93,12 +97,17 @@ kwargs
 languagedetector
 latlng
 lazydev
+LBUFFER
 lerp
+libavcodec
+libavformat
+libavutil
 libphonenumber
 libpq
 lightningcss
 lintable
 Lngs
+localoptions
 lockfiles
 LUMPUR
 MAGADAN
@@ -116,12 +125,15 @@ mvcp
 NEOVIDE
 netinfo
 NGROK
+noglobsubst
+noposixbuiltins
 notif
 notifs
 nums
 NVIM
 Opensearch
 organisation
+osascript
 ouverture
 pangea
 PG_DEV_DATABASE
@@ -147,6 +159,7 @@ quickbooks
 railtie
 RAPH
 Raphaël
+rayconfig
 rcmd
 rdjpalmer
 reactotron
@@ -159,7 +172,10 @@ rphf
 rrule
 rubocop
 rubyfmt
+SAVEHIST
 Scheel
+setfile
+signicantly
 Signout
 skhd
 smushed
@@ -181,6 +197,7 @@ UNCOLLECTIBLE
 unicity
 unionpay
 unstaged
+Unstow
 untrunc
 uppy
 usehooks
@@ -188,7 +205,9 @@ uuidv
 vaul
 vcpu
 venmo
+vicmd
 Viewability
+virtualenv
 VITE
 wezterm
 wojtekmaj
@@ -196,4 +215,5 @@ worklets
 xintl
 xmark
 yarnrc
+yasm
 zenmaid

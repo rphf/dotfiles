@@ -21,3 +21,7 @@ fi
 if command -v lazygit &> /dev/null; then
   alias lg="lazygit"
 fi
+
+if command -v git-spice &> /dev/null; then
+  alias gs="git-spice"
+fi

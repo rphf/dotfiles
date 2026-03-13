@@ -62,6 +62,8 @@ brew "libpq"
 brew "lsd"
 # Polyglot runtime manager (asdf rust clone)
 brew "mise"
+# Deep clean and optimize your Mac
+brew "mole"
 # Clean C library for processing UTF-8 Unicode data
 brew "utf8proc", args: ["HEAD"]
 # Ambitious Vim-fork focused on extensibility and agility
@@ -75,13 +77,13 @@ brew "opencode"
 # Library for JPEG-2000 image manipulation
 brew "openjpeg"
 # Object-relational database system
-brew "postgresql@18"
+brew "postgresql@18", restart_service: :changed
 # Python version management
 brew "pyenv"
 # Pyenv plugin to manage virtualenv
 brew "pyenv-virtualenv"
 # Persistent key-value database, with built-in net interface
-brew "redis"
+brew "redis", restart_service: :changed
 # Ruby autoformatter
 brew "rubyfmt"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
@@ -116,6 +118,12 @@ cask "android-studio"
 cask "battery"
 # Configuration tool for the Betaflight firmware
 cask "betaflight-configurator"
+# Anthropic's official Claude AI desktop app
+cask "claude"
+# Terminal-based AI coding assistant
+cask "claude-code"
+# Ghostty-based terminal with vertical tabs and notifications for AI coding agents
+cask "cmux"
 # Write, edit, and chat about your code with AI
 cask "cursor"
 # Music player
@@ -136,6 +144,8 @@ cask "karabiner-elements"
 cask "libreoffice"
 # Customise mouse behavior
 cask "linearmouse"
+# Open-source firewall to block unknown outgoing connections
+cask "lulu"
 # VPN client
 cask "mullvad-vpn"
 # Free and open-source RSS reader
@@ -179,6 +189,7 @@ vscode "naumovs.color-highlight"
 vscode "prisma.prisma"
 vscode "shopify.ruby-lsp"
 vscode "streetsidesoftware.code-spell-checker"
+vscode "streetsidesoftware.code-spell-checker-french"
 vscode "tamasfe.even-better-toml"
 vscode "usernamehw.errorlens"
 vscode "wasp-lang.wasp"

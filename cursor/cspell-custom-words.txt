@@ -1,3 +1,4 @@
+Anytown
 APPNAME
 appt
 appts
@@ -77,6 +78,7 @@ Gridlines
 Groupon
 haspopup
 HEIWUY
+hitbox
 hookform
 HUGUES
 Hyperlegible
@@ -185,6 +187,7 @@ sqft
 streetview
 subheadline
 Subnavigation
+subscriptionable
 Subviews
 summernote
 Suomalainen
@@ -195,6 +198,7 @@ tealish
 Textable
 timegrid
 tokyonight
+TRUNC
 UNCOLLECTIBLE
 unicity
 unionpay

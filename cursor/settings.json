@@ -109,9 +109,7 @@
   "cSpell.dictionaries": ["custom-words"],
   "git.openRepositoryInParentFolders": "never",
   "cursor.composer.usageSummaryDisplay": "always",
-  "cursor.cpp.disabledLanguages": [
-    "plaintext"
-  ],
+  "cursor.cpp.disabledLanguages": ["plaintext"],
   "update.releaseTrack": "dev",
   "update.mode": "silentlyApplyOnQuit",
   "extensions.experimental.affinity": {

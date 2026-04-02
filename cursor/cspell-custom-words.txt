@@ -223,6 +223,7 @@ vicmd
 Viewability
 virtualenv
 VITE
+welldone
 wezterm
 wojtekmaj
 worklets

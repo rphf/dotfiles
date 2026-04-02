@@ -19,8 +19,8 @@ export ZSH_AUTOSUGGEST_HISTORY_IGNORE="cd *"
 
 export PATH="$PATH:/opt/homebrew/bin"
 export PATH="$PATH:$HOME/.local/bin"
-# export PATH="$HOME/.pyenv/bin:$PATH"
-export PATH="$PATH:$HOME/.antigravity/antigravity/bin"
+export PATH="$PATH:$HOME/Library/Android/sdk/emulator"
+export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
 
 # Ensure your PATH prefers pg18 tools, needs to match the version in the Brewfile
 export PATH="$PATH:/opt/homebrew/opt/postgresql@18/bin"

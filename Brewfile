@@ -50,6 +50,8 @@ brew "gnu-typist"
 brew "gnupg"
 # Configurable static site generator
 brew "hugo"
+# Command-line benchmarking tool
+brew "hyperfine"
 # GNU utilities for networking
 brew "inetutils"
 # Lazier way to manage everything docker
@@ -64,6 +66,8 @@ brew "lsd"
 brew "mise"
 # Deep clean and optimize your Mac
 brew "mole"
+# Incremental parsing library
+brew "tree-sitter"
 # Clean C library for processing UTF-8 Unicode data
 brew "utf8proc", args: ["HEAD"]
 # Ambitious Vim-fork focused on extensibility and agility
@@ -92,8 +96,6 @@ brew "stow"
 brew "tlrc"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
-# Incremental parsing library
-brew "tree-sitter"
 # Cozy typing speed tester in terminal
 brew "typioca"
 # Maintained ctags implementation
@@ -173,6 +175,8 @@ cask "zen"
 # Video communication and virtual meeting platform
 cask "zoom"
 vscode "aaron-bond.better-comments"
+vscode "anthropic.claude-code"
+vscode "anysphere.remote-ssh"
 vscode "astro-build.astro-vscode"
 vscode "asvetliakov.vscode-neovim"
 vscode "bradlc.vscode-tailwindcss"
@@ -191,6 +195,7 @@ vscode "shopify.ruby-lsp"
 vscode "streetsidesoftware.code-spell-checker"
 vscode "streetsidesoftware.code-spell-checker-french"
 vscode "tamasfe.even-better-toml"
+vscode "typescriptteam.native-preview"
 vscode "usernamehw.errorlens"
 vscode "wasp-lang.wasp"
 vscode "yoavbls.pretty-ts-errors"

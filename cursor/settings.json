@@ -114,5 +114,6 @@
   "update.mode": "silentlyApplyOnQuit",
   "extensions.experimental.affinity": {
     "asvetliakov.vscode-neovim": 1
-  }
+  },
+  "claudeCode.preferredLocation": "panel"
 }

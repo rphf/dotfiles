@@ -19,8 +19,12 @@ export ZSH_AUTOSUGGEST_HISTORY_IGNORE="cd *"
 
 export PATH="$PATH:/opt/homebrew/bin"
 export PATH="$PATH:$HOME/.local/bin"
-export PATH="$PATH:$HOME/Library/Android/sdk/emulator"
-export PATH="$PATH:$HOME/Library/Android/sdk/platform-tools"
+
+# Android SDK
+export ANDROID_HOME=~/Library/Android/sdk
+export ANDROID_SDK_ROOT=$ANDROID_HOME
+export PATH="$PATH:$ANDROID_HOME/emulator"
+export PATH="$PATH:$ANDROID_HOME/platform-tools"
 
 # Ensure your PATH prefers pg18 tools, needs to match the version in the Brewfile
 export PATH="$PATH:/opt/homebrew/opt/postgresql@18/bin"

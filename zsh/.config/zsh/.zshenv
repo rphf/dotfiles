@@ -20,6 +20,12 @@ export ZSH_AUTOSUGGEST_HISTORY_IGNORE="cd *"
 export PATH="$PATH:/opt/homebrew/bin"
 export PATH="$PATH:$HOME/.local/bin"
 
+# Prepend mise shims so non-interactive shells (e.g. spawned by VS Code / IDE
+# extensions) resolve ruby/node/etc. through mise. `mise activate` only runs in
+# interactive shells via .zshrc; shims cover everything else.
+# See: https://mise.jdx.dev/dev-tools/shims.html
+export PATH="$HOME/.local/share/mise/shims:$PATH"
+
 # Android SDK
 export ANDROID_HOME=~/Library/Android/sdk
 export ANDROID_SDK_ROOT=$ANDROID_HOME

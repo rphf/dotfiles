@@ -23,8 +23,6 @@ antidote load
 
 # fzf for enabling fuzzy finder features (needs fzf installed with brew)
 source <(fzf --zsh)
-# Custom widget for searching command history
-source "$XDG_CONFIG_HOME/zsh/.fzf-history-search.zsh"
 # Initialize zoxide, a smarter cd command
 eval "$(zoxide init zsh)"
 # Activate Mise, a polyglot package manager

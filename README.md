@@ -77,12 +77,15 @@ stow agents bat claude cmux git karabiner lazygit mise neovide nvim skhd wezterm
 brew bundle --file=Brewfile
 # Wire up the repo-local commit template
 git config --local commit.template .gitmessage
+# Run gitleaks on every commit (hooks live in ./githooks/)
+git config core.hooksPath githooks
 ```
 
 ## Top-level files
 
 Not stowed (see `.stow-local-ignore`):
 
+- `githooks/` — versioned hooks; activate with `git config core.hooksPath githooks`
 - `Brewfile` — regenerate with `brew bundle dump --describe --force`
 - `.macos` — macOS defaults tweaks
 - `.gitmessage` — commit template for this repo; wired via `git config --local commit.template .gitmessage`

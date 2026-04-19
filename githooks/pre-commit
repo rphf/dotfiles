@@ -1,0 +1,18 @@
+#!/usr/bin/env sh
+# Scan staged changes for secrets before the commit is created.
+# https://github.com/gitleaks/gitleaks#pre-commit-hook
+#
+# Disable for this repo: git config hooks.gitleaks false
+# Skip once:            SKIP=gitleaks git commit ...
+
+if ! command -v gitleaks >/dev/null 2>&1; then
+	echo "gitleaks: not in PATH; skipping secret scan" >&2
+	exit 0
+fi
+
+if [ "${SKIP:-}" = "gitleaks" ]; then
+	echo "gitleaks: skipped (SKIP=gitleaks)" >&2
+	exit 0
+fi
+
+exec gitleaks protect -v --staged

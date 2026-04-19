@@ -6,3 +6,4 @@
 # Scope:   any stow package in the repo (zsh, wezterm, skhd, mise, git,
 #          scripts, macos, docs, …) or a new one introduced by the commit.
 # Rules:   imperative mood, concise, one line.
+#

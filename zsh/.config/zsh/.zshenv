@@ -42,5 +42,3 @@ export PATH="$PATH:/opt/homebrew/opt/postgresql@18/bin"
 export NEOVIDE_FORK=1
 
 source "$HOME/.cargo/env"
-
-source "$ZDOTDIR/.secrets.zshenv"

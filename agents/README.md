@@ -11,8 +11,9 @@ Canonical, tool-agnostic AI agent configuration. Based on the
   support the Agent Skills standard; Claude Code reads it via a symlink
   from `~/.claude/CLAUDE.md` (see the `claude/` package).
 - `skills/<name>/SKILL.md` — shared skills. Cursor picks them up
-  automatically from `~/.agents/skills/`. For Claude, per-skill symlinks
-  live under `claude/.claude/skills/`.
+  automatically from `~/.agents/skills/`. Claude Code reads them via
+  `~/.claude/skills/`, which is a symlink chain that ends here (see the
+  `claude/` package for the wiring).
 - `addons.md` — human-readable list of MCP servers and plugins I use.
   Not read by any tool; see "MCP" below for where actual config lives.
 
@@ -21,9 +22,11 @@ Canonical, tool-agnostic AI agent configuration. Based on the
 ```sh
 mkdir -p agents/.agents/skills/my-skill
 $EDITOR agents/.agents/skills/my-skill/SKILL.md
-# Symlink into Claude (Cursor picks it up from ~/.agents/skills/ natively)
-ln -s ../../../agents/.agents/skills/my-skill claude/.claude/skills/my-skill
 ```
+
+That's it — the skill is immediately visible to both Cursor (from
+`~/.agents/skills/`) and Claude (from `~/.claude/skills/`, which is a
+symlink into this directory).
 
 ## MCP
 

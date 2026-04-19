@@ -9,8 +9,10 @@ Claude Code-specific bridge to the canonical `agents/` package.
 - `CLAUDE.md` → relative symlink to `../../agents/.agents/AGENTS.md`.
   Claude Code reads `~/.claude/CLAUDE.md` as its global rules file; the
   symlink keeps a single source of truth shared with other agents.
-- `skills/<name>` — per-skill symlinks into `agents/.agents/skills/<name>`.
-  Needed because Claude Code doesn't (yet) read `~/.agents/skills/`.
+- `skills` → relative symlink to `../../agents/.agents/skills`.
+  Claude Code reads `~/.claude/skills/`; the symlink points the whole
+  directory at the canonical skills tree in `agents/`, so any skill added
+  there is immediately available to Claude with no per-skill wiring.
 - `commands/` — Claude-specific slash commands (`<name>.md`). No symlinks
   here; commands are Claude-only at user level.
 - `settings.json` — Claude Code user settings (model, effort level, etc.).

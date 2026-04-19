@@ -1,52 +1,96 @@
 # Dotfiles
 
-This repository contains my dotfiles, managed using [**GNU Stow**](https://www.gnu.org/software/stow/).
+Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
----
+## Packages
 
-## GNU Stow
 
-**GNU Stow** is a symlink manager that helps manage dotfiles by creating symlinks from a central repository (like this one) to their target locations (e.g., your home directory `~`).
+| Package     | Target                 | Purpose                                                             |
+| ----------- | ---------------------- | ------------------------------------------------------------------- |
+| `agents`    | `~/.agents/`           | Canonical AI agent config (rules, skills, MCP notes)                |
+| `bat`       | `~/.config/bat/`       | `bat` pager theme/config                                            |
+| `claude`    | `~/.claude/`           | Claude Code bridge (symlinks into `agents/`)                        |
+| `cmux`      | `~/.config/cmux/`      | `cmux` config                                                       |
+| `cursor`    | `~/.cursor/`           | Cursor settings, keybindings, MCP (flat layout, manually symlinked) |
+| `git`       | `~/.config/git/`       | Git config                                                          |
+| `karabiner` | `~/.config/karabiner/` | Karabiner-Elements                                                  |
+| `lazygit`   | `~/.config/lazygit/`   | `lazygit` config                                                    |
+| `mise`      | `~/.config/mise/`      | `mise` toolchain manager                                            |
+| `neovide`   | `~/.config/neovide/`   | Neovide GUI config                                                  |
+| `nvim`      | `~/.config/nvim/`      | Neovim config                                                       |
+| `obsidian`  | *(manual)*             | Obsidian vault snippets (not stowed)                                |
+| `skhd`      | `~/.config/skhd/`      | `skhd` hotkey daemon                                                |
+| `wezterm`   | `~/.config/wezterm/`   | Wezterm config                                                      |
+| `work`      | *(manual)*             | Work-specific bits (not stowed)                                     |
+| `zed`       | `~/.config/zed/`       | Zed editor config                                                   |
+| `zsh`       | `~/`                   | Zsh config                                                          |
 
-### Add a New Package
 
-1. Move any config to the dotfiles repo, mirroring the target directory structure:
+Each package has its own `README.md` with package-specific notes.
 
-```bash
-mv ~/.config/nvim ~/dotfiles/nvim/.config/nvim
-```
+## Using stow
 
-2. Create symlinks:
-
-```bash
-cd ~/dotfiles
-stow nvim
-```
-
-### Basic Commands
-
-**Stow a package:**
-
-```bash
-stow <package-name>
-```
-
-**Unstow a package:**
-
-```bash
-stow -D <package-name>
-```
-
-**Dry run (test without applying):**
-
-```bash
-stow -n <package-name>
-```
-
-## Brewfile
-
-To generate a Brewfile (a list of installed Homebrew packages), run:
+Stow creates symlinks from this repo to their target locations.
 
 ```sh
-brew bundle dump --describe --force
+stow <package>         # install
+stow -D <package>      # uninstall
+stow -n <package>      # dry-run (show what would happen)
+stow -R <package>      # restow (unlink + relink)
+stow --adopt <package> # absorb existing target files into the package (see below)
 ```
+
+### Handling existing files in the target
+
+Stow ignores anything that isn't in the package. For example, `stow claude`
+only touches the files listed under `claude/.claude/`; the rest of
+`~/.claude/` (runtime state like `projects/`, `todos/`, `history.jsonl`,
+`plugins/`, etc.) is left alone.
+
+If a target path already exists as a real file (not a stow-owned symlink),
+stow aborts with a conflict. Two ways to resolve:
+
+1. **Back up + stow**: `mv ~/.foo ~/.foo.bak && stow <package>` — keeps the
+   repo version as canonical.
+2. **Adopt**: `stow --adopt <package>` — moves the live file into the
+   package and symlinks back. The file in the repo is overwritten with
+   whatever was at the target, so always run with a clean git tree:
+
+   ```sh
+   git status                   # ensure clean
+   stow --adopt <package>
+   git diff                     # review what got absorbed
+   git checkout -- <file>       # per file, revert to repo version if needed
+   ```
+
+### Adding a new package
+
+Mirror the target directory structure inside the package:
+
+```sh
+mv ~/.config/nvim ~/dotfiles/nvim/.config/nvim
+cd ~/dotfiles && stow nvim
+```
+
+Flat packages (like `cursor/`) that don't follow the `.config/` pattern
+are managed with one-off manual symlinks where needed.
+
+### Fresh machine setup
+
+```sh
+cd ~/dotfiles
+stow agents bat claude cmux git karabiner lazygit mise neovide nvim skhd wezterm zed zsh
+# Install Homebrew packages
+brew bundle --file=Brewfile
+```
+
+## Top-level files
+
+Not stowed (see `.stow-local-ignore`):
+
+- `Brewfile` — regenerate with `brew bundle dump --describe --force`
+- `.macos` — macOS defaults tweaks
+- `commit-rules.txt`, `todo.local.md` — personal notes
+- `.stylua.toml` — Lua formatter config (used from repo root)
+- `backup.rayconfig` — Raycast config backup
+

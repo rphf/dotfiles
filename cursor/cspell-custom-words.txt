@@ -184,6 +184,7 @@ rubyfmt
 SAVEHIST
 Scheel
 setfile
+shellenv
 signicantly
 Signout
 skhd

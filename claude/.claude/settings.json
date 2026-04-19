@@ -1,7 +1,8 @@
 {
   "model": "opus[1m]",
   "enabledPlugins": {
-    "context7@claude-plugins-official": true
+    "context7@claude-plugins-official": true,
+    "superpowers@claude-plugins-official": true
   },
   "syntaxHighlightingDisabled": false
 }

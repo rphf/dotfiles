@@ -20,6 +20,19 @@ Turn the current diff into a git-spice branch + PR in two gated steps.
 
 ## Workflow
 
+### Check for handoff
+
+If a `HANDOFF.md` file exists (created by the `handoff` skill from an
+agent worktree), use its contents instead of proposing options:
+
+1. Read `HANDOFF.md` — parse the `# branch`, `# commit`, `# pr-title`,
+   and `# pr-body` sections.
+2. Show the diff, the handoff content, and the stack.
+3. Skip to **step 3** using the handoff values. Still let the user edit
+   or override before proceeding.
+
+Otherwise follow the normal flow below.
+
 ### 1. Show the stack and diff
 
 ```sh
@@ -41,6 +54,18 @@ or provide their own. If base isn't obvious from `log short`, ask.
 git-spice branch create <type>/<slug> --no-prompt -m "<type>: <subject>"
 ```
 
+If coming from a `HANDOFF.md` (agent worktree, typically detached HEAD):
+
+```sh
+# Create the branch from detached HEAD (this is the final branch name)
+git checkout -b <type>/<slug>
+# Stage only source changes (exclude node_modules symlink and handoff)
+git add -A -- ':!node_modules' ':!HANDOFF.md'
+# Track in git-spice, then commit
+git-spice branch track --no-prompt
+git commit -m "<type>: <subject>"
+```
+
 Then re-show the stack:
 
 ```sh
@@ -52,11 +77,27 @@ git-spice log short
 Ask explicitly: *"Ready to submit as a PR? (yes / no / draft)"*. Only
 proceed on an explicit `yes` or `draft`.
 
+If coming from a `HANDOFF.md`, pass title and body from the handoff:
+
+```sh
+git-spice branch submit --no-prompt --title "<pr-title>" --body "<pr-body>" --no-web
+```
+
+Otherwise use `--fill`:
+
 ```sh
 git-spice branch submit --no-prompt --fill --no-web
 ```
 
 Add `--draft` for drafts.
+
+### 5. Clean up handoff
+
+After a successful submit, remove the handoff file:
+
+```sh
+rm -f HANDOFF.md
+```
 
 ## Reference
 

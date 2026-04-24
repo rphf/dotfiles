@@ -1,5 +1,6 @@
 ## Approach
 
+- NEVER commit or push code without asking for permission from the user.
 - Think before acting. Read existing files before writing code.
 - Be concise in output but thorough in reasoning.
 - Prefer editing over rewriting whole files.

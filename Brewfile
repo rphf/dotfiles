@@ -123,7 +123,7 @@ cask "betaflight-configurator"
 # Anthropic's official Claude AI desktop app
 cask "claude"
 # Terminal-based AI coding assistant
-cask "claude-code"
+cask "claude-code@latest"
 # Ghostty-based terminal with vertical tabs and notifications for AI coding agents
 cask "cmux"
 # Write, edit, and chat about your code with AI
@@ -170,12 +170,15 @@ cask "transmission"
 cask "vlc"
 # GPU-accelerated cross-platform terminal emulator and multiplexer
 cask "wezterm"
+# Multiplayer code editor
+cask "zed"
 # Gecko based web browser
 cask "zen"
 # Video communication and virtual meeting platform
 cask "zoom"
 vscode "aaron-bond.better-comments"
 vscode "anthropic.claude-code"
+vscode "anysphere.remote-containers"
 vscode "anysphere.remote-ssh"
 vscode "astro-build.astro-vscode"
 vscode "asvetliakov.vscode-neovim"
@@ -191,6 +194,7 @@ vscode "golang.go"
 vscode "kaiwood.endwise"
 vscode "naumovs.color-highlight"
 vscode "prisma.prisma"
+vscode "semanticdiff.semanticdiff"
 vscode "shopify.ruby-lsp"
 vscode "streetsidesoftware.code-spell-checker"
 vscode "streetsidesoftware.code-spell-checker-french"

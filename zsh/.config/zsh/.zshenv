@@ -1,5 +1,9 @@
 export EDITOR='nvim'
 
+# https://donottrack.sh/
+export DO_NOT_TRACK=1
+export HOMEBREW_NO_ANALYTICS=1
+
 export HISTFILE="$HOME/.zsh_history"
 
 # Set Golang flags

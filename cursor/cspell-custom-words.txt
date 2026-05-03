@@ -39,6 +39,7 @@ creditcard
 customfunction
 cweek
 dasherize
+datadoghq
 datetimepicker
 DAYNAMES
 DCBN
@@ -124,6 +125,7 @@ Mailchimp
 Mamimo
 mappin
 mathjax
+mawk
 metalness
 migratecmd
 minmax
@@ -177,6 +179,7 @@ renamer
 rnpm
 Rollbar
 rphf
+rqpc
 rrule
 rrules
 rubocop
@@ -201,6 +204,7 @@ Suomalainen
 swipeable
 tableview
 tanstack
+tcpdump
 tealish
 Textable
 timegrid
@@ -229,6 +233,8 @@ welldone
 wezterm
 wojtekmaj
 worklets
+worktree
+worktrees
 xintl
 xmark
 yarnrc

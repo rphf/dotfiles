@@ -16,7 +16,7 @@
   "editor.formatOnType": false,
   "editor.formatOnSaveMode": "file",
   "[toml]": {
-    "editor.defaultFormatter": "tamasfe.even-better-toml"
+    "editor.defaultFormatter": "tamasfe.even-better-toml",
   },
 
   // ===== FILE HANDLING =====
@@ -78,33 +78,33 @@
   "[javascriptreact]": {
     "editor.codeActionsOnSave": {
       "source.organizeImports": "explicit",
-      "source.fixAll": "always"
-    }
+      "source.fixAll": "always",
+    },
   },
   "[javascript]": {
     "editor.codeActionsOnSave": {
       "source.organizeImports": "explicit",
-      "source.fixAll": "always"
-    }
+      "source.fixAll": "always",
+    },
   },
   "[typescriptreact]": {
     "editor.codeActionsOnSave": {
       "source.organizeImports": "explicit",
-      "source.fixAll": "always"
-    }
+      "source.fixAll": "always",
+    },
   },
   "[typescript]": {
     "editor.codeActionsOnSave": {
       "source.organizeImports": "explicit",
-      "source.fixAll": "always"
-    }
+      "source.fixAll": "always",
+    },
   },
   "cSpell.dictionaryDefinitions": [
     {
       "name": "custom-words",
       "path": "~/dotfiles/cursor/cspell-custom-words.txt",
-      "addWords": true
-    }
+      "addWords": true,
+    },
   ],
   "cSpell.dictionaries": ["custom-words"],
   "git.openRepositoryInParentFolders": "never",
@@ -113,7 +113,8 @@
   "update.releaseTrack": "dev",
   "update.mode": "silentlyApplyOnQuit",
   "extensions.experimental.affinity": {
-    "asvetliakov.vscode-neovim": 1
+    "asvetliakov.vscode-neovim": 1,
   },
-  "claudeCode.preferredLocation": "panel"
+  "claudeCode.preferredLocation": "panel",
+  "redhat.telemetry.enabled": false,
 }

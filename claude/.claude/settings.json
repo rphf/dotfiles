@@ -6,5 +6,7 @@
   },
   "syntaxHighlightingDisabled": false,
   "tui": "fullscreen",
-  "editorMode": "vim"
+  "editorMode": "vim",
+  "skipAutoPermissionPrompt": true,
+  "effortLevel": "max"
 }

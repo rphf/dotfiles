@@ -176,6 +176,7 @@ refetched
 refetches
 Refreshable
 renamer
+RNKC
 rnpm
 Rollbar
 rphf

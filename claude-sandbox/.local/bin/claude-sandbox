@@ -1,0 +1,817 @@
+#!/usr/bin/env bash
+# claude-sandbox: run Claude Code in the background on an isolated git worktree
+# inside a Docker container. Project-local worktree at .worktrees/<id>.
+set -euo pipefail
+
+CS_HOME="${CS_HOME:-$HOME/.claude-sandbox}"
+CS_STATE_HOME="${CS_STATE_HOME:-${XDG_STATE_HOME:-$HOME/.local/state}/claude-sandbox}"
+CS_IMAGE="${CS_IMAGE:-claude-sandbox:latest}"
+LOGS_DIR="$CS_STATE_HOME/logs"
+STATE_DIR="$CS_STATE_HOME/state"
+mkdir -p "$LOGS_DIR" "$STATE_DIR"
+
+die() { echo "claude-sandbox: $*" >&2; exit 1; }
+
+require_git_repo() {
+  git rev-parse --show-toplevel >/dev/null 2>&1 \
+    || die "not inside a git repository"
+}
+
+check_worktrees_ignored() {
+  # Trailing slash is required for directory-only patterns to match
+  # paths that don't exist yet. Also probe a child path to be safe.
+  if ! git check-ignore -q .worktrees/ 2>/dev/null \
+       && ! git check-ignore -q .worktrees/x 2>/dev/null; then
+    die ".worktrees/ is not git-ignored in this repo.
+  fix once, globally: echo '.worktrees/' >> ~/.config/git/ignore"
+  fi
+}
+
+gen_id() {
+  printf 'cs-%s-%s' "$(date +%Y%m%d-%H%M%S)" "$(openssl rand -hex 3)"
+}
+
+pick_session_id() {
+  # Resolve a session id. If one is passed as $1, echo it unchanged. Otherwise
+  # show an fzf picker over every session recorded in $STATE_DIR (running and
+  # finished-but-not-cleaned). Returns non-zero if cancelled or no sessions.
+  local given="${1:-}"
+  if [[ -n "$given" ]]; then
+    printf '%s' "$given"
+    return 0
+  fi
+
+  local rows="" f id repo branch started running marker
+  for f in "$STATE_DIR"/*.json; do
+    [[ -e "$f" ]] || continue
+    id="$(jq -r .id "$f")"
+    repo="$(basename "$(jq -r .repo "$f")")"
+    branch="$(jq -r .branch "$f")"
+    started="$(jq -r .started_at "$f")"
+    if docker ps -q --filter "label=cs-session=$id" --format '{{.ID}}' 2>/dev/null | grep -q .; then
+      marker='running'
+    else
+      marker='stopped'
+    fi
+    rows+="$id"$'\t'"$marker"$'\t'"$repo"$'\t'"$branch"$'\t'"$started"$'\n'
+  done
+
+  if [[ -z "$rows" ]]; then
+    echo "claude-sandbox: no sessions found" >&2
+    return 1
+  fi
+
+  if command -v fzf >/dev/null 2>&1; then
+    local pick
+    pick="$(printf '%s' "$rows" \
+      | sort -k5 -r \
+      | fzf --delimiter=$'\t' --with-nth=1,2,3,5 \
+            --prompt='session> ' --height=40% --reverse \
+            --preview='jq . '"$STATE_DIR"'/{1}.json' \
+            --preview-window=right:50%:wrap)" || return 1
+    [[ -n "$pick" ]] || return 1
+    printf '%s' "$pick" | cut -f1
+  else
+    {
+      echo "sessions:"
+      printf '%s' "$rows" \
+        | awk -F'\t' '{printf "  %-40s  %-8s  %s  (%s)\n", $1, $2, $3, $5}'
+      echo
+      echo "(install fzf for interactive selection)"
+    } >&2
+    return 1
+  fi
+}
+
+build_git_identity() {
+  # Commits made inside the sandbox are authored by "Claude Code". The host
+  # user is added as co-author via a commit-msg hook baked into the image
+  # (see /usr/local/etc/git-hooks/commit-msg) reading CS_CO_AUTHOR_* env vars.
+  #
+  # Host gitconfig is NOT mounted — it would pull in host-only paths (SSH
+  # signing keys under ~/.ssh, macOS includes, aliases referencing host tools)
+  # that break inside Linux. GIT_CONFIG_GLOBAL points at a minimal config
+  # baked into the image so only the hooks path is set.
+  local claude_name="${CS_CLAUDE_NAME:-Claude Code}"
+  local claude_email="${CS_CLAUDE_EMAIL:-noreply@anthropic.com}"
+  local host_name host_email
+  host_name="$(git config --get user.name 2>/dev/null || true)"
+  host_email="$(git config --get user.email 2>/dev/null || true)"
+
+  GIT_IDENTITY_ARGS=(
+    -e "GIT_AUTHOR_NAME=$claude_name"
+    -e "GIT_AUTHOR_EMAIL=$claude_email"
+    -e "GIT_COMMITTER_NAME=$claude_name"
+    -e "GIT_COMMITTER_EMAIL=$claude_email"
+    -e "GIT_CONFIG_GLOBAL=/etc/gitconfig-claude"
+  )
+  [[ -n "$host_name" ]]  && GIT_IDENTITY_ARGS+=(-e "CS_CO_AUTHOR_NAME=$host_name")
+  [[ -n "$host_email" ]] && GIT_IDENTITY_ARGS+=(-e "CS_CO_AUTHOR_EMAIL=$host_email")
+}
+
+build_ssh_args() {
+  # Populates the global array `SSH_ARGS`.
+  SSH_ARGS=()
+  [[ "${CLAUDE_SANDBOX_SSH:-0}" == "1" ]] || return 0
+  if [[ -S /run/host-services/ssh-auth.sock ]]; then
+    SSH_ARGS=(-v /run/host-services/ssh-auth.sock:/ssh-agent -e SSH_AUTH_SOCK=/ssh-agent)
+  elif [[ -n "${SSH_AUTH_SOCK:-}" ]]; then
+    SSH_ARGS=(-v "$SSH_AUTH_SOCK:/ssh-agent" -e SSH_AUTH_SOCK=/ssh-agent)
+  else
+    die "CLAUDE_SANDBOX_SSH=1 but no SSH agent socket found"
+  fi
+}
+
+docker_exists() {
+  docker image inspect "$CS_IMAGE" >/dev/null 2>&1 \
+    || die "docker image '$CS_IMAGE' not found. Build it: docker build -t $CS_IMAGE $CS_HOME"
+}
+
+# ---- subcommands ------------------------------------------------------------
+
+cmd_run() {
+  local prompt=""
+  local prompt_file=""
+  local bg=0
+  local name=""
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -f|--file) prompt_file="$2"; shift 2 ;;
+      -n|--name) name="$2"; shift 2 ;;
+      --bg|--background) bg=1; shift ;;
+      -h|--help) echo 'usage: claude-sandbox run -n NAME [--bg] [-f FILE] ["<prompt>"]'; return 0 ;;
+      --) shift; break ;;
+      -*) die "unknown flag: $1" ;;
+      *)  prompt="$*"; break ;;
+    esac
+  done
+
+  [[ -n "$name" ]] || die '-n NAME is required (a memorable slug for this session)'
+  [[ "$name" =~ ^[a-zA-Z0-9._-]+$ ]] \
+    || die "name must be alphanumeric (plus . _ -): '$name'"
+
+  if [[ -n "$prompt_file" ]]; then
+    [[ -f "$prompt_file" ]] || die "prompt file not found: $prompt_file"
+    prompt="$(cat "$prompt_file")"
+  fi
+  if [[ "$bg" == 1 && -z "$prompt" ]]; then
+    die '--bg needs a prompt (a headless session with nothing to do is pointless)'
+  fi
+
+  require_git_repo
+  check_worktrees_ignored
+  docker_exists
+
+  local repo id branch worktree
+  repo="$(git rev-parse --show-toplevel)"
+  id="cs-$name"
+  [[ -e "$STATE_DIR/$id.json" ]] \
+    && die "session '$id' already exists. pick a different name or run: claude-sandbox cleanup $id"
+  if git -C "$repo" show-ref --verify --quiet "refs/heads/claude-sandbox/$id"; then
+    die "branch 'claude-sandbox/$id' already exists in this repo. delete it first: git -C $repo branch -D claude-sandbox/$id"
+  fi
+  branch="claude-sandbox/$id"
+  worktree="$repo/.worktrees/$id"
+
+  local prompt_env=()
+  if [[ -n "$prompt" ]]; then
+    printf '%s' "$prompt" > "$LOGS_DIR/$id.prompt"
+    prompt_env=(-e "CS_PROMPT_FILE=/logs/$id.prompt")
+  fi
+
+  git -C "$repo" worktree add "$worktree" -b "$branch" >&2
+
+  # `git worktree add` only populates tracked files. Many projects keep their
+  # tool-version config gitignored (.mise.toml, .tool-versions, .nvmrc…), so
+  # Claude would otherwise land in a worktree with no way to pick the right
+  # Node/Ruby/Python version. Port a small, safe-by-design allowlist from the
+  # main worktree. Sensitive files (.env, credentials) are intentionally NOT
+  # here — extend via CS_PORT_FILES (colon-separated) if your project needs more.
+  local default_ports=(mise.toml .tool-versions .nvmrc .ruby-version .python-version .node-version)
+  local ports=("${default_ports[@]}")
+  if [[ -n "${CS_PORT_FILES:-}" ]]; then
+    local extra; IFS=':' read -ra extra <<< "$CS_PORT_FILES"
+    ports+=("${extra[@]}")
+  fi
+  local ported=()
+  for f in "${ports[@]}"; do
+    [[ -n "$f" ]] || continue
+    if [[ -f "$repo/$f" && ! -e "$worktree/$f" ]]; then
+      mkdir -p "$(dirname "$worktree/$f")"
+      cp "$repo/$f" "$worktree/$f"
+      ported+=("$f")
+    fi
+  done
+  [[ ${#ported[@]} -gt 0 ]] && echo "ported from main worktree: ${ported[*]}" >&2
+
+  # Clone directories from main (node_modules, vendor/bundle, etc.) so the
+  # sandbox doesn't reinstall from scratch. On macOS APFS, `cp -cR` uses
+  # clonefile(2) — instant, copy-on-write, mutations stay isolated from main.
+  # Falls back to a plain copy on non-APFS (slower, still safe).
+  local default_dirs=(node_modules vendor/bundle)
+  local dirs_to_port=("${default_dirs[@]}")
+  if [[ -n "${CS_PORT_DIRS:-}" ]]; then
+    local extra_dirs; IFS=':' read -ra extra_dirs <<< "$CS_PORT_DIRS"
+    dirs_to_port+=("${extra_dirs[@]}")
+  fi
+  local cloned=()
+  local d
+  for d in "${dirs_to_port[@]}"; do
+    [[ -n "$d" ]] || continue
+    if [[ -d "$repo/$d" && ! -e "$worktree/$d" ]]; then
+      mkdir -p "$(dirname "$worktree/$d")"
+      if cp -cR "$repo/$d" "$worktree/$d" 2>/dev/null; then
+        cloned+=("$d (cloned)")
+      elif cp -R "$repo/$d" "$worktree/$d" 2>/dev/null; then
+        cloned+=("$d (copied)")
+      fi
+    fi
+  done
+  [[ ${#cloned[@]} -gt 0 ]] && echo "cloned from main worktree: ${cloned[*]}" >&2
+
+  jq -n \
+    --arg id "$id" --arg repo "$repo" --arg worktree "$worktree" \
+    --arg branch "$branch" --arg started_at "$(date -Iseconds)" \
+    --arg prompt_file "$LOGS_DIR/$id.prompt" \
+    '{id:$id, repo:$repo, worktree:$worktree, branch:$branch, started_at:$started_at, prompt_file:$prompt_file}' \
+    > "$STATE_DIR/$id.json"
+
+  local SSH_ARGS GIT_IDENTITY_ARGS
+  build_ssh_args
+  build_git_identity
+
+  local common_args=(
+    --name "$id"
+    --rm
+    --label claude-sandbox=1
+    --label "cs-session=$id"
+    --label "cs-repo=$(basename "$repo")"
+    --cap-add=NET_RAW
+    # Host-path mount of the whole repo so the worktree's .git file (which
+    # contains an absolute host path) resolves inside the container.
+    -v "$repo:$repo"
+    # Shortcut mount of this session's worktree at /workspace/<id> so pwd
+    # and Claude's status line tell you which feature you're on at a glance.
+    # Both mounts point at the same host files; editing through either path
+    # affects the same inode.
+    -v "$worktree:/workspace/$id"
+    -v claude-sandbox-home:/home/claude
+    -v "$LOGS_DIR:/logs"
+    -w "/workspace/$id"
+    -e "CS_SESSION_ID=$id"
+    # Auto-trust any mise config under /workspace (our own mount — safe).
+    # Without this, mise refuses to parse mise.toml and falls back to the
+    # base image's node/yarn/ruby/python.
+    -e "MISE_TRUSTED_CONFIG_PATHS=/workspace"
+  )
+
+  if [[ "$bg" == 1 ]]; then
+    docker run -d \
+      "${common_args[@]}" \
+      -e "CS_MODE=bg" \
+      "${prompt_env[@]}" \
+      "${GIT_IDENTITY_ARGS[@]}" \
+      "${SSH_ARGS[@]}" \
+      "$CS_IMAGE" >/dev/null
+
+    cat <<EOF
+Session started: $id (background)
+  branch:   $branch
+  worktree: $worktree
+  follow:   claude-sandbox logs $id
+  egress:   claude-sandbox logs $id --net
+EOF
+    return 0
+  fi
+
+  # Interactive (default): attach TTY, drop you into Claude's normal UI.
+  cat >&2 <<EOF
+Session: $id
+  branch:   $branch
+  worktree: $worktree
+EOF
+  docker run -it \
+    "${common_args[@]}" \
+    "${prompt_env[@]}" \
+    "${GIT_IDENTITY_ARGS[@]}" \
+    "${SSH_ARGS[@]}" \
+    "$CS_IMAGE"
+  local rc=$?
+  print_exit_hint "$id" "$worktree"
+  return $rc
+}
+
+print_exit_hint() {
+  local id="$1" worktree="$2"
+  cat >&2 <<EOF
+
+Session $id exited. Conversation history, worktree, and branch are preserved.
+  continue:  claude-sandbox resume $id            # reopen interactive
+  diff:      git -C $worktree log --oneline
+  done:      claude-sandbox cleanup $id           # drop worktree + per-session state (keeps branch)
+EOF
+}
+
+cmd_list() {
+  docker ps -a \
+    --filter 'label=claude-sandbox=1' \
+    --format 'table {{.Label "cs-session"}}\t{{.Label "cs-repo"}}\t{{.Status}}\t{{.Names}}'
+
+  # Also list state files whose container is gone.
+  local any=0
+  for f in "$STATE_DIR"/*.json; do
+    [[ -e "$f" ]] || continue
+    local id
+    id="$(jq -r .id "$f")"
+    if ! docker ps -a --filter "label=cs-session=$id" --format '{{.ID}}' | grep -q .; then
+      [[ $any -eq 0 ]] && { echo; echo "Finished (container gone, worktree kept):"; any=1; }
+      printf '  %s  %s\n' "$id" "$(jq -r .worktree "$f")"
+    fi
+  done
+}
+
+cmd_logs() {
+  local id="${1:-}"
+  [[ -n "$id" ]] || die 'usage: claude-sandbox logs <id> [--net|--raw]'
+  local mode="${2:-pretty}"
+
+  if [[ "$mode" == "--net" ]]; then
+    local f="$LOGS_DIR/$id.net.log"
+    [[ -f "$f" ]] || die "no egress log yet: $f"
+    exec tail -F "$f"
+  fi
+
+  # --bg sessions: live tail of the host-side stream-json log.
+  local host_log="$LOGS_DIR/$id.jsonl"
+  if [[ -f "$host_log" ]]; then
+    case "$mode" in
+      --raw) exec tail -F "$host_log" ;;
+      pretty) tail -F "$host_log" | filter_jsonl ;;
+      *) die "unknown logs mode: $mode" ;;
+    esac
+  fi
+
+  # Interactive sessions don't write a host-side log (their output goes to the
+  # TTY). But Claude always persists the full conversation to a jsonl inside
+  # the claude-sandbox-home volume, keyed by session UUID. Fetch it one-shot.
+  local uuid_file="$LOGS_DIR/$id.session-uuid"
+  [[ -f "$uuid_file" ]] || die "no logs for $id (session may not have started yet)"
+  local uuid; uuid="$(cat "$uuid_file")"
+  docker_exists
+  local dump
+  dump="$(docker run --rm \
+    -v claude-sandbox-home:/home/claude \
+    --entrypoint sh \
+    "$CS_IMAGE" \
+    -c "find /home/claude/.claude/projects -type f -name '${uuid}.jsonl' -exec cat {} +" \
+    2>/dev/null || true)"
+  if [[ -z "$dump" ]]; then
+    die "no conversation log found for $id (nothing recorded yet)"
+  fi
+  case "$mode" in
+    --raw)  printf '%s\n' "$dump" ;;
+    pretty) printf '%s\n' "$dump" | filter_jsonl ;;
+    *) die "unknown logs mode: $mode" ;;
+  esac
+}
+
+filter_jsonl() {
+  jq -r --unbuffered '
+    if .type == "assistant" then
+      ((.message.content // [])[] | (
+        if .type == "text" then "[assistant] " + .text
+        elif .type == "tool_use" then "[tool] " + .name + " " + ((.input | tostring)[:200])
+        else empty end
+      ))
+    elif .type == "user" then
+      ((.message.content // [])[] | (
+        if .type == "tool_result" then "[tool result] " + ((.content | tostring)[:300])
+        else empty end
+      ))
+    elif .type == "result" then
+      "[done] " + (.subtype // "") + " " + ((.result // "") | tostring | .[:500])
+    else empty end
+  ' 2>/dev/null || cat
+}
+
+cmd_resume() {
+  # First positional is the id (unless it starts with -, meaning the user
+  # omitted it and we should pick).
+  local id=""
+  if [[ $# -gt 0 && "$1" != -* ]]; then
+    id="$1"; shift
+  fi
+
+  local prompt_file=""
+  local prompt=""
+  local bg=0
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -f|--file) prompt_file="$2"; shift 2 ;;
+      --bg|--background) bg=1; shift ;;
+      --) shift; break ;;
+      -*) die "unknown flag: $1" ;;
+      *)  prompt="$*"; break ;;
+    esac
+  done
+
+  if [[ -z "$id" ]]; then
+    id="$(pick_session_id)" || die 'cancelled'
+  fi
+  if [[ -n "$prompt_file" ]]; then
+    [[ -f "$prompt_file" ]] || die "prompt file not found: $prompt_file"
+    prompt="$(cat "$prompt_file")"
+  fi
+  if [[ "$bg" == 1 && -z "$prompt" ]]; then
+    die '--bg needs a prompt'
+  fi
+
+  local state="$STATE_DIR/$id.json"
+  [[ -f "$state" ]] || die "no such session: $id"
+  local uuid_file="$LOGS_DIR/$id.session-uuid"
+  [[ -f "$uuid_file" ]] || die "no session-uuid file for $id (first session may have failed)"
+
+  local uuid repo worktree
+  uuid="$(cat "$uuid_file")"
+  repo="$(jq -r .repo "$state")"
+  worktree="$(jq -r .worktree "$state")"
+
+  local prompt_env=()
+  if [[ -n "$prompt" ]]; then
+    printf '%s' "$prompt" > "$LOGS_DIR/$id.prompt"
+    prompt_env=(-e "CS_PROMPT_FILE=/logs/$id.prompt")
+  fi
+
+  docker_exists
+  local SSH_ARGS GIT_IDENTITY_ARGS
+  build_ssh_args
+  build_git_identity
+  local cname="$id-r$(date +%s)"
+
+  local common_args=(
+    --name "$cname"
+    --rm
+    --label claude-sandbox=1
+    --label "cs-session=$id"
+    --label "cs-repo=$(basename "$repo")"
+    --cap-add=NET_RAW
+    -v "$repo:$repo"
+    -v "$worktree:/workspace/$id"
+    -v claude-sandbox-home:/home/claude
+    -v "$LOGS_DIR:/logs"
+    -w "/workspace/$id"
+    -e "CS_SESSION_ID=$id"
+    -e "CS_RESUME_UUID=$uuid"
+    -e "MISE_TRUSTED_CONFIG_PATHS=/workspace"
+  )
+
+  if [[ "$bg" == 1 ]]; then
+    docker run -d \
+      "${common_args[@]}" \
+      -e "CS_MODE=bg" \
+      "${prompt_env[@]}" \
+      "${GIT_IDENTITY_ARGS[@]}" \
+      "${SSH_ARGS[@]}" \
+      "$CS_IMAGE" >/dev/null
+    echo "Resumed $id in background (container: $cname). Follow: claude-sandbox logs $id"
+    return 0
+  fi
+
+  docker run -it \
+    "${common_args[@]}" \
+    "${prompt_env[@]}" \
+    "${GIT_IDENTITY_ARGS[@]}" \
+    "${SSH_ARGS[@]}" \
+    "$CS_IMAGE"
+  local rc=$?
+  print_exit_hint "$id" "$worktree"
+  return $rc
+}
+
+cmd_stop() {
+  local id="${1:-}"
+  if [[ -z "$id" ]]; then
+    id="$(pick_session_id)" || die 'cancelled'
+  fi
+  local containers
+  containers="$(docker ps -q --filter "label=cs-session=$id")"
+  [[ -n "$containers" ]] || die "no running containers for session $id"
+  echo "$containers" | xargs docker kill
+}
+
+cmd_login() {
+  docker_exists
+  local GIT_IDENTITY_ARGS; build_git_identity
+  # Interactive, one-shot container that overrides the default entrypoint so you
+  # can run `claude /login` (or any other interactive claude subcommand) once.
+  # Auth is persisted in the `claude-sandbox-home` volume.
+  exec docker run -it --rm \
+    -v claude-sandbox-home:/home/claude \
+    "${GIT_IDENTITY_ARGS[@]}" \
+    --entrypoint claude \
+    "$CS_IMAGE" \
+    "$@"
+}
+
+cmd_prune() {
+  # Remove project dirs inside the claude-sandbox-home volume that don't
+  # correspond to any active state file. Useful for cleaning up after
+  # sessions that were killed without `cleanup` (pre-volume-cleanup days,
+  # crashed sessions, manual docker removals, etc.).
+  local yes=0
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -y|--yes) yes=1; shift ;;
+      -h|--help) echo 'usage: claude-sandbox prune [-y]'; return 0 ;;
+      -*) die "unknown flag: $1" ;;
+      *)  die "unknown arg: $1" ;;
+    esac
+  done
+
+  docker_exists
+
+  # Build the list of "active" project dir names: Claude encodes a worktree
+  # path like /private/tmp/foo/.worktrees/bar as -private-tmp-foo--worktrees-bar
+  # (every `/` becomes `-`).
+  local active_file
+  active_file="$(mktemp)"
+  trap 'rm -f "$active_file"' RETURN
+  local f
+  for f in "$STATE_DIR"/*.json; do
+    [[ -e "$f" ]] || continue
+    jq -r .worktree "$f" | tr '/' '-' >> "$active_file"
+  done
+
+  local list_script='
+    root=/home/claude/.claude/projects
+    [ -d "$root" ] || exit 0
+    ls -1 "$root" | grep -Fxv -f /active.list || true
+  '
+  local orphans
+  orphans="$(docker run --rm \
+    -v claude-sandbox-home:/home/claude \
+    -v "$active_file":/active.list:ro \
+    --entrypoint sh \
+    "$CS_IMAGE" \
+    -c "$list_script")"
+
+  if [[ -z "$orphans" ]]; then
+    echo "no orphan project dirs in claude-sandbox-home volume."
+    return 0
+  fi
+
+  local count
+  count="$(echo "$orphans" | wc -l | tr -d ' ')"
+  echo "Found $count orphan project dir(s) in claude-sandbox-home:"
+  echo "$orphans" | sed 's/^/  /'
+  echo
+
+  if [[ "$yes" != 1 ]]; then
+    printf 'remove them? [y/N] '
+    local ans; read -r ans
+    [[ "$ans" =~ ^[Yy]$ ]] || { echo "aborted."; return 1; }
+  fi
+
+  local rm_script='
+    root=/home/claude/.claude/projects
+    ls -1 "$root" | grep -Fxv -f /active.list | while IFS= read -r name; do
+      [ -n "$name" ] && rm -rf -- "$root/$name"
+    done
+  '
+  docker run --rm \
+    -v claude-sandbox-home:/home/claude \
+    -v "$active_file":/active.list:ro \
+    --entrypoint sh \
+    "$CS_IMAGE" \
+    -c "$rm_script"
+
+  echo "Removed $count orphan dir(s)."
+  echo
+  echo "Tip: Docker Desktop's Build history is separate. To reclaim build"
+  echo "cache (affects ALL your docker builds, not just claude-sandbox):"
+  echo "  docker buildx prune -af"
+}
+
+cmd_review() {
+  local target=""
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -n|--name) target="$2"; shift 2 ;;
+      -h|--help) echo 'usage: claude-sandbox review [-n NAME]'; return 0 ;;
+      -*) die "unknown flag: $1" ;;
+      *)  target="$1"; shift ;;
+    esac
+  done
+
+  require_git_repo
+  # `review` always operates on the *main* worktree (where your dev server,
+  # editor layout, and usual workflow live) — not whatever worktree you
+  # happen to be standing in.
+  local main_wt
+  main_wt="$(git worktree list --porcelain | awk '$1=="worktree" {print $2; exit}')"
+  [[ -n "$main_wt" ]] || die "could not determine main worktree"
+
+  # Resolve the target to a real branch ref.
+  local branch=""
+  if [[ -n "$target" ]]; then
+    local candidates=(
+      "$target"
+      "claude-sandbox/$target"
+      "claude-sandbox/cs-$target"
+      "claude-sandbox/${target#cs-}"
+      "claude-sandbox/cs-${target#cs-}"
+    )
+    for c in "${candidates[@]}"; do
+      if git -C "$main_wt" show-ref --verify --quiet "refs/heads/$c"; then
+        branch="$c"; break
+      fi
+    done
+    [[ -n "$branch" ]] || die "no matching branch for '$target' (tried: ${candidates[*]})"
+  else
+    local branches
+    branches="$(git -C "$main_wt" for-each-ref --format='%(refname:short)' 'refs/heads/claude-sandbox/*' \
+                | sort -r)"
+    [[ -n "$branches" ]] || die "no claude-sandbox branches in this repo"
+    if command -v fzf >/dev/null 2>&1; then
+      branch="$(echo "$branches" \
+        | fzf --prompt='review> ' --height=40% --reverse \
+              --preview "git -C '$main_wt' log --oneline --decorate -20 {}" \
+              --preview-window=right:60%:wrap)"
+      [[ -n "$branch" ]] || die "no branch selected"
+    else
+      echo "claude-sandbox branches in this repo:"
+      echo "$branches" | sed 's|^claude-sandbox/|  |'
+      die "pick one with: claude-sandbox review -n <name>"
+    fi
+  fi
+
+  local current
+  current="$(git -C "$main_wt" symbolic-ref --short HEAD 2>/dev/null || git -C "$main_wt" rev-parse --short HEAD)"
+
+  if [[ "$current" == "$branch" ]]; then
+    echo "already on $branch (in $main_wt). nothing to do."
+    return 0
+  fi
+
+  # Auto-stash any dirty state in the main worktree (tracked + untracked).
+  local stashed=0 stash_msg
+  stash_msg="claude-sandbox review: auto-stash from $current before switching to $branch"
+  if ! git -C "$main_wt" diff --quiet \
+     || ! git -C "$main_wt" diff --cached --quiet \
+     || [[ -n "$(git -C "$main_wt" ls-files --others --exclude-standard)" ]]; then
+    git -C "$main_wt" stash push --include-untracked -m "$stash_msg" >&2 \
+      || die "git stash failed; aborting (working tree unchanged)"
+    stashed=1
+  fi
+
+  if ! git -C "$main_wt" switch "$branch" 2>/dev/null; then
+    # Branch is likely checked out in .worktrees/<id>/. Restore and bail.
+    [[ "$stashed" == 1 ]] && git -C "$main_wt" stash pop >&2 2>/dev/null || true
+    die "failed to switch to $branch (probably still checked out in a worktree). run: claude-sandbox cleanup ${branch#claude-sandbox/}"
+  fi
+
+  cat >&2 <<EOF
+
+Main worktree now on: $branch
+  cwd: $main_wt
+  was: $current${stashed:+ (auto-stashed: "$stash_msg")}
+
+When you're done reviewing:
+  git -C $main_wt switch -              # back to $current
+EOF
+  if [[ "$stashed" == 1 ]]; then
+    echo "  git -C $main_wt stash pop             # restore your uncommitted changes" >&2
+  fi
+}
+
+cmd_cleanup() {
+  local id="${1:-}"
+  if [[ -z "$id" ]]; then
+    id="$(pick_session_id)" || die 'cancelled'
+  fi
+  local state="$STATE_DIR/$id.json"
+  [[ -f "$state" ]] || die "no such session: $id"
+
+  # 1. Kill any running container for this session. Ignore errors — the
+  #    container may have exited between our `docker ps` and `docker kill`.
+  local running
+  running="$(docker ps -q --filter "label=cs-session=$id")"
+  if [[ -n "$running" ]]; then
+    echo "$running" | xargs docker kill >/dev/null 2>&1 || true
+  fi
+
+  # 2. Remove any stopped containers labelled for this session (defensive: normally
+  #    --rm handles this, but if someone launched without --rm, clean it up).
+  local stopped
+  stopped="$(docker ps -aq --filter "label=cs-session=$id" 2>/dev/null || true)"
+  if [[ -n "$stopped" ]]; then
+    echo "$stopped" | xargs docker rm -f >/dev/null 2>&1 || true
+  fi
+
+  local repo worktree branch
+  repo="$(jq -r .repo "$state")"
+  worktree="$(jq -r .worktree "$state")"
+  branch="$(jq -r .branch "$state")"
+
+  # 3. Remove the worktree (git's record + the directory on disk).
+  if [[ -d "$worktree" ]]; then
+    git -C "$repo" worktree remove --force "$worktree" 2>/dev/null \
+      || { rm -rf "$worktree"; git -C "$repo" worktree prune 2>/dev/null || true; }
+  else
+    git -C "$repo" worktree prune 2>/dev/null || true
+  fi
+
+  # 4. Delete this session's Claude state from the shared volume:
+  #    - /home/claude/.claude/projects/<encoded-cwd>/<uuid>.jsonl (main conversation)
+  #    - /home/claude/.claude/projects/<encoded-cwd>/<uuid>/ (subagent logs, if any)
+  #    - the parent <encoded-cwd>/ dir if it becomes empty afterwards
+  local uuid_file="$LOGS_DIR/$id.session-uuid"
+  if [[ -f "$uuid_file" ]] && docker image inspect "$CS_IMAGE" >/dev/null 2>&1; then
+    local uuid; uuid="$(cat "$uuid_file")"
+    docker run --rm \
+      -v claude-sandbox-home:/home/claude \
+      --entrypoint sh \
+      "$CS_IMAGE" \
+      -c "
+        set -e
+        root=/home/claude/.claude/projects
+        [ -d \"\$root\" ] || exit 0
+        find \"\$root\" -mindepth 2 -maxdepth 2 -type f -name '${uuid}.jsonl' -delete 2>/dev/null || true
+        find \"\$root\" -mindepth 2 -maxdepth 2 -type d -name '${uuid}' -exec rm -rf {} + 2>/dev/null || true
+        find \"\$root\" -mindepth 1 -maxdepth 1 -type d -empty -delete 2>/dev/null || true
+      " \
+      >/dev/null 2>&1 || true
+  fi
+
+  # 5. Remove the per-session state file. Log files (~/.local/state/claude-sandbox/logs/<id>.*)
+  #    are intentionally kept so you can look back at what happened.
+  rm -f "$state"
+
+  echo "Cleaned up $id:"
+  echo "  - container removed (if any)"
+  echo "  - worktree '$worktree' removed"
+  echo "  - conversation file removed from claude-sandbox-home volume"
+  echo "  - state/$id.json removed"
+  echo "  - KEPT: branch '$branch' (for your review / merge)"
+  echo "  - KEPT: logs at $LOGS_DIR/$id.*"
+}
+
+# ---- dispatch ---------------------------------------------------------------
+
+usage() {
+  cat <<'EOF'
+claude-sandbox <command> [args]
+
+Commands:
+  run -n NAME [--bg] [-f FILE] ["<prompt>"]     start a session. NAME is required and becomes
+                                                the session id (cs-<name>), branch suffix, and
+                                                container name. TTY by default; --bg detaches.
+  list                                          list running + finished sessions
+  logs <id> [--net|--raw]                       --bg: live-tails the stream log. Interactive:
+                                                prints the conversation history from the volume.
+                                                --net tails the DNS egress log either way.
+  resume [--bg] [<id>] [-f FILE] ["<prompt>"]   reopen an existing session (TTY by default,
+                                                history preserved). omit <id> for an fzf picker.
+  review [-n NAME]                              check out a sandbox branch in your MAIN worktree
+                                                (auto-stashes dirty state). fzf picker if no arg.
+  stop [<id>]                                   kill the running container. omit <id> for picker.
+  cleanup [<id>]                                remove container + worktree + volume session
+                                                file + state. Keeps branch and logs. Picker if omitted.
+  prune [-y]                                    remove orphan project dirs in the shared volume
+                                                (ones with no matching active state file)
+  login [args...]                               one-shot interactive claude (e.g. first-time /login)
+
+Env overrides:
+  CLAUDE_SANDBOX_SSH=1                mount the SSH agent socket into the container (opt-in)
+  CS_IMAGE=<tag>                      docker image tag (default: claude-sandbox:latest)
+  CS_HOME=<path>                      config/scripts dir (default: ~/.claude-sandbox)
+  CS_STATE_HOME=<path>                runtime logs + per-session state (default: $XDG_STATE_HOME/claude-sandbox)
+  CS_CLAUDE_NAME=<string>             git author name for Claude's commits (default: "Claude Code")
+  CS_CLAUDE_EMAIL=<string>            git author email (default: noreply@anthropic.com)
+  CS_PORT_FILES=<a:b:c>               colon-separated list of extra repo-relative paths to
+                                      port from main worktree (defaults include mise.toml,
+                                      .tool-versions, .nvmrc, .ruby-version, .python-version,
+                                      .node-version). NOT for secrets — .env etc. stay out.
+  CS_PORT_DIRS=<a:b:c>                colon-separated extra directories to clone from main
+                                      (APFS clonefile when possible, plain copy otherwise).
+                                      Defaults already include node_modules and vendor/bundle;
+                                      use CS_PORT_DIRS to extend with e.g. .venv.
+EOF
+}
+
+cmd="${1:-}"
+shift || true
+case "$cmd" in
+  run)     cmd_run "$@" ;;
+  list)    cmd_list "$@" ;;
+  logs)    cmd_logs "$@" ;;
+  resume)  cmd_resume "$@" ;;
+  review)  cmd_review "$@" ;;
+  stop)    cmd_stop "$@" ;;
+  login)   cmd_login "$@" ;;
+  cleanup) cmd_cleanup "$@" ;;
+  prune)   cmd_prune "$@" ;;
+  ""|-h|--help) usage ;;
+  *) usage; exit 2 ;;
+esac

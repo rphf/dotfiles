@@ -80,13 +80,16 @@
   "selection_highlight": false,
   "languages": {
     "TypeScript": {
-      "language_servers": ["vtsls", "!typescript-language-server", "!tsgo"],
+      "language_servers": ["vtsls", "!typescript-language-server", "!tsgo", "..."],
     },
     "TSX": {
-      "language_servers": ["vtsls", "!typescript-language-server", "!tsgo"],
+      "language_servers": ["vtsls", "!typescript-language-server", "!tsgo", "..."],
     },
     "JavaScript": {
-      "language_servers": ["vtsls", "!typescript-language-server", "!tsgo"],
+      "language_servers": ["vtsls", "!typescript-language-server", "!tsgo", "..."],
+    },
+    "JSX": {
+      "language_servers": ["vtsls", "!typescript-language-server", "!tsgo", "..."],
     },
   },
   "autosave": "on_focus_change",

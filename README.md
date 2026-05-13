@@ -17,6 +17,7 @@ Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 | `lazygit`   | `~/.config/lazygit/`   | `lazygit` config                                                                                                               |
 | `mise`      | `~/.config/mise/`      | `mise` toolchain manager                                                                                                       |
 | `neovide`   | `~/.config/neovide/`   | Neovide GUI config                                                                                                             |
+| `node`      | `~/`                   | Global npm (`.npmrc`) and Yarn Berry (`.yarnrc.yml`) config                                                                    |
 | `nvim`      | `~/.config/nvim/`      | Neovim config                                                                                                                  |
 | `obsidian`  | *(manual)*             | Obsidian vault snippets (not stowed)                                                                                           |
 | `skhd`      | `~/.config/skhd/`      | `skhd` hotkey daemon                                                                                                           |
@@ -72,7 +73,7 @@ are managed with one-off manual symlinks where needed.
 
 ```sh
 cd ~/dotfiles
-stow agents bat claude cmux git karabiner lazygit mise neovide nvim skhd wezterm zed zsh
+stow agents bat claude cmux git karabiner lazygit mise neovide node nvim skhd wezterm zed zsh
 # Install Homebrew packages
 brew bundle --file=Brewfile
 # Wire up the repo-local commit template

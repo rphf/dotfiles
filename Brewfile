@@ -52,6 +52,10 @@ brew "gnupg"
 brew "hugo"
 # Command-line benchmarking tool
 brew "hyperfine"
+# Image format providing lossless and lossy compression for web images
+brew "webp"
+# Tools and libraries to manipulate images in select formats
+brew "imagemagick"
 # GNU utilities for networking
 brew "inetutils"
 # Lazier way to manage everything docker
@@ -100,8 +104,6 @@ brew "tree"
 brew "typioca"
 # Maintained ctags implementation
 brew "universal-ctags"
-# Image format providing lossless and lossy compression for web images
-brew "webp"
 # Feature-rich command-line audio/video downloader
 brew "yt-dlp"
 # Shell extension to navigate your filesystem faster
@@ -123,7 +125,7 @@ cask "betaflight-configurator"
 # Anthropic's official Claude AI desktop app
 cask "claude"
 # Terminal-based AI coding assistant
-cask "claude-code@latest"
+cask "claude-code"
 # Ghostty-based terminal with vertical tabs and notifications for AI coding agents
 cask "cmux"
 # Write, edit, and chat about your code with AI

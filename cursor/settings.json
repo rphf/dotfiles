@@ -3,7 +3,7 @@
   "editor.semanticHighlighting.enabled": true,
   "editor.rulers": [80],
   "editor.insertSpaces": true,
-  "editor.renderWhitespace": "all",
+  "editor.renderWhitespace": "trailling",
   "editor.cursorSmoothCaretAnimation": "off",
   "editor.accessibilitySupport": "off",
   "editor.fontLigatures": false,
@@ -98,6 +98,12 @@
       "source.organizeImports": "explicit",
       "source.fixAll": "always"
     }
+  },
+  "[go]": {
+    "editor.defaultFormatter": "golang.go",
+    "editor.formatOnSave": true,
+    "editor.insertSpaces": false,
+    "editor.tabSize": 2
   },
   "cSpell.dictionaryDefinitions": [
     {

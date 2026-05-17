@@ -77,6 +77,7 @@ getifaddr
 GLTF
 Gmcc
 GOFLAGS
+gofmt
 gorhom
 Gridlines
 Groupon

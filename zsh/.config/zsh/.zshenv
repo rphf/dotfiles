@@ -21,12 +21,15 @@ export GREP_OPTIONS='--color=always'
 # I prefer relying on zoxide for changing directories
 export ZSH_AUTOSUGGEST_HISTORY_IGNORE="cd *"
 
-export PATH="$PATH:/opt/homebrew/bin"
+# Initialize Homebrew early so its tools are available in all shells
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
 export PATH="$PATH:$HOME/.local/bin"
 
-# Prepend mise shims so non-interactive shells (e.g. spawned by VS Code / IDE
-# extensions) resolve ruby/node/etc. through mise. `mise activate` only runs in
-# interactive shells via .zshrc; shims cover everything else.
+# Prepend mise shims AFTER Homebrew so mise-managed tools (node, go, etc.)
+# take priority over Homebrew-installed versions in non-interactive shells.
+# `mise activate` only runs in interactive shells via .zshrc; shims cover
+# everything else (IDE extensions, mise run, scripts).
 # See: https://mise.jdx.dev/dev-tools/shims.html
 export PATH="$HOME/.local/share/mise/shims:$PATH"
 

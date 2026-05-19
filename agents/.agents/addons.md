@@ -5,9 +5,10 @@ MCP servers and plugins I install across tools.
 ## MCP servers
 
 
-| Name     | Transport | URL                                                          |
+| Name     | Transport | URL / Command                                                |
 | -------- | --------- | ------------------------------------------------------------ |
 | context7 | http      | [https://mcp.context7.com/mcp](https://mcp.context7.com/mcp) |
+| semble   | stdio     | `uvx --from "semble[mcp]" semble`                           |
 
 
 ## Plugins

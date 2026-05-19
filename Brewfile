@@ -104,6 +104,8 @@ brew "tree"
 brew "typioca"
 # Maintained ctags implementation
 brew "universal-ctags"
+# Extremely fast Python package installer and resolver, written in Rust
+brew "uv"
 # Feature-rich command-line audio/video downloader
 brew "yt-dlp"
 # Shell extension to navigate your filesystem faster
@@ -114,8 +116,6 @@ brew "f/mcptools/mcp"
 brew "koekeishiya/formulae/skhd"
 # The easiest way to automate UI testing for your mobile app
 brew "mobile-dev-inc/tap/maestro"
-# Supabase CLI
-brew "supabase/tap/supabase"
 # Tools for building Android applications
 cask "android-studio"
 # App for managing battery charging. (Also installs a CLI on first use.)
@@ -126,8 +126,6 @@ cask "betaflight-configurator"
 cask "claude"
 # Terminal-based AI coding assistant
 cask "claude-code"
-# Ghostty-based terminal with vertical tabs and notifications for AI coding agents
-cask "cmux"
 # Write, edit, and chat about your code with AI
 cask "cursor"
 # Music player
@@ -207,6 +205,7 @@ vscode "wasp-lang.wasp"
 vscode "yoavbls.pretty-ts-errors"
 go "cmd/go"
 go "cmd/gofmt"
-go "golang.org/x/tools/gopls"
-go "honnef.co/go/tools/cmd/staticcheck"
 cargo "gelatyx"
+uv "semble"
+npm "corepack"
+npm "eas-cli"

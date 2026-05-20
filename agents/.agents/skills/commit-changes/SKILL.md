@@ -11,8 +11,8 @@ Turn staged changes into a Conventional Commit in one gated step.
 
 - The user handles staging. Do not run `git add`.
 - Commit format: follow `commitlint` config if present, else `.gitmessage`
-if present, else Conventional Commits (`type: short summary`). One-line
-subject, no body.
+if present, else Conventional Commits (`type: short summary`). No scopes —
+never use `type(scope):`, always `type:`. One-line subject, no body.
 - Never run `git commit` without explicit user approval.
 
 ## Workflow

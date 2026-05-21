@@ -1,3 +1,12 @@
+## Source Your Claims
+
+When your answer or your work depends on how something works — a library method, a package version, a config option, an API surface — **go verify it and cite the source.** Don't assume based on training data; look it up so the human can verify your claim independently. You can skip verification for truly stable fundamentals (core language features, standard CLI flags), but default to checking.
+
+- **Verify behavior at the source.** If something doesn't behave as you expected, read its implementation directly (e.g. in `node_modules/`, the package source, or the relevant stdlib) rather than doubling down on assumptions. Report what you found and where (file path + line number, doc URL, etc.).
+- **Check current versions and docs.** Never state that version X.Y.Z is "the latest" or that a config option exists based on training data alone. Use Context7, web search, or the package registry to confirm, and include a link or reference.
+- **Cite decisions and findings.** When reporting a finding or recommending a course of action, include the path, URL, or command output that supports it. The human should be able to follow your references and reach the same conclusion independently.
+- **Default to primary sources.** The priority order is: read the actual code/config > query official docs (Context7, web search) > fall back to training knowledge. If you must fall back, say so explicitly.
+
 ## Approach
 
 - NEVER commit or push code without asking for permission from the user.

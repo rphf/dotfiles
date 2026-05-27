@@ -1,11 +1,14 @@
-## Source Your Claims
+## Source Your Claims — MANDATORY
 
-When your answer or your work depends on how something works — a library method, a package version, a config option, an API surface — **go verify it and cite the source.** Don't assume based on training data; look it up so the human can verify your claim independently. You can skip verification for truly stable fundamentals (core language features, standard CLI flags), but default to checking.
+NEVER answer questions about anything outside this repository from training data alone. If the answer depends on the state of the world — how a tool works, whether something is supported, what the current version is, whether a project is maintained — **search first, answer second.**
+
+If you catch yourself writing "likely", "probably", "almost certainly", or "should work fine" about anything outside this repository — STOP. That means you are guessing. Go verify with a web search, Context7, the package registry, or the actual source code before continuing.
 
 - **Verify behavior at the source.** If something doesn't behave as you expected, read its implementation directly (e.g. in `node_modules/`, the package source, or the relevant stdlib) rather than doubling down on assumptions. Report what you found and where (file path + line number, doc URL, etc.).
 - **Check current versions and docs.** Never state that version X.Y.Z is "the latest" or that a config option exists based on training data alone. Use Context7, web search, or the package registry to confirm, and include a link or reference.
 - **Cite decisions and findings.** When reporting a finding or recommending a course of action, include the path, URL, or command output that supports it. The human should be able to follow your references and reach the same conclusion independently.
-- **Default to primary sources.** The priority order is: read the actual code/config > query official docs (Context7, web search) > fall back to training knowledge. If you must fall back, say so explicitly.
+- **Default to primary sources.** The priority order is: read the actual code/config > query official docs (Context7, web search) > fall back to training knowledge. If you must fall back, prefix the claim with "UNVERIFIED:" so the human can see which claims haven't been checked.
+- **No silent fallback.** If a search fails or returns nothing useful, say so. Never silently fall back to training knowledge and present it as verified fact.
 
 ## Approach
 

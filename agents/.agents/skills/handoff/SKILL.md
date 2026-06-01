@@ -18,9 +18,15 @@ and PR.
 
 - Commit format: follow `commitlint` config if present, else Conventional
   Commits (`type: short summary`). One-line subject, no body.
+- PR title: **always exactly the commit subject** (same string, including the
+  `type:` prefix). Do not paraphrase or drop the prefix.
 - Branch format: `type/short-slug` derived from the commit subject.
 - PR body must strictly follow the PR template at `.github/pull_request_template.md`.
   Read the template, fill in every section, and remove the HTML comments.
+- Be concise but clear throughout, especially the Description and AI Input —
+  short paragraphs and tight bullets, no restating the diff line by line.
+- Links must be plain URLs, not markdown: `fix for: https://...`, not
+  `fix for: [label](https://...)`.
 - Do not run `git add`, `git commit`, or `git push`.
 
 ## Workflow
@@ -54,12 +60,14 @@ type: short summary
 
 # pr-title
 
-Short PR title
+type: short summary
 
 # pr-body
 
 <!-- PR body here: fill in the PR template from .github/pull_request_template.md -->
 ```
+
+`# pr-title` must be identical to the `# commit` subject.
 
 The `# pr-body` section must be the filled-in PR template — all sections
 present, HTML comment instructions removed, placeholder links replaced

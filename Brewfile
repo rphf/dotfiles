@@ -8,10 +8,7 @@ tap "koekeishiya/formulae"
 tap "lencx/chatgpt", "https://github.com/lencx/ChatGPT.git"
 tap "mobile-dev-inc/tap"
 tap "nikitabobko/tap"
-tap "supabase/tap"
 tap "withgraphite/tap"
-# Run your GitHub Actions locally
-brew "act"
 # Plugin manager for zsh, inspired by antigen and antibody
 brew "antidote"
 # Portable library for importing many well-known 3D model formats
@@ -78,10 +75,6 @@ brew "utf8proc", args: ["HEAD"]
 brew "neovim"
 # Command-line Git information tool
 brew "onefetch"
-# Search tool like grep and The Silver Searcher
-brew "ripgrep"
-# AI coding agent, built for the terminal
-brew "opencode"
 # Library for JPEG-2000 image manipulation
 brew "openjpeg"
 # Object-relational database system
@@ -92,6 +85,8 @@ brew "pyenv"
 brew "pyenv-virtualenv"
 # Persistent key-value database, with built-in net interface
 brew "redis", restart_service: :changed
+# Search tool like grep and The Silver Searcher
+brew "ripgrep"
 # Ruby autoformatter
 brew "rubyfmt"
 # Organize software neatly under a single directory tree (e.g. /usr/local)

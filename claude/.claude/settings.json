@@ -1,5 +1,5 @@
 {
-  "model": "claude-opus-4-6[1m]",
+  "model": "claude-opus-4-8[1m]",
   "enabledPlugins": {
     "context7@claude-plugins-official": true,
     "superpowers@claude-plugins-official": true
@@ -8,5 +8,5 @@
   "tui": "fullscreen",
   "editorMode": "vim",
   "skipAutoPermissionPrompt": true,
-  "effortLevel": "max"
+  "effortLevel": "xhigh"
 }

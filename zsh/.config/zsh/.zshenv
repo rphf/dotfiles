@@ -42,10 +42,4 @@ export PATH="$PATH:$ANDROID_HOME/platform-tools"
 # Ensure your PATH prefers pg18 tools, needs to match the version in the Brewfile
 export PATH="$PATH:/opt/homebrew/opt/postgresql@18/bin"
 
-# Will refuse to execute a commands if there is an alternative alias for it (zsh-you-should-use)
-# export YSU_HARDCORE=1
-
-# Detach from the terminal instead of waiting for the Neovide process to terminate
-export NEOVIDE_FORK=1
-
 source "$HOME/.cargo/env"

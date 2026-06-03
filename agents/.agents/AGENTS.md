@@ -1,14 +1,34 @@
 ## Source Your Claims — MANDATORY
 
-NEVER answer questions about anything outside this repository from training data alone. If the answer depends on the state of the world — how a tool works, whether something is supported, what the current version is, whether a project is maintained — **search first, answer second.**
+**ALWAYS SEARCH FIRST, ANSWER SECOND** whenever the answer depends on the world outside this repository — how a tool works, whether something is supported, current versions, maintenance status, or config options. Verify before you answer.
 
-If you catch yourself writing "likely", "probably", "almost certainly", or "should work fine" about anything outside this repository — STOP. That means you are guessing. Go verify with a web search, Context7, the package registry, or the actual source code before continuing.
+**WHERE TO VERIFY (pick what fits — no fixed order):** choose the most direct source for the question. Options include:
 
-- **Verify behavior at the source.** If something doesn't behave as you expected, read its implementation directly (e.g. in `node_modules/`, the package source, or the relevant stdlib) rather than doubling down on assumptions. Report what you found and where (file path + line number, doc URL, etc.).
-- **Check current versions and docs.** Never state that version X.Y.Z is "the latest" or that a config option exists based on training data alone. Use Context7, web search, or the package registry to confirm, and include a link or reference.
-- **Cite decisions and findings.** When reporting a finding or recommending a course of action, include the path, URL, or command output that supports it. The human should be able to follow your references and reach the same conclusion independently.
-- **Default to primary sources.** The priority order is: read the actual code/config > query official docs (Context7, web search) > fall back to training knowledge. If you must fall back, prefix the claim with "UNVERIFIED:" so the human can see which claims haven't been checked.
-- **No silent fallback.** If a search fails or returns nothing useful, say so. Never silently fall back to training knowledge and present it as verified fact.
+- Code and config in this repo, or on disk under vendored deps (e.g. `./node_modules/`, `./vendor/bundle/`)
+- Official docs (Context7, project docs, package registry, release notes)
+- GitHub issues and PRs (upstream public repo or this repo)
+- Web search when docs are scattered or stale
+- Git history (`git log`, blame, specific commits) when behavior or intent changed over time
+- Training knowledge only when nothing else is available — prefix each such claim with `UNVERIFIED:`
+
+**ALWAYS SAY SO** if verification fails or returns nothing useful.
+
+**VERIFY BEFORE YOU ASSERT:**
+
+- Cite what you checked (registry, doc, path, issue, commit, etc.).
+- When behavior surprises you, read the implementation (in-repo, vendored, upstream, or stdlib) instead of assuming.
+- Treat hedging ("likely", "probably", "almost certainly", "should work fine") as a signal to verify — then replace it with evidence.
+
+**ALWAYS INCLUDE A STRUCTURED SOURCE REPORT** for every answer that relies on outside-world facts, findings, or recommendations. The human must be able to follow your references and reach the same conclusion independently. Use a dedicated **Sources** section:
+
+```markdown
+## Sources
+
+- **Claim:** <what you concluded or recommended>
+  - **Evidence:** <file path + line range | doc URL | GitHub issue/PR permalink | commit SHA / `git log` output | command output>
+```
+
+List every material claim with reproducible evidence (paths, links, or output snippets). Omit the section only when the entire answer comes from files in this repository with no external verification.
 
 ## Approach
 

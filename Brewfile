@@ -1,10 +1,10 @@
+tap "asmvik/formulae"
 tap "beeftornado/rmtree"
 tap "f/mcptools"
 tap "facebook/fb"
 tap "felixkratz/formulae"
 tap "ggozad/formulas"
 tap "jesseduffield/lazygit"
-tap "koekeishiya/formulae"
 tap "lencx/chatgpt", "https://github.com/lencx/ChatGPT.git"
 tap "mobile-dev-inc/tap"
 tap "nikitabobko/tap"
@@ -105,12 +105,6 @@ brew "uv"
 brew "yt-dlp"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
-# Command-line interface for interacting with MCP (Model Context Protocol) servers
-brew "f/mcptools/mcp"
-# Simple hotkey-daemon for macOS.
-brew "koekeishiya/formulae/skhd"
-# The easiest way to automate UI testing for your mobile app
-brew "mobile-dev-inc/tap/maestro"
 # Tools for building Android applications
 cask "android-studio"
 # App for managing battery charging. (Also installs a CLI on first use.)

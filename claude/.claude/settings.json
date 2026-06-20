@@ -5,8 +5,9 @@
     "superpowers@claude-plugins-official": true
   },
   "syntaxHighlightingDisabled": false,
+  "effortLevel": "xhigh",
   "tui": "fullscreen",
   "editorMode": "vim",
   "skipAutoPermissionPrompt": true,
-  "effortLevel": "xhigh"
+  "env": { "ENABLE_CLAUDEAI_MCP_SERVERS": "false" }
 }

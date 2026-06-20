@@ -1,6 +1,6 @@
 rcmd - a: open -a WezTerm
 rcmd - s: open -a Slack
-rcmd - d: open -a Cursor
+rcmd - d: open -a Zed
 rcmd - f: open -a Zen
 rcmd - e: open -a Simulator
 rcmd - g: open -a "Google Chrome"

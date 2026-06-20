@@ -25,4 +25,11 @@
       // put key-bindings here if you want them to work only in normal mode
     },
   },
+  // In references/search multibuffers, gd opens the file at the excerpt under the cursor
+  {
+    "context": "Editor && vim_mode == normal && multibuffer && !VimWaiting && !menu",
+    "bindings": {
+      "g d": "editor::OpenExcerpts",
+    },
+  },
 ]

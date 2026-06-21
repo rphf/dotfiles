@@ -32,4 +32,13 @@
       "g d": "editor::OpenExcerpts",
     },
   },
+  // Circle between terminal tabs, mirroring the editor ctrl-h/ctrl-l bindings.
+  // Note: this overrides the shell's ctrl-l (clear) and ctrl-h (backspace); use cmd-k to clear.
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-h": "pane::ActivatePreviousItem",
+      "ctrl-l": "pane::ActivateNextItem",
+    },
+  },
 ]

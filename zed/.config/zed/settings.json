@@ -8,6 +8,7 @@
     "dock": "left",
   },
   "git_panel": {
+    "tree_view": true,
     "dock": "left",
   },
   "agent_servers": {
@@ -31,6 +32,7 @@
   "cursor_blink": false,
   "show_signature_help_after_edits": true,
   "diff_view_style": "unified", // show diffs inline (full width) instead of split side-by-side
+  "excerpt_context_lines": 5, // lines of context shown around each change in the unified diff (default 2)
   "indent_guides": {
     "coloring": "indent_aware",
   },

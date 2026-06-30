@@ -1,8 +1,8 @@
-tap "asmvik/formulae"
+tap "asmvik/formulae", "https://github.com/asmvik/homebrew-formulae.git"
 tap "beeftornado/rmtree"
 tap "f/mcptools"
 tap "facebook/fb"
-tap "felixkratz/formulae"
+tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae"
 tap "ggozad/formulas"
 tap "jesseduffield/lazygit"
 tap "lencx/chatgpt", "https://github.com/lencx/ChatGPT.git"
@@ -78,13 +78,13 @@ brew "onefetch"
 # Library for JPEG-2000 image manipulation
 brew "openjpeg"
 # Object-relational database system
-brew "postgresql@18", restart_service: :changed
+brew "postgresql@18"
 # Python version management
 brew "pyenv"
 # Pyenv plugin to manage virtualenv
 brew "pyenv-virtualenv"
 # Persistent key-value database, with built-in net interface
-brew "redis", restart_service: :changed
+brew "redis"
 # Search tool like grep and The Silver Searcher
 brew "ripgrep"
 # Ruby autoformatter
@@ -123,10 +123,14 @@ cask "deezer"
 cask "discord"
 # App to build and share containerised applications and microservices
 cask "docker-desktop"
+# Launch builds and start simulators from your menu bar
+cask "expo-orbit"
 cask "font-hack-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
 # Web browser
 cask "google-chrome"
+# AI-powered notepad for meetings
+cask "granola"
 # Terminal emulator as alternative to Apple's Terminal app
 cask "iterm2"
 # Keyboard customiser

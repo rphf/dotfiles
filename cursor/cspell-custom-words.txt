@@ -178,6 +178,7 @@ refetched
 refetches
 Refreshable
 renamer
+reshim
 RNKC
 rnpm
 Rollbar
@@ -230,6 +231,7 @@ vcpu
 venmo
 vicmd
 Viewability
+VIEWBOX
 virtualenv
 VITE
 welldone
@@ -238,6 +240,7 @@ wojtekmaj
 worklets
 worktree
 worktrees
+xhigh
 xintl
 xmark
 yarnrc

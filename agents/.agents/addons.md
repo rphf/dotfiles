@@ -18,7 +18,6 @@ Plugins bundle MCPs + skills + slash commands + subagents.
 | Name        | Provides                                                   | Cursor                        | Claude Code                                                 |
 | ----------- | ---------------------------------------------------------- | ----------------------------- | ----------------------------------------------------------- |
 | context7    | MCP, `/context7:docs`, `docs-researcher` subagent, skill   | `/add-plugin context7-plugin` | `claude plugin install context7@claude-plugins-official`    |
-| superpowers | ~13 skills (TDD, planning, debugging), subagents, commands | `/add-plugin superpowers`     | `claude plugin install superpowers@claude-plugins-official` |
 
 
 ## Quick reference

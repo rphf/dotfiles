@@ -21,13 +21,19 @@ export GREP_OPTIONS='--color=always'
 # I prefer relying on zoxide for changing directories
 export ZSH_AUTOSUGGEST_HISTORY_IGNORE="cd *"
 
-# Initialize Homebrew early so its tools are available in all shells
+# --- PATH precedence: mise > Homebrew > system --------------------------------
+# This order must hold in every shell. Here (.zshenv) it covers non-login
+# shells (IDE extensions, `zsh -c`, scripts) where path_helper never runs.
+# Login shells re-assert the same order in .zprofile, because macOS's
+# /etc/zprofile runs path_helper AFTER .zshenv and shoves the system paths
+# back to the front.
+
+# Homebrew ahead of the system paths (git, curl, ... resolve to the brew copy).
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 export PATH="$PATH:$HOME/.local/bin"
 
-# Prepend mise shims AFTER Homebrew so mise-managed tools (node, go, etc.)
-# take priority over Homebrew-installed versions in non-interactive shells.
+# mise shims ahead of Homebrew so mise-managed tools (node, go, etc.) win.
 # `mise activate` only runs in interactive shells via .zshrc; shims cover
 # everything else (IDE extensions, mise run, scripts).
 # See: https://mise.jdx.dev/dev-tools/shims.html

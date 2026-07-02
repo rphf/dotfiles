@@ -49,3 +49,6 @@
 [spice "experiment"]
 	merge = true
 	commitFixup = true
+[spice "submit"]
+	navigationComment = multiple
+	assignees = rphf

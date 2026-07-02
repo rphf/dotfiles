@@ -4,7 +4,16 @@
   },
   "model": "fable[1m]",
   "enabledPlugins": {
-    "context7@claude-plugins-official": true
+    "context7@claude-plugins-official": true,
+    "compound-engineering@compound-engineering-plugin": true
+  },
+  "extraKnownMarketplaces": {
+    "compound-engineering-plugin": {
+      "source": {
+        "source": "git",
+        "url": "https://github.com/EveryInc/every-marketplace.git"
+      }
+    }
   },
   "syntaxHighlightingDisabled": false,
   "effortLevel": "xhigh",

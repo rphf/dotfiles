@@ -6,9 +6,6 @@ export HOMEBREW_NO_ANALYTICS=1
 
 export HISTFILE="$HOME/.zsh_history"
 
-# Set Golang flags
-export GOFLAGS="-mod=vendor"
-
 # Set the pager for viewing man pages, using 'bat' for syntax highlighting
 export MANPAGER="sh -c 'col -bx | bat --paging=always -l man -p'"
 

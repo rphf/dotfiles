@@ -25,3 +25,10 @@ fi
 if command -v git-spice &> /dev/null; then
   alias gs="git-spice"
 fi
+
+if command -v claude &> /dev/null; then
+  alias haiku="claude --model haiku"
+  alias sonnet="claude --model sonnet"
+  alias opus="claude --model 'claude-opus-4-8[1m]'"
+  alias fable="claude --model 'fable[1m]'"
+fi

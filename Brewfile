@@ -147,6 +147,8 @@ cask "mullvad-vpn"
 cask "netnewswire"
 # Knowledge base that works on top of a local folder of plain text Markdown files
 cask "obsidian"
+# Native companion app for AI coding agents
+cask "open-island"
 # Control your tools with a few keystrokes
 cask "raycast"
 # Desktop app for inspecting React JS and React Native projects

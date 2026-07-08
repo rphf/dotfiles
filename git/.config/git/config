@@ -52,3 +52,5 @@
 [spice "submit"]
 	navigationComment = multiple
 	assignees = rphf
+[spice "merge"]
+	method = squash

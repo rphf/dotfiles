@@ -5,7 +5,7 @@ description: Write a HANDOFF.md file summarizing changes for the host user to co
 
 # Handoff
 
-Write a single `HANDOFF.md` at the worktree root so the host user can
+Write a `HANDOFF.md` file at the worktree root so the host user can
 commit and open a PR from your uncommitted changes.
 
 ## When to use
@@ -18,6 +18,9 @@ and PR.
 
 - Commit format: follow `commitlint` config if present, else Conventional
   Commits (`type: short summary`). One-line subject, no body.
+- Never use scopes in the commit type: `feat: customer portal business name
+  editing`, NOT `feat(customer-portal): business name editing`. Fold the
+  scope into the summary words instead.
 - PR title: **always exactly the commit subject** (same string, including the
   `type:` prefix). Do not paraphrase or drop the prefix.
 - Branch format: `type/short-slug` derived from the commit subject.
@@ -27,7 +30,8 @@ and PR.
   short paragraphs and tight bullets, no restating the diff line by line.
 - Links must be plain URLs, not markdown: `fix for: https://...`, not
   `fix for: [label](https://...)`.
-- Do not run `git add`, `git commit`, or `git push`.
+- Do not run `git add`, `git commit`, `git push`, or any `gs`/`git spice`
+  command. Commands are printed for the user to copy, never executed.
 
 ## Workflow
 
@@ -45,9 +49,22 @@ git diff
 cat .github/pull_request_template.md
 ```
 
-### 3. Write `HANDOFF.md`
+### 3. Pick the file name
 
-Write a single file at the worktree root with this exact structure:
+Check the worktree root for existing handoff files (`ls HANDOFF*.md`).
+
+- No existing handoff file: write `HANDOFF.md`.
+- A handoff file already exists for a PR that has NOT been submitted yet
+  (its branch/PR isn't pushed — check `git log`/`gs ls` if unsure): use
+  named files so they can coexist. Name each file after the PR it is for:
+  `HANDOFF-<pr-slug>.md`, where `<pr-slug>` is the branch's short-slug
+  (branch name minus the `type/` prefix). If the existing file is a bare
+  `HANDOFF.md`, rename it to its own `HANDOFF-<pr-slug>.md` first (derive
+  the slug from its `# branch` section).
+
+### 4. Write the handoff file
+
+Write the file with this exact structure:
 
 ```markdown
 # branch
@@ -73,9 +90,11 @@ The `# pr-body` section must be the filled-in PR template — all sections
 present, HTML comment instructions removed, placeholder links replaced
 with real context or removed.
 
-### 4. Confirm
+### 5. Confirm with ready-to-run commands
 
-Print a summary:
+Print a summary ending with the git-spice commands, filled in with the
+actual branch name and commit subject so the user can copy and run them
+as-is. Do NOT run these commands yourself.
 
 ```
 Handoff ready.
@@ -83,6 +102,19 @@ Handoff ready.
   Commit:  <commit>
   PR:      <pr-title>
 
-Written to HANDOFF.md
-The host user can now commit and open a PR.
+Written to <handoff-file>
+
+To commit and submit:
+
+  git add -A
+  gs branch create <branch> -m "<commit>"
+  gs branch submit
 ```
+
+Notes for the command block:
+
+- `git add -A` is required — `gs branch create` only commits staged
+  changes (`-a` would miss untracked files).
+- `gs branch create` uses the current branch as base, which is correct
+  for stacked PRs; no `--target` needed in the normal flow.
+- Quote the commit message exactly; escape any double quotes inside it.

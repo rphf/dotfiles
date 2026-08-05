@@ -1,3 +1,4 @@
+Agentic
 Anytown
 APPNAME
 appt
@@ -11,6 +12,7 @@ authorizenet
 Authorizisation
 autocmd
 automatable
+automations
 Automigrate
 Avenir
 Barbee
@@ -108,6 +110,7 @@ latlng
 lazydev
 LBUFFER
 lerp
+lexicalbits
 libavcodec
 libavformat
 libavutil
@@ -131,6 +134,7 @@ mawk
 metalness
 migratecmd
 minmax
+Morzaram
 Muli
 mvcp
 NEOVIDE
@@ -142,6 +146,7 @@ notif
 notifs
 nums
 NVIM
+onvbqalc
 Opensearch
 organisation
 osascript
@@ -166,6 +171,7 @@ Pressable
 Procfile
 pyenv
 pygmentsstyle
+queenoftherobots
 quickbooks
 railtie
 RAPH
@@ -192,6 +198,7 @@ SAVEHIST
 Scheel
 setfile
 shellenv
+Sidekiq
 signicantly
 Signout
 skhd
@@ -245,4 +252,5 @@ xintl
 xmark
 yarnrc
 yasm
+zenbot
 zenmaid

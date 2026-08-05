@@ -36,6 +36,11 @@ export PATH="$PATH:$HOME/.local/bin"
 # See: https://mise.jdx.dev/dev-tools/shims.html
 export PATH="$HOME/.local/share/mise/shims:$PATH"
 
+# Java — Homebrew's OpenJDK is keg-only, so it's not on PATH or discoverable
+# via /usr/libexec/java_home without this. Needed by Maestro (e2e UI tests).
+export JAVA_HOME="/opt/homebrew/opt/openjdk"
+export PATH="$PATH:$JAVA_HOME/bin"
+
 # Android SDK
 export ANDROID_HOME=~/Library/Android/sdk
 export ANDROID_SDK_ROOT=$ANDROID_HOME

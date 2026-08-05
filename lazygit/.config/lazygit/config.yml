@@ -42,6 +42,6 @@ gui:
     searchingActiveBorderColor:
       - "#e5c890"
 git:
-  pagers:
+  diffRenderers:
     - colorArg: always
-      pager: delta --paging=never
+      command: delta --paging=never

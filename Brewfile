@@ -23,6 +23,8 @@ brew "bottom"
 brew "cocoapods"
 # TIFF library and utilities
 brew "libtiff"
+# Image format providing lossless and lossy compression for web images
+brew "webp"
 # View disk space usage and delete unwanted data, fast
 brew "dua-cli"
 # Simple, fast and user-friendly alternative to find
@@ -49,8 +51,6 @@ brew "gnupg"
 brew "hugo"
 # Command-line benchmarking tool
 brew "hyperfine"
-# Image format providing lossless and lossy compression for web images
-brew "webp"
 # Tools and libraries to manipulate images in select formats
 brew "imagemagick"
 # GNU utilities for networking
@@ -75,6 +75,8 @@ brew "utf8proc", args: ["HEAD"]
 brew "neovim"
 # Command-line Git information tool
 brew "onefetch"
+# Development kit for the Java programming language
+brew "openjdk"
 # Library for JPEG-2000 image manipulation
 brew "openjpeg"
 # Object-relational database system

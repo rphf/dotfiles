@@ -12,6 +12,7 @@ Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 | `claude`    | `~/.claude/`           | Claude Code bridge (symlinks into `agents/`)                                                                                   |
 | `cmux`      | `~/.config/cmux/`      | `cmux` config                                                                                                                  |
 | `cursor`    | *(two targets)*        | Cursor settings/keybindings → `~/Library/Application Support/Cursor/User/`; `mcp.json` → `~/.cursor/` (see `cursor/README.md`) |
+| `gh`        | *(manual)*             | GitHub CLI extensions manifest (`extensions.txt`, see `gh/README.md`)                                                          |
 | `git`       | `~/.config/git/`       | Git config                                                                                                                     |
 | `karabiner` | `~/.config/karabiner/` | Karabiner-Elements                                                                                                             |
 | `lazygit`   | `~/.config/lazygit/`   | `lazygit` config                                                                                                               |

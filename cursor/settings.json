@@ -124,5 +124,6 @@
   "claudeCode.preferredLocation": "panel",
   "redhat.telemetry.enabled": false,
   "window.autoDetectColorScheme": false,
-  "claudeCode.allowDangerouslySkipPermissions": true
+  "claudeCode.allowDangerouslySkipPermissions": true,
+  "cursor.composer.queueMessageDefaultBehavior": "steer"
 }

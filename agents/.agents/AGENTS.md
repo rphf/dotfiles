@@ -40,4 +40,5 @@ List every material claim with reproducible evidence (paths, links, or output sn
 - Test your code before declaring done. Check if there is a per project testing guideline.
 - No sycophantic openers or closing fluff.
 - Keep solutions simple and direct.
+- By default use the github CLI (`gh`) for read only operation unless told otherwise.
 - User instructions always override this file.

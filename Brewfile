@@ -63,8 +63,6 @@ brew "lazygit"
 brew "libpq"
 # Clone of ls with colorful output, file type icons, and more
 brew "lsd"
-# Polyglot runtime manager (asdf rust clone)
-brew "mise"
 # Deep clean and optimize your Mac
 brew "mole"
 # Incremental parsing library

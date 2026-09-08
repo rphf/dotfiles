@@ -75,7 +75,10 @@ are managed with one-off manual symlinks where needed.
 ```sh
 cd ~/dotfiles
 stow agents bat claude cmux git karabiner lazygit mise neovide node nvim skhd wezterm zed zsh
-# Install Homebrew packages
+# Install mise (official build, not the Homebrew formula) and its toolchains
+curl https://mise.run | sh
+mise install
+# Install Homebrew packages (after mise: the npm/go entries need node and go)
 brew bundle --file=Brewfile
 # Wire up the repo-local commit template
 git config --local commit.template .gitmessage

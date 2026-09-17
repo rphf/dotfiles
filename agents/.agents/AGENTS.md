@@ -42,3 +42,4 @@ List every material claim with reproducible evidence (paths, links, or output sn
 - Keep solutions simple and direct.
 - By default use the github CLI (`gh`) for read only operation unless told otherwise.
 - User instructions always override this file.
+- DO NOT WRITE COMMENTS. We write those by hand. If you think there's a spot that could use a comment, add `#TODO: Consider a comment here` and nothing else - that way I'm not biased as to if or what it should be.

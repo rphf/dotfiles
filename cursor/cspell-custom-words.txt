@@ -84,6 +84,7 @@ gorhom
 Gridlines
 Groupon
 haspopup
+hatton
 HEIWUY
 hitbox
 hookform
@@ -94,6 +95,7 @@ imagebutton
 initdb
 initialise
 initialised
+inversed
 Invoiceable
 isequal
 isset
@@ -131,6 +133,7 @@ Mamimo
 mappin
 mathjax
 mawk
+metabase
 metalness
 migratecmd
 minmax
@@ -201,6 +204,7 @@ shellenv
 Sidekiq
 signicantly
 Signout
+siteverify
 skhd
 skia
 smushed

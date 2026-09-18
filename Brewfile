@@ -114,7 +114,7 @@ cask "betaflight-configurator"
 # Anthropic's official Claude AI desktop app
 cask "claude"
 # Terminal-based AI coding assistant
-cask "claude-code"
+cask "claude-code@latest"
 # Write, edit, and chat about your code with AI
 cask "cursor"
 # Music player

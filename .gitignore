@@ -1,2 +1,5 @@
 config.local
 **/.env.shipyard
+
+# agentbox mounts bot tokens from here; never commit them
+agentbox/.config/agentbox/secrets/

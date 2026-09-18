@@ -1,0 +1,23 @@
+{
+  "env": {
+    "ENABLE_CLAUDEAI_MCP_SERVERS": "false"
+  },
+  "model": "opus[1m]",
+  "enabledPlugins": {
+    "context7@claude-plugins-official": true
+  },
+  "syntaxHighlightingDisabled": false,
+  "effortLevel": "xhigh",
+  "tui": "fullscreen",
+  "editorMode": "vim",
+  "skipAutoPermissionPrompt": true,
+  "enableAllProjectMcpServers": true,
+  "permissions": {
+    "defaultMode": "bypassPermissions",
+    "additionalDirectories": [
+      "/home/agent",
+      "/tmp"
+    ]
+  },
+  "skipDangerousModePermissionPrompt": true
+}

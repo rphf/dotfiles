@@ -2,7 +2,7 @@
   "env": {
     "ENABLE_CLAUDEAI_MCP_SERVERS": "false"
   },
-  "model": "fable[1m]",
+  "model": "opus[1m]",
   "enabledPlugins": {
     "context7@claude-plugins-official": true
   },

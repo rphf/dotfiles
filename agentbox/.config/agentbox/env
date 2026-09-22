@@ -1,5 +1,7 @@
 # ~/.config/agentbox/env — personal settings. home/ and secrets/ next to this file are picked up by default.
 BOT_NAME=rphf-agent[bot]
-BOT_EMAIL=rphf-agent[bot]@users.noreply.github.com
+BOT_EMAIL=331661235+rphf-agent[bot]@users.noreply.github.com
+DEV_NAME=rphf
+DEV_EMAIL=93053988+rphf@users.noreply.github.com
 AGENT_SHELL=zsh
 NET_LOG=1

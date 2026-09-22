@@ -97,4 +97,16 @@ wezterm.on("gui-startup", function()
   default_window:gui_window():maximize()
 end)
 
+-- Cmd+click opens links everywhere: in normal panes via the binding, and in panes where an
+-- app captures the mouse (Claude Code, tmux) because Cmd bypasses that capture and the click
+-- falls back to the default open-link rule.
+config.bypass_mouse_reporting_modifiers = "SUPER"
+config.mouse_bindings = {
+  {
+    event = { Up = { streak = 1, button = "Left" } },
+    mods = "SUPER",
+    action = wezterm.action.OpenLinkAtMouseCursor,
+  },
+}
+
 return config

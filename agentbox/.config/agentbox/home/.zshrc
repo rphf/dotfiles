@@ -24,14 +24,15 @@ bindkey -M viins '^N'    down-line-or-history
 bindkey -M viins '^R'    history-incremental-search-backward
 
 # zsh changes no cursor shape on its own, so vi mode is invisible without this. Steady bar while inserting,
-# steady block in normal mode, and a bar again before running a command so whatever you launch inherits that.
+# steady block in normal mode, and a block again before running a command so programs like Claude Code
+# start with the terminal's normal cursor instead of the insert-mode bar.
 _cursor_bar()   { print -n '\e[6 q' }
 _cursor_block() { print -n '\e[2 q' }
 zle-keymap-select() { [[ $KEYMAP == vicmd ]] && _cursor_block || _cursor_bar }
 zle-line-init()     { _cursor_bar }
 zle -N zle-keymap-select
 zle -N zle-line-init
-preexec() { _cursor_bar }
+preexec() { _cursor_block }
 zle_highlight=(region:bg=blue,fg=white special:standout suffix:bold isearch:underline paste:bold)
 export EDITOR=vim VISUAL=vim PAGER=less
 export LESS=-FRX

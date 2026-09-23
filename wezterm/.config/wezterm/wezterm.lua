@@ -109,4 +109,7 @@ config.mouse_bindings = {
   },
 }
 
+local agentbox_ok, agentbox = pcall(dofile, wezterm.home_dir .. "/Workspace/perso/agentbox/host/wezterm.lua")
+if agentbox_ok then agentbox.apply(config) end
+
 return config

@@ -5,3 +5,4 @@ DEV_NAME=rphf
 DEV_EMAIL=93053988+rphf@users.noreply.github.com
 AGENT_SHELL=zsh
 NET_LOG=1
+AGENT_MEM_LIMIT=5g

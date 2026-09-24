@@ -64,17 +64,20 @@ over as is.
   it. Cut anything an agent already knows.
 - Write it for an agent that has never seen this session: no "as we discussed", no names of files it will not have.
 - State the rule and the reason for it. Leave out the story of how you found it.
+- Clear `~/out/home` of earlier proposals first. The install copies the whole folder, so a leftover file overwrites
+  what the human has installed or edited since. Keep only the files of this proposal.
 
 ## Then tell the human
 
-For user-wide files, list each one with its URL, `http://$AGENT_HOST:$OUT_PORT/home/<path>`, and give these commands to
-run on their machine:
+For user-wide files, list each one with its URL, `http://$AGENT_HOST:$OUT_PORT/home/<path>`, and give this command to
+run on their machine, from the project checkout:
 
 ```bash
-cp -R "$(agentbox get $AGENT home)/." ~/.config/agentbox/home/
+d=$(agentbox get $AGENT home) && cp -R "$d/." ~/.config/agentbox/home/
 ```
 
-`agentbox get` prints only the path of the copied directory, so the command works as is. Expand `$AGENT_HOST`,
+`agentbox get` prints only the path of the copied directory, so the command works as is. Keep the `&&`: if `get`
+fails, `$d` is empty and `cp` would copy `/`. Expand `$AGENT_HOST`,
 `$OUT_PORT` and `$AGENT` from your environment. Agents pick the files up on their next `agentbox up`.
 
 For files changed in the project, list their paths and say they are left unstaged and show in `git diff`.

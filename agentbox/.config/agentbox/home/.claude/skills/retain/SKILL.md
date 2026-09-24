@@ -22,16 +22,28 @@ correction the human made, a workflow you had to work out, a trap you fell into.
 - **A skill** is a procedure run on demand, with steps. Write it to `~/out/home/.claude/skills/<slug>/SKILL.md`,
   with a frontmatter `description` saying when to use it. Add `disable-model-invocation: true` when only the human
   should trigger it.
-- **Project-specific knowledge** (this repository's commands, its layout, its quirks) belongs in the repository
-  instead, under `/workspace/docs/ai/raph/` (`.claude/` is gitignored there). Write it there directly and leave
-  it unstaged: no `git add`, no commit, no pull request. The human decides what to keep.
+- **Project-specific knowledge** (this repository's commands, its layout, its quirks) belongs in the repository,
+  in the directories `.claude/rules` and `.claude/skills` really live in. Find them:
+
+  ```bash
+  cd /workspace
+  for d in .claude/rules .claude/skills; do
+    r="$(realpath -m --relative-to=. "$d")"
+    git check-ignore -q "$r" && echo "$d: gitignored" || echo "$d -> $r"
+  done
+  ```
+
+  Write through the resolved path, which git tracks: `.claude/rules` itself when it is tracked, the link target
+  (for example `docs/ai/raph/claude/rules`) when it is a link. Edit in place and leave it unstaged: no `git add`,
+  no commit, no pull request. The human decides what to keep. When both are gitignored, say so and ask the human
+  where it should go.
 
 `<slug>` is short kebab-case. The layout under `~/out/home` mirrors the overlay exactly, so the human can copy it
 over as is.
 
 ## Before writing
 
-- Look at `~/.claude/rules/`, `~/.claude/skills/`, `~/.claude/CLAUDE.md` and `/workspace/docs/ai/raph/`. Prefer
+- Look at `~/.claude/rules/`, `~/.claude/skills/`, `~/.claude/CLAUDE.md` and the project's resolved rules and skills directories. Prefer
   updating an existing file over creating a new one: if a file touches the same subject, add the rule to it or
   extend the skill, and propose the whole updated file under the same path, not a patch. Create a new file only
   when nothing existing fits.
@@ -42,7 +54,7 @@ over as is.
 
 ## Then tell the human
 
-List each file you wrote with its URL, `http://$AGENT_HOST:$OUT_PORT/home/<path>`, and give them these commands to
+For user-wide files, list each one with its URL, `http://$AGENT_HOST:$OUT_PORT/home/<path>`, and give these commands to
 run on their machine:
 
 ```bash
@@ -53,4 +65,4 @@ cp -R <printed dir>/home/. ~/.config/agentbox/home/
 Expand `$AGENT_HOST`, `$OUT_PORT` and `$AGENT` from your environment, and replace `<printed dir>` with the directory `agentbox get` prints. Agents pick the
 files up on their next `agentbox up`.
 
-For files written under `/workspace/docs/ai/raph/`, list their paths and say they are left unstaged.
+For files changed in the project, list their paths and say they are left unstaged.

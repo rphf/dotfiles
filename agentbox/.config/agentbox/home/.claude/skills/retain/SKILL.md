@@ -1,6 +1,5 @@
 ---
-description: Hand a new skill or rule to the human, for every future agent. Run only when the human asks.
-disable-model-invocation: true
+description: Save a lesson as a rule or skill for future agents. Use when the human corrects you, states a preference, or you work out a non-obvious workflow or trap worth keeping. Project lessons are edited in the repository and left unstaged, so they show in git diff.
 argument-hint: "[what to capture — leave empty to capture what this session learned]"
 ---
 
@@ -9,6 +8,10 @@ argument-hint: "[what to capture — leave empty to capture what this session le
 Your home config is read-only: `~/.claude` is partly linked from the human's `~/.config/agentbox/home`, which every
 agent in every project shares. You cannot change it, and must not try. Write a proposal to `~/out/home` instead.
 The human reviews it and copies the ones they keep into their overlay, where the next agents pick them up.
+
+When you run this on your own, without the human asking, change only project files, and only where the change
+shows in `git diff`. Do not write user-wide proposals to `~/out/home` then: mention the idea in your reply
+instead, and the human runs `/retain` if they want it.
 
 What to capture: $ARGUMENTS
 
@@ -34,9 +37,19 @@ correction the human made, a workflow you had to work out, a trap you fell into.
   ```
 
   Write through the resolved path, which git tracks: `.claude/rules` itself when it is tracked, the link target
-  (for example `docs/ai/raph/claude/rules`) when it is a link. Edit in place and leave it unstaged: no `git add`,
-  no commit, no pull request. The human decides what to keep. When both are gitignored, say so and ask the human
-  where it should go.
+  (for example `docs/ai/raph/claude/rules`) when it is a link. Edit in place and leave it unstaged: no commit, no
+  pull request. The human decides what to keep. When both are gitignored, say so and ask the human where it
+  should go, and do not write anything.
+
+  Then make sure every change shows in `git diff`. A new file does not until it is marked with intent to add,
+  which stages no content:
+
+  ```bash
+  git add -N -- <new files>
+  git diff --stat -- <resolved dirs>
+  ```
+
+  Every file you wrote must be in that output. If one is missing, it is outside git's view: move it or undo it.
 
 `<slug>` is short kebab-case. The layout under `~/out/home` mirrors the overlay exactly, so the human can copy it
 over as is.
@@ -65,4 +78,4 @@ cp -R <printed dir>/home/. ~/.config/agentbox/home/
 Expand `$AGENT_HOST`, `$OUT_PORT` and `$AGENT` from your environment, and replace `<printed dir>` with the directory `agentbox get` prints. Agents pick the
 files up on their next `agentbox up`.
 
-For files changed in the project, list their paths and say they are left unstaged.
+For files changed in the project, list their paths and say they are left unstaged and show in `git diff`.

@@ -42,4 +42,7 @@ List every material claim with reproducible evidence (paths, links, or output sn
 - Keep solutions simple and direct.
 - By default use the github CLI (`gh`) for read only operation unless told otherwise.
 - User instructions always override this file.
-- DO NOT WRITE COMMENTS. We write those by hand. If you think there's a spot that could use a comment, add `#TODO: Consider a comment here` and nothing else - that way I'm not biased as to if or what it should be.
+
+## Self-review in revue
+
+When you ask the human to review your changes in revue, review your own change first, but only if a part of it needs an explanation that the diff does not give: a non-obvious choice, a trade-off, or a workaround. Most changes need none. If one does, do the self-review before you run `revue open`: for each such line, run `revue comment <path>:<line>[-<end>] "..."`. Keep each comment short and about that line only. `revue --help` lists the other commands.

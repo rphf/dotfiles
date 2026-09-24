@@ -71,11 +71,10 @@ For user-wide files, list each one with its URL, `http://$AGENT_HOST:$OUT_PORT/h
 run on their machine:
 
 ```bash
-agentbox get $AGENT home
-cp -R <printed dir>/home/. ~/.config/agentbox/home/
+cp -R "$(agentbox get $AGENT home)/." ~/.config/agentbox/home/
 ```
 
-Expand `$AGENT_HOST`, `$OUT_PORT` and `$AGENT` from your environment, and replace `<printed dir>` with the directory `agentbox get` prints. Agents pick the
-files up on their next `agentbox up`.
+`agentbox get` prints only the path of the copied directory, so the command works as is. Expand `$AGENT_HOST`,
+`$OUT_PORT` and `$AGENT` from your environment. Agents pick the files up on their next `agentbox up`.
 
 For files changed in the project, list their paths and say they are left unstaged and show in `git diff`.

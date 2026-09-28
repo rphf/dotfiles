@@ -6,6 +6,8 @@
   "enabledPlugins": {
     "context7@claude-plugins-official": true
   },
+  "syncClaudeAiPlugins": false,
+  "syncClaudeAiSkills": false,
   "syntaxHighlightingDisabled": false,
   "effortLevel": "xhigh",
   "tui": "fullscreen",

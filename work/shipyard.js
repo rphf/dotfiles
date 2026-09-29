@@ -34,6 +34,8 @@ class ShipyardGenerator {
       verbose: false,
       useAI: false,
       targetAuthor: "@me",
+      // null = default: my agent app when reporting on myself
+      extraAuthors: null,
       repos: [],
     };
 
@@ -136,6 +138,15 @@ class ShipyardGenerator {
         case "--target-author":
           this.config.targetAuthor = args[++i] || "@me";
           break;
+        case "--extra-author":
+          this.config.extraAuthors = [
+            ...(this.config.extraAuthors || []),
+            args[++i],
+          ].filter(Boolean);
+          break;
+        case "--no-extra-authors":
+          this.config.extraAuthors = [];
+          break;
         case "--help":
         case "-h":
           this.showHelp();
@@ -146,6 +157,11 @@ class ShipyardGenerator {
           }
           break;
       }
+    }
+
+    if (this.config.extraAuthors === null) {
+      this.config.extraAuthors =
+        this.config.targetAuthor === "@me" ? ["app/rphf-zm-agent"] : [];
     }
   }
 
@@ -170,6 +186,9 @@ Output Options:
 
 GitHub Options:
   --author, --target-author USERNAME  GitHub username to fetch activity for (default: @me)
+  --extra-author AUTHOR          Also count PRs by AUTHOR as the target's work,
+                                 repeatable (default with @me: app/rphf-zm-agent)
+  --no-extra-authors             Only count the target author's own PRs
 
 General Options:
   --help, -h                     Show this help message
@@ -203,7 +222,6 @@ Examples:
   # - PRs authored and merged by the coworker
   # - PRs authored by the coworker that are still open
   # - PRs reviewed by the coworker
-  # - Issues opened by the coworker that are still open
 `);
   }
 
@@ -445,179 +463,188 @@ Examples:
     return Array.from(allRepos);
   }
 
+  // Authors whose PRs count as the target's work. My GitHub app opens
+  // PRs on my behalf, so include it when reporting on myself.
+  authors() {
+    return [this.config.targetAuthor, ...this.config.extraAuthors];
+  }
+
+  // Resolve "@me" to a login, needed to match review authors
+  targetLogin() {
+    if (this.config.targetAuthor !== "@me") return this.config.targetAuthor;
+    if (!this.cachedLogin) {
+      this.cachedLogin = execSync("gh api user --jq .login", {
+        encoding: "utf8",
+      }).trim();
+    }
+    return this.cachedLogin;
+  }
+
+  // Run `gh <kind> list` and return parsed JSON
+  ghList(kind, repo, state, search, fields) {
+    const cmd = `gh ${kind} list -R "${repo}" --state ${state} --limit 1000 --search "${search}" --json ${fields}`;
+    return JSON.parse(
+      execSync(cmd, { encoding: "utf8", stdio: ["pipe", "pipe", "ignore"] })
+    );
+  }
+
+  // Search once per author (multiple author: qualifiers are ANDed) and merge
+  ghListByAuthors(kind, repo, state, search, fields, dateField) {
+    const seen = new Map();
+    for (const author of this.authors()) {
+      for (const item of this.ghList(
+        kind,
+        repo,
+        state,
+        `author:${author} ${search}`,
+        fields
+      )) {
+        seen.set(item.number, item);
+      }
+    }
+    return this.toItems([...seen.values()], dateField);
+  }
+
+  toItems(list, dateField) {
+    return list
+      .map((item) => ({
+        number: String(item.number),
+        title: item.title?.replace(/[\t\r\n]/g, " "),
+        url: item.url,
+        date: item[dateField],
+      }))
+      .sort((a, b) => new Date(a.date) - new Date(b.date));
+  }
+
+  // PRs by others where the target submitted a review inside the week.
+  // `reviewed-by:` + `updated:` alone matches any PR reviewed in the past that
+  // got a new commit or rebase this week, and our own PRs (thread replies count
+  // as reviews), so filter on the review timestamps. Search updated since the
+  // week start: a PR reviewed this week but touched after it is still in scope.
+  fetchReviewedPRs(repo) {
+    const login = this.targetLogin();
+    const ownAuthors = new Set([login, ...this.config.extraAuthors]);
+    const prs = this.ghList(
+      "pr",
+      repo,
+      "all",
+      `reviewed-by:${login} is:pr updated:>=${this.config.sinceDate}`,
+      "number,title,url,author,reviews"
+    );
+
+    const reviewed = [];
+    for (const pr of prs) {
+      if (ownAuthors.has(pr.author?.login)) continue;
+      const reviewDates = (pr.reviews || [])
+        .filter((r) => r.author?.login === login)
+        .map((r) => new Date(r.submittedAt))
+        .filter((d) => this.isDateInWeekRange(d));
+      if (reviewDates.length === 0) continue;
+      const latest = new Date(Math.max(...reviewDates));
+      reviewed.push({ ...pr, reviewedAt: latest.toISOString() });
+    }
+    return this.toItems(reviewed, "reviewedAt");
+  }
+
   // Fetch GitHub activity for a repository
-  async fetchRepoActivity(repo) {
-    const activities = {
-      prMerged: [],
-      prOpenedOpen: [],
-      prClosedNoMerge: [],
-      prReviewed: [],
-      issueOpenedOpen: [],
-      issueClosed: [],
-      issueInteracted: [],
-    };
+  fetchRepoActivity(repo) {
+    const range = this.config.dateRange;
+    const activities = { merged: [], opened: [], reviewed: [] };
 
     try {
-      // PRs merged this week
-      const prMergedCmd = `gh pr list -R "${repo}" --state merged --limit 1000 --search "author:${this.config.targetAuthor} is:pr is:merged merged:${this.config.dateRange}" --json number,title,url,mergedAt --jq '.[] | [.number, .title, .url, .mergedAt] | @tsv'`;
-      const prMerged = execSync(prMergedCmd, {
-        encoding: "utf8",
-        stdio: ["pipe", "pipe", "ignore"],
-      });
-      activities.prMerged = this.parseTsvOutput(prMerged, "PR");
-
-      // PRs opened this week and still open
-      const prOpenedCmd = `gh pr list -R "${repo}" --state open --limit 1000 --search "author:${this.config.targetAuthor} is:pr state:open created:${this.config.dateRange}" --json number,title,url,createdAt --jq '.[] | [.number, .title, .url, .createdAt] | @tsv'`;
-      const prOpened = execSync(prOpenedCmd, {
-        encoding: "utf8",
-        stdio: ["pipe", "pipe", "ignore"],
-      });
-      activities.prOpenedOpen = this.parseTsvOutput(prOpened, "PR");
-
-      // PRs reviewed this week
-      const prReviewedCmd = `gh pr list -R "${repo}" --limit 1000 --search "reviewed-by:${this.config.targetAuthor} is:pr updated:${this.config.dateRange}" --json number,title,url,updatedAt --jq '.[] | [.number, .title, .url, .updatedAt] | @tsv'`;
-      const prReviewed = execSync(prReviewedCmd, {
-        encoding: "utf8",
-        stdio: ["pipe", "pipe", "ignore"],
-      });
-      activities.prReviewed = this.parseTsvOutput(prReviewed, "PR");
-
-      // Issues opened this week and still open
-      const issueOpenedCmd = `gh issue list -R "${repo}" --state open --limit 1000 --search "author:${this.config.targetAuthor} is:issue state:open created:${this.config.dateRange}" --json number,title,url,createdAt --jq '.[] | [.number, .title, .url, .createdAt] | @tsv'`;
-      const issueOpened = execSync(issueOpenedCmd, {
-        encoding: "utf8",
-        stdio: ["pipe", "pipe", "ignore"],
-      });
-      activities.issueOpenedOpen = this.parseTsvOutput(issueOpened, "ISSUE");
+      activities.merged = this.ghListByAuthors(
+        "pr",
+        repo,
+        "merged",
+        `is:pr is:merged merged:${range}`,
+        "number,title,url,mergedAt",
+        "mergedAt"
+      );
+      activities.opened = this.ghListByAuthors(
+        "pr",
+        repo,
+        "open",
+        `is:pr state:open created:${range}`,
+        "number,title,url,createdAt",
+        "createdAt"
+      );
+      activities.reviewed = this.fetchReviewedPRs(repo);
     } catch (error) {
       this.log(`Failed to fetch activity for ${repo}: ${error.message}`);
     }
 
-    return { repo, activities };
+    return activities;
   }
 
-  // Parse TSV output from gh commands
-  parseTsvOutput(output, type) {
-    if (!output.trim()) return [];
-
-    return output
-      .trim()
-      .split("\n")
-      .map((line) => {
-        const [number, title, url, date] = line.split("\t");
-        return {
-          type,
-          number,
-          title: title?.replace(/[\t\r\n]/g, " "),
-          url,
-          date,
-        };
-      })
-      .filter((item) => item.number)
-      .sort((a, b) => {
-        // Sort by date from oldest to newest
-        const dateA = new Date(a.date);
-        const dateB = new Date(b.date);
-        return dateA - dateB;
-      });
+  // "ZenMaid/zenmaid-webapp" -> "Webapp"
+  repoLabel(repo) {
+    const [owner, name] = repo.split("/");
+    const short = name.replace(new RegExp(`^${owner}-`, "i"), "");
+    return short.charAt(0).toUpperCase() + short.slice(1);
   }
 
-  // Render a section
-  renderSection(header, items) {
-    if (items.length === 0) {
-      return "";
+  // Render one repo as a Slack-ready list of PRs
+  renderRepo(repo, { merged, opened, reviewed }) {
+    const lines = [`${this.repoLabel(repo)}:`];
+    const link = (pr) => `[${pr.title.trim()}](${pr.url})`;
+
+    merged.forEach((pr) => lines.push(` - ${link(pr)} :merged:`));
+    opened.forEach((pr) => lines.push(` - ${link(pr)} :opened:`));
+
+    if (reviewed.length > 0) {
+      const refs = reviewed.map((pr) => `[#${pr.number}](${pr.url})`);
+      const count = `${reviewed.length} PR${reviewed.length === 1 ? "" : "s"}`;
+      // No parens around the links: Slack swallows the ")" after a link's "(url)"
+      lines.push(` - Reviewed ${count}: ${refs.join(", ")} :reviewed:`);
     }
 
-    let section = `- ${header} (${items.length})\n`;
-
-    if (items.length > 0) {
-      items.forEach((item) => {
-        section += `  • #${item.number} ${item.date} — ${item.title} (${item.url})\n`;
-      });
-    } else {
-      section += "  (none)\n\n";
-    }
-
-    return section;
+    return lines.join("\n");
   }
 
-  // Generate GitHub text
+  // Generate the PR list for all repos with activity
   async generateGitHubText() {
     const repos = await this.expandGitHubRepos();
-
-    if (repos.length === 0) {
-      return "";
-    }
-
     this.log(`Processing GitHub activity for ${repos.length} repositories`);
-    let githubText = "";
 
+    const blocks = [];
+    const reviewedTitles = [];
     for (const repo of repos) {
-      githubText += `#### ${repo}\n`;
-
-      const { activities } = await this.fetchRepoActivity(repo);
-
-      githubText += this.renderSection("PRs — Merged", activities.prMerged);
-      githubText += this.renderSection(
-        "PRs — Opened & still open",
-        activities.prOpenedOpen
+      const activities = this.fetchRepoActivity(repo);
+      const { merged, opened, reviewed } = activities;
+      if (merged.length + opened.length + reviewed.length === 0) continue;
+      blocks.push(this.renderRepo(repo, activities));
+      reviewed.forEach((pr) =>
+        reviewedTitles.push(`- ${this.repoLabel(repo)} #${pr.number}: ${pr.title.trim()}`)
       );
-      githubText += this.renderSection("PRs — Reviewed", activities.prReviewed);
-      githubText += this.renderSection(
-        "Issues — Opened & still open",
-        activities.issueOpenedOpen
-      );
-
-      githubText += "\n";
     }
 
-    return githubText;
+    return { list: blocks.join("\n\n"), reviewedTitles };
   }
 
-  // Build the main prompt
-  buildPrompt(remindersText, githubText) {
-    let prompt = `You are my "Shipyard update" formatter. Using my raw weekly notes (Apple Reminders + GitHub activity), produce a Slack-ready Markdown summary grouped by project and focused on delivered value.
+  // Build the output: a prompt for the agent, then the PR list
+  buildPrompt(remindersText, { list, reviewedTitles }) {
+    if (!list && !remindersText) {
+      return `(No activity found for ${this.config.sinceDate} → ${this.config.untilDate}.)`;
+    }
 
-Output format (strict):
-- Use section titles: **Project A**, **Project B**, **Project C**, **Others**... (use the project name as the section title)
-- Everything under each section title must be bullets or sub-bullets (no free-text paragraphs).
-- For each project:
-  - Start with one value-focused summary bullet.
-  - Then a PRs sub-list where each item is the PR **title** as a Markdown link to the PR URL (not \`#123\`). After the link, add a status icon for slack — :merged:, :opened:, :reviewed: etc... any icon that makes sense and can be a github emoji used in slack.
-  - If relevant, add an Issues sub-list: link issue titles the same way with a status tag.
-- Others: bullets for non-code items (syncs, credentials, Slack threads), linking titles when possible.
-- Order: Merged PRs → Opened PRs → Issues.
-- Don't list all Reviewed PRs in different bullet points, squash them into a single bullet, with description of the scope (if relevant, like I review 10 PRs of the same scope feat(scope-name) following the conventional PR title format) and add the #123 link of all of them in parenthesis.
-- Keep bullets clear, concise, and value-first. Use "-" for bullets; two-space indent for sub-bullets. Skip empty sections.
-
-Week range: ${this.config.sinceDate} → ${this.config.untilDate}
-
-Below are my raw items for this week:
+    let prompt = `Below are my PRs for this week (${this.config.sinceDate} → ${this.config.untilDate}), grouped by repo. Summarize what I did as a short bullet list:
+- One short line per bullet, a handful of bullets in total. Group related PRs into one bullet.
+- Plain text only: no links, no PR numbers, no emojis, no bold, no sub-bullets.
+- Do not repeat or reformat the PR list; I paste it myself.
+- Output only the bullet list, nothing else.
 `;
 
     if (remindersText) {
-      prompt += `### Completed tasks (Apple Reminders — list: ${this.config.remindersList})\n${remindersText}\n\n`;
+      prompt += `\nAlso include these completed non-code tasks, skipping any already covered by a PR:\n${remindersText}\n`;
     }
 
-    if (githubText) {
-      prompt += `### GitHub activity\n${githubText}`;
+    if (reviewedTitles.length > 0) {
+      prompt += `\nTitles of the PRs I reviewed:\n${reviewedTitles.join("\n")}\n`;
     }
 
-    if (!remindersText && !githubText) {
-      if (!this.config.enableReminders && !this.config.enableGitHub) {
-        prompt +=
-          "(All data sources disabled. Use --reminders and/or --github to enable data collection.)\n";
-      } else if (
-        !this.config.enableReminders &&
-        this.config.repos.length === 0
-      ) {
-        prompt +=
-          "(Reminders disabled and no GitHub repositories specified. Provide org/repo arguments or enable reminders.)\n";
-      } else {
-        prompt += "(No items found in this window.)\n";
-      }
+    if (list) {
+      prompt += `\n---\n\n${list}\n`;
     }
-
     return prompt;
   }
 
@@ -736,6 +763,7 @@ Below are my raw items for this week:
     this.log(`  Reminders enabled: ${this.config.enableReminders}`);
     this.log(`  GitHub enabled: ${this.config.enableGitHub}`);
     this.log(`  Target author: ${this.config.targetAuthor}`);
+    this.log(`  Extra authors: ${this.config.extraAuthors.join(", ") || "none"}`);
     this.log(
       `  GitHub repos: ${
         this.config.repos.length > 0 ? this.config.repos.join(", ") : "none"
@@ -750,7 +778,7 @@ Below are my raw items for this week:
 
     // Process with AI if requested
     if (this.config.useAI) {
-      finalOutput = await this.sendToDeepSeek(formattedOutput);
+      finalOutput = await this.sendToDeepSeek(prompt);
     }
 
     this.copyToClipboard(finalOutput);

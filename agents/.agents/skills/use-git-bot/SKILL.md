@@ -45,8 +45,12 @@ Leave staging and the commit message to the usual rules; this skill only changes
 `origin` is often SSH, which pushes as the human. Push over HTTPS instead, with the token given to this command only,
 through a temporary remote. `origin` and git config stay untouched.
 
+The human's global git config rewrites `https://github.com/` to SSH (`url.ssh://git@github.com/.insteadof`). A plain
+`https://github.com/...` remote then pushes as the human, with no error. The `x-access-token@` in the URL below stops
+that prefix from matching. It is only a username: the token never goes in the URL.
+
 ```bash
-git remote add bot "https://github.com/<owner>/<repo>.git"
+git remote add bot "https://x-access-token@github.com/<owner>/<repo>.git"
 export GH_TOKEN="$(cat "$GH_APP_TOKEN_FILE")"
 export GIT_CONFIG_COUNT=2
 export GIT_CONFIG_KEY_0='credential.https://github.com.helper' GIT_CONFIG_VALUE_0=''
@@ -63,6 +67,7 @@ For any other `gh` command, use the app's wrapper: `"$APP/bin/gh-bot" pr edit <n
 
 ## Check and report
 
+- The push output must say `To https://github.com/...`. If it says `To ssh://...`, the push ran as the human: say so.
 - `"$APP/bin/gh-bot" pr view <n> --json author -q .author.login` must print `app/<bot slug>`. If it prints the human's
   login, say so: the action ran as them.
 - Report what ran as the bot, the PR URL, and that `origin` is unchanged.

@@ -1,5 +1,7 @@
 [include]
     path = config.local
+# Use the SSH key (also the commit signing key) for all GitHub remotes, so no HTTPS token is stored.
+# Silently overrides any HTTPS token auth (e.g. GitHub App bots): use https://x-access-token@github.com/... to bypass.
 [url "ssh://git@github.com/"]
     insteadOf = https://github.com/
 [init]

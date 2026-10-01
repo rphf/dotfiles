@@ -13,6 +13,7 @@ Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 | `cmux`      | `~/.config/cmux/`      | `cmux` config                                                                                                                  |
 | `cursor`    | *(two targets)*        | Cursor settings/keybindings → `~/Library/Application Support/Cursor/User/`; `mcp.json` → `~/.cursor/` (see `cursor/README.md`) |
 | `gh`        | *(manual)*             | GitHub CLI extensions manifest (`extensions.txt`, see `gh/README.md`)                                                          |
+| `gh-dash`   | `~/.config/gh-dash/`   | `gh dash` PR/issue dashboard config                                                                                            |
 | `git`       | `~/.config/git/`       | Git config                                                                                                                     |
 | `karabiner` | `~/.config/karabiner/` | Karabiner-Elements                                                                                                             |
 | `lazygit`   | `~/.config/lazygit/`   | `lazygit` config                                                                                                               |

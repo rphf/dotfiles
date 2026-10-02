@@ -5,6 +5,16 @@
 # Disable for this repo: git config hooks.gitleaks false
 # Skip once:            SKIP=gitleaks git commit ...
 
+# agentbox needs real copies of the shared skills, not symlinks (see agentbox/README.md).
+for skill in agents/.agents/skills/*/; do
+	copy="agentbox/.config/agentbox/home/.claude/skills/$(basename "$skill")"
+	[ -d "$copy" ] || continue
+	if ! diff -r "$skill" "$copy" >/dev/null; then
+		echo "skills: $copy differs from $skill; copy it over" >&2
+		exit 1
+	fi
+done
+
 if ! command -v gitleaks >/dev/null 2>&1; then
 	echo "gitleaks: not in PATH; skipping secret scan" >&2
 	exit 0

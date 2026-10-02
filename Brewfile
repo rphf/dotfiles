@@ -139,8 +139,6 @@ cask "karabiner-elements"
 cask "libreoffice"
 # Customise mouse behavior
 cask "linearmouse"
-# Open-source firewall to block unknown outgoing connections
-cask "lulu"
 # VPN client
 cask "mullvad-vpn"
 # Free and open-source RSS reader

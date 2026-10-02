@@ -1,4 +1,8 @@
 aaron-bond.better-comments
+anthropic.claude-code
+anysphere.remote-containers
+anysphere.remote-ssh
+astro-build.astro-vscode
 asvetliakov.vscode-neovim
 bradlc.vscode-tailwindcss
 chakrounanas.turbo-console-log
@@ -12,9 +16,12 @@ golang.go
 kaiwood.endwise
 naumovs.color-highlight
 prisma.prisma
+semanticdiff.semanticdiff
 shopify.ruby-lsp
 streetsidesoftware.code-spell-checker
+streetsidesoftware.code-spell-checker-french
 tamasfe.even-better-toml
+typescriptteam.native-preview
 usernamehw.errorlens
 wasp-lang.wasp
 yoavbls.pretty-ts-errors

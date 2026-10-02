@@ -6,39 +6,30 @@ source "$XDG_CACHE_HOME/p10k-instant-prompt-${(%):-%n}.zsh"
 # To clean up stale files (keep the latest `.zsh` and `.zwc`):
 # rm -f "$XDG_CACHE_HOME"/p10k-*.tmp.*
 
-# To customize prompt, run `p10k configure` or edit $XDG_CONFIG_HOME/zsh/.p10k.zsh.
-source "$XDG_CONFIG_HOME/zsh/.p10k.zsh"
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+source ~/.p10k.zsh
 
 # In antidote home folder (check with `antidote home`), this will use friendly names for the git repositories cloned
 # e.g. `zsh-users__zsh-autosuggestions` instead of `https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-autosuggestions`
 zstyle ':antidote:bundle' use-friendly-names 'yes'
 
 # Source antidote plugin manager
-source $(brew --prefix)/opt/antidote/share/antidote/antidote.zsh
+source "$HOMEBREW_PREFIX/opt/antidote/share/antidote/antidote.zsh"
 antidote load
 
 # fzf for enabling fuzzy finder features (needs fzf installed with brew)
 source <(fzf --zsh)
+export FZF_DEFAULT_OPTS='--height 40% --tmux bottom,40% --layout reverse'
 # Initialize zoxide, a smarter cd command
 eval "$(zoxide init zsh)"
 # Activate Mise, a polyglot package manager
 eval "$(mise activate zsh)"
 
-export PATH="/opt/homebrew/opt/openjdk/bin:$PATH"
-
-# Commenting pyenv when not using it because it signicantly decrease the shell performance
-# see https://github.com/romkatv/zsh-bench for benchmarking the shell
-# eval "$(pyenv init --path)"
-# eval "$(pyenv virtualenv-init -)"
-
-for f in "$XDG_CONFIG_HOME/zsh/utils"/*.zsh(N); do source "$f"; done
-source "$XDG_CONFIG_HOME/zsh/.zsh_aliases"
 
 # HISTORY
 #
-# Needs to set in .zshrc because .zshenv is loaded before /etc/zshrc default config load which
-# overwrites to HISTFILE=${ZDOTDIR:-$HOME}/.zsh_history (and ZDOTDIR is set to $HOME/.config/zsh)
-export HISTFILE="$HOME/.zsh_history"
+# Set in .zshrc because /etc/zshrc (read after .zshenv) sets smaller defaults.
+# HISTFILE keeps its /etc/zshrc default, ~/.zsh_history.
 export HISTSIZE=10000
 export SAVEHIST=50000
 
@@ -49,3 +40,22 @@ setopt HIST_REDUCE_BLANKS       # Remove superfluous blanks from each command li
 setopt EXTENDED_HISTORY         # Include timestamp
 setopt HIST_EXPIRE_DUPS_FIRST   # Expire the duplicates first when trimming history
 # setopt INC_APPEND_HISTORY       # Append history lines from all sessions.
+
+# ALIASES
+
+if command -v lsd &> /dev/null; then
+  alias ls=lsd
+  alias lla='ls -la'
+fi
+
+if command -v zoxide &> /dev/null; then
+  alias cd=z
+fi
+
+alias lg=lazygit
+alias gs=git-spice
+
+alias haiku="claude --model haiku"
+alias sonnet="claude --model sonnet"
+alias opus="claude --model 'opus[1m]'"
+alias fable="claude --model 'fable[1m]'"

@@ -7,10 +7,10 @@ Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
 | Package     | Target                 | Purpose                                                                                                                        |
 | ----------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
+| `agentbox`  | `~/.config/agentbox/`  | Settings and home overlay for agentbox sandboxes (see `agentbox/README.md`)                                                    |
 | `agents`    | `~/.agents/`           | Canonical AI agent config (rules, skills, MCP notes)                                                                           |
 | `bat`       | `~/.config/bat/`       | `bat` pager theme/config                                                                                                       |
 | `claude`    | `~/.claude/`           | Claude Code bridge (symlinks into `agents/`)                                                                                   |
-| `cmux`      | `~/.config/cmux/`      | `cmux` config                                                                                                                  |
 | `cursor`    | *(two targets)*        | Cursor settings/keybindings → `~/Library/Application Support/Cursor/User/`; `mcp.json` → `~/.cursor/` (see `cursor/README.md`) |
 | `gh`        | *(manual)*             | GitHub CLI extensions manifest (`extensions.txt`, see `gh/README.md`)                                                          |
 | `gh-dash`   | `~/.config/gh-dash/`   | `gh dash` PR/issue dashboard config                                                                                            |
@@ -18,7 +18,6 @@ Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 | `karabiner` | `~/.config/karabiner/` | Karabiner-Elements                                                                                                             |
 | `lazygit`   | `~/.config/lazygit/`   | `lazygit` config                                                                                                               |
 | `mise`      | `~/.config/mise/`      | `mise` toolchain manager                                                                                                       |
-| `neovide`   | `~/.config/neovide/`   | Neovide GUI config                                                                                                             |
 | `node`      | `~/`                   | Global npm (`.npmrc`) and Yarn Berry (`.yarnrc.yml`) config                                                                    |
 | `nvim`      | `~/.config/nvim/`      | Neovim config                                                                                                                  |
 | `obsidian`  | *(manual)*             | Obsidian vault snippets (not stowed)                                                                                           |
@@ -26,7 +25,7 @@ Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 | `wezterm`   | `~/.config/wezterm/`   | Wezterm config                                                                                                                 |
 | `work`      | *(manual)*             | Work-specific bits (not stowed)                                                                                                |
 | `zed`       | `~/.config/zed/`       | Zed editor config                                                                                                              |
-| `zsh`       | `~/`                   | Zsh config                                                                                                                     |
+| `zsh`       | `~/`                   | Zsh config, and scripts in `~/.local/bin/`                                                                                     |
 
 
 Each package has its own `README.md` with package-specific notes.
@@ -75,7 +74,7 @@ are managed with one-off manual symlinks where needed.
 
 ```sh
 cd ~/dotfiles
-stow agents bat claude cmux git karabiner lazygit mise neovide node nvim skhd wezterm zed zsh
+stow agentbox agents bat claude gh-dash git karabiner lazygit mise node nvim skhd wezterm zed zsh
 # Install mise (official build, not the Homebrew formula) and its toolchains
 curl https://mise.run | sh
 mise install

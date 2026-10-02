@@ -1,0 +1,93 @@
+#!/usr/bin/env zsh
+# orphans: List leftover dev processes adopted by launchd (PPID 1)
+#
+# A test run or editor that dies without cleanup leaves its children (chromedriver,
+# node, ...) reparented to launchd. The memory shown is the whole process tree, taken
+# from top's MEM column, which includes compressed memory that ps's RSS misses.
+#
+# Usage:
+#   orphans [-k] [pattern]   Pattern is an awk regex matched against the command
+#
+# Options:
+#   -k, --kill   After listing, ask to SIGTERM each orphan and all its descendants
+#
+# Examples:
+#   orphans
+#   orphans 'chromedriver'
+#   orphans -k chromedriver
+
+main() {
+  local kill=false
+  if [[ $1 == -k || $1 == --kill ]]; then
+    kill=true
+    shift
+  fi
+  local pattern=${1:-'chromedriver|Chrome for Testing|node|ruby|python'}
+  local mem_file=$(mktemp)
+
+  top -l 1 -n 9999 -stats pid,mem 2>/dev/null >"$mem_file"
+
+  local list=$(ps -U "$UID" -o pid=,ppid=,etime=,command= | awk -v pattern="$pattern" '
+    # First file: top output, "PID MEM" where MEM looks like 444M, 1016K or 1.2G
+    NR == FNR {
+      if ($1 ~ /^[0-9]+$/) {
+        n = $2 + 0
+        if ($2 ~ /K/) n /= 1024
+        else if ($2 ~ /G/) n *= 1024
+        else if ($2 ~ /B/) n /= 1048576
+        mem[$1] = n
+      }
+      next
+    }
+    {
+      pid = $1; ppid[pid] = $2; etime[pid] = $3
+      cmd = $0; sub(/^ *[0-9]+ +[0-9]+ +[^ ]+ +/, "", cmd); command[pid] = cmd
+      children[$2] = children[$2] " " pid
+    }
+    function tree_mem(p,   kids, i, total) {
+      total = mem[p]
+      split(children[p], kids, " ")
+      for (i in kids) total += tree_mem(kids[i])
+      return total
+    }
+    END {
+      for (pid in ppid)
+        if (ppid[pid] == 1 && command[pid] ~ pattern)
+          printf "%6s %12s %6.0f MB  %s\n", pid, etime[pid], tree_mem(pid), substr(command[pid], 1, 120)
+    }
+  ' "$mem_file" - | sort -k3 -rn)
+
+  rm -f "$mem_file"
+
+  if [[ -z $list ]]; then
+    echo "No orphans matching: $pattern"
+    return 0
+  fi
+
+  printf "%6s %12s %9s  %s\n" PID ELAPSED "TREE MEM" COMMAND
+  print -r -- "$list"
+
+  $kill || return 0
+
+  read -q "?Kill these process trees? [y/N] " || { echo; return 1; }
+  echo
+
+  local -a pids
+  local pid
+  for pid in ${(f)"$(print -r -- "$list" | awk '{print $1}')"}; do
+    pids+=($(_orphans_tree "$pid"))
+  done
+  kill -TERM $pids 2>/dev/null
+  echo "Sent SIGTERM to ${#pids} processes"
+}
+
+# Prints a process and all its descendants, children first
+_orphans_tree() {
+  local child
+  for child in $(pgrep -P "$1"); do
+    _orphans_tree "$child"
+  done
+  print "$1"
+}
+
+main "$@"

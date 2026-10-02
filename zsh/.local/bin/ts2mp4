@@ -1,24 +1,8 @@
 #!/usr/bin/env zsh
-# utils/ts2mp4.zsh - Convert TS (MPEG Transport Stream) files to MP4 using ffmpeg
-#
-# Usage:
-#   ts2mp4 <folder> [options]     Convert all .ts files in folder
-#   ts2mp4 <file.ts> [options]   Convert single file
-#
-# Options:
-#   -n, --dry-run   Show what would be done without making changes
-#   -d, --delete    Delete .ts file after successful conversion
-#   -f, --fast      Fast remux only (-c copy), no re-encode (may not play in QuickTime)
-#   -h, --help      Show this help
-#
-# Default: re-encodes to H.264 + AAC for QuickTime compatibility.
-#
-# Examples:
-#   ts2mp4 ~/Videos/air65
-#   ts2mp4 ~/Videos/air65/recording.ts -d
-#   ts2mp4 ~/Videos/air65 -f          # fast copy (if source is already H.264/AAC)
+# ts2mp4: Convert TS (MPEG Transport Stream) files to MP4 using ffmpeg
+# Run with -h for usage.
 
-ts2mp4() {
+main() {
   local dry_run=false delete_ts=false fast_copy=false
   local -a args
 
@@ -52,6 +36,11 @@ Options:
 
 Default: re-encodes to H.264 + AAC for QuickTime compatibility.
 Requires ffmpeg.
+
+Examples:
+  ts2mp4 ~/Videos/air65
+  ts2mp4 ~/Videos/air65/recording.ts -d
+  ts2mp4 ~/Videos/air65 -f          # fast copy (if source is already H.264/AAC)
 EOF
         return 0
         ;;
@@ -124,3 +113,5 @@ EOF
 
   return 0
 }
+
+main "$@"

@@ -1,22 +1,8 @@
 #!/usr/bin/env zsh
-# utils/mp4-rename.zsh - Rename MP4 and TS video files to DD-MM-YYYY_NNN_SLUG format based on creation date
-#
-# Usage:
-#   mp4rename <folder> [slug] [options]
-#   mp4rename <folder> [options] [--] [slug]
-#
-# Options:
-#   -d, --delete-images   Delete .jpg, .jpeg, .png files in the folder
-#   -n, --dry-run        Show what would be done without making changes
-#   -h, --help           Show this help
-#
-# Examples:
-#   mp4rename ~/Videos/air65                    # slug defaults to "air65"
-#   mp4rename ~/Videos/air65 vacation           # custom slug "vacation"
-#   mp4rename ~/Videos/air65 -d                 # also delete images
-#   mp4rename ~/Videos/air65 -n vacation        # dry-run with custom slug
+# mp4rename: Rename MP4 and TS video files to DD-MM-YYYY_NNN_SLUG format based on creation date
+# Run with -h for usage.
 
-mp4rename() {
+main() {
   local folder slug delete_images=false dry_run=false
   local -a args
 
@@ -213,3 +199,5 @@ EOF
 
   return 0
 }
+
+main "$@"

@@ -1,24 +1,8 @@
 #!/usr/bin/env zsh
-# utils/untrunc.zsh - Repair corrupted MP4 files using untrunc (via Docker)
-#
-# untrunc uses a working reference file to fix a corrupted one with the same codec.
-#
-# Usage:
-#   untrunc <reference.mp4> <corrupted.mp4> [options]
-#   untrunc --build   Build/rebuild the Docker image
-#
-# Options:
-#   -b, --build       Build or rebuild the untrunc Docker image
-#   -h, --help        Show this help
-#
-# Examples:
-#   cd ~/Videos/air65
-#   untrunc 14-02-2026_005_air65.mp4 14-02-2026_007_air65.mp4
-#   untrunc --build
-#
-# The repaired file is written to the current directory (fixed_<corrupted_name>).
+# untrunc: Repair corrupted MP4 files using untrunc (via Docker)
+# Run with -h for usage.
 
-untrunc() {
+main() {
   local build=false
   local -a args
 
@@ -45,6 +29,11 @@ The corrupted file will be repaired; output is written as fixed_<corrupted_name>
 in the current directory.
 
 Requires Docker. Run from the folder containing your MP4 files.
+
+Examples:
+  cd ~/Videos/air65
+  untrunc 14-02-2026_005_air65.mp4 14-02-2026_007_air65.mp4
+  untrunc --build
 EOF
         return 0
         ;;
@@ -105,3 +94,5 @@ DOCKERFILE
   echo "Repairing $corrupted using $reference as reference..."
   docker run -v "$PWD":/work -w /work untrunc:local "$reference" "$corrupted"
 }
+
+main "$@"

@@ -1,22 +1,8 @@
 #!/usr/bin/env zsh
-# utils/mp4-metadata-fixed.zsh - Copy metadata from original to untrunc fixed MP4 files
-#
-# For fixed_*.mp4 or *_fixed.mp4 files, copies creation date and timestamps from the
-# corresponding original file. Does not rename or delete anything.
-#
-# Usage:
-#   mp4-metadata-fixed <folder> [options]
-#
-# Options:
-#   -n, --dry-run   Show what would be done without making changes
-#   -v, --verbose   Debug logs (folder, glob matches, paths)
-#   -h, --help      Show this help
-#
-# Examples:
-#   mp4-metadata-fixed ~/Videos/air65
-#   mp4-metadata-fixed ~/Videos/air65 -n
+# mp4-metadata-fixed: Copy metadata from original to untrunc fixed MP4 files
+# Run with -h for usage.
 
-mp4-metadata-fixed() {
+main() {
   local folder dry_run=false verbose=false
   local -a args
 
@@ -44,6 +30,10 @@ Options:
 
 For fixed_*.mp4 or *_fixed.mp4 files, copies creation date and timestamps
 from the corresponding original. Does not rename or delete anything.
+
+Examples:
+  mp4-metadata-fixed ~/Videos/air65
+  mp4-metadata-fixed ~/Videos/air65 -n
 EOF
         return 0
         ;;
@@ -112,3 +102,5 @@ EOF
   [[ $found -eq 0 ]] && echo "No fixed files found (looking for fixed_*.mp4 or *_fixed.mp4)" >&2
   return 0
 }
+
+main "$@"

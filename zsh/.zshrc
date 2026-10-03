@@ -13,6 +13,10 @@ source ~/.p10k.zsh
 # e.g. `zsh-users__zsh-autosuggestions` instead of `https-COLON--SLASH--SLASH-github.com-SLASH-zsh-users-SLASH-zsh-autosuggestions`
 zstyle ':antidote:bundle' use-friendly-names 'yes'
 
+# ez-compinit: skip compinit's full check while the dump is less than 20h old (~20ms faster startup).
+# Run `run-compinit -f` to pick up new completions sooner.
+zstyle ':plugin:ez-compinit' 'use-cache' 'yes'
+
 # Source antidote plugin manager
 source "$HOMEBREW_PREFIX/opt/antidote/share/antidote/antidote.zsh"
 antidote load

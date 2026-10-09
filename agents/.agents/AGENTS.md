@@ -46,3 +46,8 @@ List every material claim with reproducible evidence (paths, links, or output sn
 ## Self-review in revue
 
 When you ask the human to review your changes in revue, review your own change first, but only if a part of it needs an explanation that the diff does not give: a non-obvious choice, a trade-off, or a workaround. Most changes need none. If one does, do the self-review before you run `revue open`: for each such line, run `revue comment <path>:<line>[-<end>] "..."`. Keep each comment short and about that line only. `revue --help` lists the other commands.
+
+## Obsidian vault
+
+- The vault is the worktree `~/Obsidian` of the notes repo at `~/Workspace/perso/notes`. Follow the vault's own `CLAUDE.md` for its structure and git rules.
+- When the user asks to "save" a link, note or idea, write it to the vault.

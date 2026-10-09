@@ -5,7 +5,8 @@
     "padding": 0
   },
   "env": {
-    "ENABLE_CLAUDEAI_MCP_SERVERS": "false"
+    "ENABLE_CLAUDEAI_MCP_SERVERS": "false",
+    "PLAYWRIGHT_MCP_VIEWPORT_SIZE": "1920x1080"
   },
   "model": "opus[1m]",
   "enabledPlugins": {

@@ -20,7 +20,8 @@ that in their own browser.
 
 - The state before your change and the state after it, framed identically, when the point is a difference.
 - The exact screen the request names, at a viewport where the thing being judged is visible without scrolling.
-  1400x900 is a reasonable default for a desktop layout.
+  The browser already runs at 1920x1080, so take desktop shots at that size without resizing. For a mobile
+  check, resize to 390x844 with `browser_resize` and take the shot at that size, labelled `-mobile` in its name.
 - Any error state you hit on the way, if you could not resolve it.
 
 Wait for the page to settle before the shot: network idle plus a moment for animations, or an explicit wait for

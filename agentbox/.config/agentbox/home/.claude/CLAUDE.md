@@ -73,6 +73,14 @@ as you save them; you talk to revue with the `revue` CLI from /workspace.
 
 Never resolve threads yourself; only the human does. `revue --help` lists the rest.
 
+## Write for the present
+
+Any text that stays or is shared (code comments, docs, READMEs, PR and issue descriptions,
+review comments, commit messages, notes, and instruction files like this one) describes
+only the current state. Do not record past decisions, removed features, discarded options,
+or history ("X was removed", "there is no Y on purpose"). When something no longer exists or
+no longer matters, delete its mention instead of explaining it.
+
 ## The machine you are on
 
 @~/AGENTBOX.md

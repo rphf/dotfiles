@@ -20,7 +20,6 @@ Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 | `mise`      | `~/.config/mise/`      | `mise` toolchain manager                                                                                                       |
 | `node`      | `~/`                   | Global npm (`.npmrc`) and Yarn Berry (`.yarnrc.yml`) config                                                                    |
 | `nvim`      | `~/.config/nvim/`      | Neovim config                                                                                                                  |
-| `obsidian`  | *(manual)*             | Obsidian vault snippets (not stowed)                                                                                           |
 | `skhd`      | `~/.config/skhd/`      | `skhd` hotkey daemon                                                                                                           |
 | `wezterm`   | `~/.config/wezterm/`   | Wezterm config                                                                                                                 |
 | `work`      | *(manual)*             | Work-specific bits (not stowed)                                                                                                |

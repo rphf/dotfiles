@@ -58,6 +58,7 @@ alias g='git'
 alias gs='git status --short --branch'
 alias out='cd "$HOME/out"'
 alias ws='cd /workspace'
+alias lg='lazygit'
 
 # Where things are, one line, on every new shell. Delete if it gets in the way.
 box-help() {

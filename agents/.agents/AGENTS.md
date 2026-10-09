@@ -51,3 +51,11 @@ When you ask the human to review your changes in revue, review your own change f
 
 - The vault is the worktree `~/Obsidian` of the notes repo at `~/Workspace/perso/notes`. Follow the vault's own `CLAUDE.md` for its structure and git rules.
 - When the user asks to "save" a link, note or idea, write it to the vault.
+
+## Write for the present
+
+Any text that stays or is shared (code comments, docs, READMEs, PR and issue descriptions,
+review comments, commit messages, notes, and instruction files like this one) describes
+only the current state. Do not record past decisions, removed features, discarded options,
+or history ("X was removed", "there is no Y on purpose"). When something no longer exists or
+no longer matters, delete its mention instead of explaining it.

@@ -6,14 +6,26 @@
     insteadOf = https://github.com/
 [init]
     defaultBranch = main
+[branch]
+    sort = -committerdate
+[tag]
+    sort = version:refname
+[help]
+    autocorrect = prompt
+[rerere]
+    enabled = true
+    autoupdate = true
 [pull]
     rebase = true
 [push]
     autoSetupRemote = true
+    followTags = true
 [merge]
-    conflictstyle = diff3
+    conflictstyle = zdiff3
 [diff]
     colorMoved = default
+    algorithm = histogram
+    renames = true
 [commit]
     gpgsign = true
 [gpg]

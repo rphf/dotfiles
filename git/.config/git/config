@@ -49,11 +49,6 @@
     line-numbers-plus-style = "bold #3a6686"
     line-numbers-left-format = "{nm:^5}│"
     line-numbers-right-format = "{np:^5}│"
-[filter "lfs"]
-    clean = git-lfs clean -- %f
-    smudge = git-lfs smudge -- %f
-    process = git-lfs filter-process
-    required = true
 [alias]
     fix = "!f() { git log -n 500 --pretty=format:\"%h %s\" --no-merges | fzf | cut -c -7 | xargs -o git commit \"$@\" --fixup; }; f"
 [rebase]

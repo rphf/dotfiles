@@ -2,8 +2,6 @@ tap "asmvik/formulae", "https://github.com/asmvik/homebrew-formulae.git", truste
 tap "mobile-dev-inc/tap", trusted: true
 # Plugin manager for zsh, inspired by antigen and antibody
 brew "antidote"
-# Portable library for importing many well-known 3D model formats
-brew "assimp"
 # Bourne-Again SHell, a UNIX command interpreter
 brew "bash"
 # Clone of cat(1) with syntax highlighting and Git integration
@@ -30,20 +28,14 @@ brew "git-delta"
 brew "git-spice"
 # Audit git repos for secrets
 brew "gitleaks"
-# GNU typing tutor
-brew "gnu-typist"
 # GNU Privacy Guard (OpenPGP)
 brew "gnupg"
-# Configurable static site generator
-brew "hugo"
 # Command-line benchmarking tool
 brew "hyperfine"
 # Tools and libraries to manipulate images in select formats
 brew "imagemagick"
 # GNU utilities for networking
 brew "inetutils"
-# Lazier way to manage everything docker
-brew "lazydocker"
 # Simple terminal UI for git commands
 brew "lazygit"
 # Postgres C API library
@@ -54,8 +46,6 @@ brew "lsd"
 brew "mole"
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
-# Command-line Git information tool
-brew "onefetch"
 # Development kit for the Java programming language
 brew "openjdk"
 # Library for JPEG-2000 image manipulation
@@ -70,8 +60,6 @@ brew "ripgrep"
 brew "rubyfmt"
 # Organize software neatly under a single directory tree (e.g. /usr/local)
 brew "stow"
-# Official tldr client written in Rust
-brew "tlrc"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
 # Cozy typing speed tester in terminal

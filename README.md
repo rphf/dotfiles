@@ -90,7 +90,7 @@ git config core.hooksPath .githooks
 Not stowed (see `.stow-local-ignore`):
 
 - `.githooks/` — versioned hooks (gitleaks scan, agentbox skill sync check); activate with `git config core.hooksPath .githooks`
-- `Brewfile` — regenerate with `brew bundle dump --describe --force`
+- `Brewfile` — regenerate with `brew bundle dump --force`
 - `.macos` — macOS defaults tweaks
 - `.gitmessage` — commit template for this repo; wired via `git config --local commit.template .gitmessage`
 - `todo.local.md` — personal notes

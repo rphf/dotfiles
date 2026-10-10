@@ -1,14 +1,5 @@
-tap "asmvik/formulae", "https://github.com/asmvik/homebrew-formulae.git"
-tap "beeftornado/rmtree"
-tap "f/mcptools"
-tap "facebook/fb"
-tap "felixkratz/formulae", "https://github.com/FelixKratz/homebrew-formulae"
-tap "ggozad/formulas"
-tap "jesseduffield/lazygit"
-tap "lencx/chatgpt", "https://github.com/lencx/ChatGPT.git"
-tap "mobile-dev-inc/tap"
-tap "nikitabobko/tap"
-tap "withgraphite/tap"
+tap "asmvik/formulae", "https://github.com/asmvik/homebrew-formulae.git", trusted: true
+tap "mobile-dev-inc/tap", trusted: true
 # Plugin manager for zsh, inspired by antigen and antibody
 brew "antidote"
 # Portable library for importing many well-known 3D model formats
@@ -21,10 +12,6 @@ brew "bat"
 brew "bottom"
 # Dependency manager for Cocoa projects
 brew "cocoapods"
-# TIFF library and utilities
-brew "libtiff"
-# Image format providing lossless and lossy compression for web images
-brew "webp"
 # View disk space usage and delete unwanted data, fast
 brew "dua-cli"
 # Simple, fast and user-friendly alternative to find
@@ -65,10 +52,6 @@ brew "libpq"
 brew "lsd"
 # Deep clean and optimize your Mac
 brew "mole"
-# Incremental parsing library
-brew "tree-sitter"
-# Clean C library for processing UTF-8 Unicode data
-brew "utf8proc", args: ["HEAD"]
 # Ambitious Vim-fork focused on extensibility and agility
 brew "neovim"
 # Command-line Git information tool
@@ -97,10 +80,18 @@ brew "typioca"
 brew "universal-ctags"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
+# Port of OpenAI's Whisper model in C/C++
+brew "whisper.cpp"
 # Feature-rich command-line audio/video downloader
 brew "yt-dlp"
 # Shell extension to navigate your filesystem faster
 brew "zoxide"
+# Simple hotkey-daemon for macOS.
+brew "asmvik/formulae/skhd"
+# The easiest way to automate UI testing for your mobile app
+brew "mobile-dev-inc/tap/maestro"
+# Android SDK component
+cask "android-platform-tools"
 # Tools for building Android applications
 cask "android-studio"
 # App for managing battery charging. (Also installs a CLI on first use.)
@@ -127,12 +118,8 @@ cask "font-jetbrains-mono-nerd-font"
 cask "google-chrome"
 # AI-powered notepad for meetings
 cask "granola"
-# Terminal emulator as alternative to Apple's Terminal app
-cask "iterm2"
 # Keyboard customiser
 cask "karabiner-elements"
-# Free cross-platform office suite, fresh version
-cask "libreoffice"
 # Customise mouse behavior
 cask "linearmouse"
 # VPN client
@@ -196,4 +183,3 @@ go "cmd/go"
 go "cmd/gofmt"
 cargo "gelatyx"
 npm "corepack"
-npm "eas-cli"

@@ -22,15 +22,26 @@ export BAT_PAGING="never"
 # I prefer relying on zoxide for changing directories
 export ZSH_AUTOSUGGEST_HISTORY_IGNORE="cd *"
 
-# --- PATH precedence: mise > Homebrew > system --------------------------------
+# --- PATH precedence: cargo > mise > Homebrew > system --------------------------------
 # This order must hold in every shell. Here (.zshenv) it covers non-login
 # shells (IDE extensions, `zsh -c`, scripts) where path_helper never runs.
 # Login shells re-assert the same order in .zprofile, because macOS's
 # /etc/zprofile runs path_helper AFTER .zshenv and shoves the system paths
 # back to the front.
 
+# Keep each entry once; prepending an entry that is already there moves it to the front.
+typeset -U path fpath
+
 # Homebrew ahead of the system paths (git, curl, ... resolve to the brew copy).
-eval "$(/opt/homebrew/bin/brew shellenv)"
+# Static copy of `eval "$(brew shellenv)"`, which costs ~30 ms per shell.
+# Compare with `brew shellenv` after a major Homebrew upgrade.
+export HOMEBREW_PREFIX=/opt/homebrew
+export HOMEBREW_CELLAR=/opt/homebrew/Cellar
+export HOMEBREW_REPOSITORY=/opt/homebrew
+fpath=($HOMEBREW_PREFIX/share/zsh/site-functions $fpath)
+path=($HOMEBREW_PREFIX/bin $HOMEBREW_PREFIX/sbin $path)
+[ -z "${MANPATH-}" ] || { export MANPATH="${MANPATH%"${MANPATH##*[!:]}"}"; export MANPATH=":${MANPATH#"${MANPATH%%[!:]*}"}"; }
+[[ ":$INFOPATH:" == *":$HOMEBREW_PREFIX/share/info:"* ]] || export INFOPATH="$HOMEBREW_PREFIX/share/info:${INFOPATH:-}"
 
 export PATH="$PATH:$HOME/.local/bin"
 
@@ -54,4 +65,5 @@ export PATH="$PATH:$ANDROID_HOME/platform-tools"
 # Ensure your PATH prefers pg18 tools, needs to match the version in the Brewfile
 export PATH="$PATH:/opt/homebrew/opt/postgresql@18/bin"
 
-source "$HOME/.cargo/env"
+# Rust toolchain (rustup), same effect as `source ~/.cargo/env`.
+path=($HOME/.cargo/bin $path)

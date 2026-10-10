@@ -12,6 +12,9 @@ export EDITOR='nvim'
 export DO_NOT_TRACK=1
 export HOMEBREW_NO_ANALYTICS=1
 
+# `brew upgrade` skips casks that update themselves; also upgrade these.
+export HOMEBREW_UPGRADE_GREEDY_CASKS="mullvad-vpn"
+
 # Set the pager for viewing man pages, using 'bat' for syntax highlighting
 export MANPAGER="sh -c 'col -bx | bat --paging=always -l man -p'"
 

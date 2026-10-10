@@ -118,8 +118,6 @@ cask "obsidian"
 cask "open-island"
 # Control your tools with a few keystrokes
 cask "raycast"
-# Simple menu bar app to view and interact with reminders
-cask "reminders-menubar"
 # Team communication and collaboration software
 cask "slack"
 # System monitor for the menu bar

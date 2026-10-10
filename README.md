@@ -85,6 +85,23 @@ git config --local commit.template .gitmessage
 git config core.hooksPath .githooks
 ```
 
+Then apply the macOS settings: run `bash .macos` and follow [macOS settings](#macos-settings).
+
+## macOS settings
+
+`.macos` holds the settings that `defaults write` can set (keyboard repeat, UI animations).
+Run it with `bash .macos`; it restarts Dock and Finder so they load the new values.
+
+Set these by hand, in System Settings or the app:
+
+- **Spotlight → Search Privacy:** add `~/Workspace`, `~/Library/Application Support` and
+  `~/Library/Android` (Cmd+Shift+G in the file picker to paste a path). They hold about 93% of
+  the indexed items (code, `node_modules`, app data, Android SDK). The list is root-only, and a
+  `.metadata_never_index` file in a folder does not stop indexing. Check the result with
+  `mdfind -count -onlyin ~/Workspace 'kMDItemContentTypeTree == "public.item"'` (expect `0`).
+- **Raycast → Settings → Launcher:** turn off "Include Files in Root Search". Raycast is only
+  used to launch apps and commands, not to search files.
+
 ## Top-level files
 
 Not stowed (see `.stow-local-ignore`):

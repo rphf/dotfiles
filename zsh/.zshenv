@@ -14,6 +14,9 @@ export HOMEBREW_NO_ANALYTICS=1
 
 # `brew upgrade` skips casks that update themselves; also upgrade these.
 export HOMEBREW_UPGRADE_GREEDY_CASKS="mullvad-vpn"
+# mise manages Go and points GOBIN at its Go install, so `brew bundle dump` would
+# list Go's own binaries (cmd/go, cmd/gofmt) as packages.
+export HOMEBREW_BUNDLE_DUMP_NO_GO=1
 
 # Set the pager for viewing man pages, using 'bat' for syntax highlighting
 export MANPAGER="sh -c 'col -bx | bat --paging=always -l man -p'"

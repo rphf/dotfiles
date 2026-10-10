@@ -41,6 +41,7 @@ List every material claim with reproducible evidence (paths, links, or output sn
 - No sycophantic openers or closing fluff.
 - Keep solutions simple and direct.
 - By default use the github CLI (`gh`) for read only operation unless told otherwise.
+- NEVER open a pull request or an issue on a forked repository (a fork of someone else's project, or its upstream) without explicit permission from the user, even when asked to make a change there.
 - User instructions always override this file.
 
 ## Self-review in revue
@@ -49,7 +50,7 @@ When you ask the human to review your changes in revue, review your own change f
 
 ## Obsidian vault
 
-- The vault is the worktree `~/Obsidian` of the notes repo at `~/Workspace/perso/notes`. Follow the vault's own `CLAUDE.md` for its structure and git rules.
+- The vault is the worktree of the notes repo at `~/Workspace/perso/notes`, located in iCloud at `~/Library/Mobile Documents/iCloud~md~obsidian/Documents/Main`. Follow the vault's own `CLAUDE.md` for its structure and git rules.
 - When the user asks to "save" a link, note or idea, write it to the vault.
 
 ## Write for the present

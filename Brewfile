@@ -108,8 +108,6 @@ cask "google-chrome"
 cask "granola"
 # Keyboard customiser
 cask "karabiner-elements"
-# Customise mouse behavior
-cask "linearmouse"
 # VPN client
 cask "mullvad-vpn"
 # Free and open-source RSS reader
@@ -120,16 +118,12 @@ cask "obsidian"
 cask "open-island"
 # Control your tools with a few keystrokes
 cask "raycast"
-# Desktop app for inspecting React JS and React Native projects
-cask "reactotron"
 # Simple menu bar app to view and interact with reminders
 cask "reminders-menubar"
 # Team communication and collaboration software
 cask "slack"
 # System monitor for the menu bar
 cask "stats"
-# Open-source BitTorrent client
-cask "transmission"
 # Multimedia player
 cask "vlc"
 # GPU-accelerated cross-platform terminal emulator and multiplexer

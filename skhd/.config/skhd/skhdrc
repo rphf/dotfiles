@@ -4,7 +4,6 @@ rcmd - d: open -a Cursor
 rcmd - f: open -a Zen
 rcmd - e: open -a Simulator
 rcmd - g: open -a "Google Chrome"
-rcmd - r: open -a Figma
 rcmd - v: open -a Deezer
 rcmd - w: open -a Safari
 rcmd - c: open -a Calendar

@@ -64,8 +64,6 @@ brew "stow"
 brew "tree"
 # Cozy typing speed tester in terminal
 brew "typioca"
-# Maintained ctags implementation
-brew "universal-ctags"
 # Extremely fast Python package installer and resolver, written in Rust
 brew "uv"
 # Port of OpenAI's Whisper model in C/C++

@@ -116,5 +116,4 @@ Not stowed (see `.stow-local-ignore`):
 - `.gitmessage` — commit template for this repo; wired via `git config --local commit.template .gitmessage`
 - `todo.local.md` — personal notes
 - `.stylua.toml` — Lua formatter config (used from repo root)
-- `backup.rayconfig` — Raycast config backup
 

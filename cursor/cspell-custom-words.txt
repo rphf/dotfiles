@@ -179,7 +179,6 @@ quickbooks
 railtie
 RAPH
 Raphaël
-rayconfig
 rcmd
 rdjpalmer
 reactotron

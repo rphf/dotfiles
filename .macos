@@ -41,4 +41,20 @@ defaults write NSGlobalDomain QLPanelAnimationDuration -float 0
 # Finder: no animations (window open, Get Info, ...).
 defaults write com.apple.finder DisableAllAnimations -bool true
 
+# --- Safari --------------------------------------------------------------------
+# Quit Safari first so it does not write its old values back.
+osascript -e 'quit app "Safari"'
+
+# Advanced tracking and fingerprinting protection in all browsing, not only in
+# private windows. Includes Link Tracking Protection (strips click IDs from URLs).
+defaults write com.apple.Safari EnableEnhancedPrivacyInRegularBrowsing -bool true
+# No Safari Suggestions: what is typed in the address bar is not sent to Apple.
+defaults write com.apple.Safari UniversalSearchEnabled -bool false
+# Do not open "safe" files after downloading.
+defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
+# Develop menu and Web Inspector.
+defaults write com.apple.Safari IncludeDevelopMenu -bool true
+defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
+defaults write com.apple.Safari WebKitPreferences.developerExtrasEnabled -bool true
+
 killall Dock Finder 2>/dev/null

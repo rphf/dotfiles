@@ -89,8 +89,8 @@ Then apply the macOS settings: run `bash .macos` and follow [macOS settings](#ma
 
 ## macOS settings
 
-`.macos` holds the settings that `defaults write` can set (keyboard repeat, UI animations).
-Run it with `bash .macos`; it restarts Dock and Finder so they load the new values.
+`.macos` holds the settings that `defaults write` can set (keyboard repeat, UI animations, Safari).
+Run it with `bash .macos`; it quits Safari and restarts Dock and Finder so they load the new values.
 
 Set these by hand, in System Settings or the app:
 
@@ -99,6 +99,10 @@ Set these by hand, in System Settings or the app:
   the indexed items (code, `node_modules`, app data, Android SDK). The list is root-only, and a
   `.metadata_never_index` file in a folder does not stop indexing. Check the result with
   `mdfind -count -onlyin ~/Workspace 'kMDItemContentTypeTree == "public.item"'` (expect `0`).
+- **Safari → Settings → Websites:** Pop-up Windows "Block and Notify", Notifications without
+  "Allow websites to ask for permission", Auto-Play "Stop Media with Sound". Per-site settings are
+  not in Safari's `defaults`.
+- **wBlock:** lists, custom filters and settings sync through iCloud.
 - **Raycast → Settings → Launcher:** turn off "Include Files in Root Search". Raycast is only
   used to launch apps and commands, not to search files.
 

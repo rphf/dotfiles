@@ -28,8 +28,6 @@ brew "git-delta"
 brew "git-spice"
 # Audit git repos for secrets
 brew "gitleaks"
-# GNU Privacy Guard (OpenPGP)
-brew "gnupg"
 # Command-line benchmarking tool
 brew "hyperfine"
 # Tools and libraries to manipulate images in select formats
@@ -102,8 +100,6 @@ cask "docker-desktop"
 cask "expo-orbit"
 cask "font-hack-nerd-font"
 cask "font-jetbrains-mono-nerd-font"
-# Web browser
-cask "google-chrome"
 # AI-powered notepad for meetings
 cask "granola"
 # Speech to text application

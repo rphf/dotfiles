@@ -3,7 +3,6 @@ rcmd - s: open -a Slack
 rcmd - d: open -a Cursor
 rcmd - f: open -a Safari
 rcmd - e: open -a Simulator
-rcmd - g: open -a "Google Chrome"
 rcmd - v: open -a Deezer
 rcmd - c: open -a Calendar
 rcmd - z: open -a Reminders

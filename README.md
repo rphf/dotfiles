@@ -19,7 +19,8 @@ Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 | `lazygit`   | `~/.config/lazygit/`   | `lazygit` config                                                                                                               |
 | `mise`      | `~/.config/mise/`      | `mise` toolchain manager                                                                                                       |
 | `node`      | `~/`                   | Global npm (`.npmrc`) and Yarn Berry (`.yarnrc.yml`) config                                                                    |
-| `nvim`      | `~/.config/nvim/`      | Neovim config                                                                                                                  |
+| `nvim`      | `~/.config/nvim/`      | Neovim: [kickstart.nvim](https://github.com/nvim-lua/kickstart.nvim) at `8e35dbe` for `$EDITOR`, `nvim-vscode` for Cursor     |
+| `nvim-backup` | *(not stowed)*       | Full Neovim config (lazy.nvim, LSP, mason, copilot, codecompanion, neotest), kept for reference                                |
 | `skhd`      | `~/.config/skhd/`      | `skhd` hotkey daemon                                                                                                           |
 | `wezterm`   | `~/.config/wezterm/`   | Wezterm config                                                                                                                 |
 | `work`      | *(manual)*             | Work-specific bits (not stowed)                                                                                                |

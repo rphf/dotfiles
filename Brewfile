@@ -62,6 +62,8 @@ brew "rubyfmt"
 brew "stow"
 # Display directories as trees (with optional color/HTML output)
 brew "tree"
+# Parser generator tool
+brew "tree-sitter-cli"
 # Cozy typing speed tester in terminal
 brew "typioca"
 # Extremely fast Python package installer and resolver, written in Rust

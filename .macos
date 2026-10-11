@@ -56,5 +56,18 @@ defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
 defaults write com.apple.Safari IncludeDevelopMenu -bool true
 defaults write com.apple.Safari WebKitDeveloperExtrasEnabledPreferenceKey -bool true
 defaults write com.apple.Safari WebKitPreferences.developerExtrasEnabled -bool true
+# Open with all non-private windows from the last session.
+defaults write com.apple.Safari AlwaysRestoreSessionAtLaunch -bool true
+defaults write com.apple.Safari OpenPrivateWindowWhenNotRestoringSessionAtLaunch -bool false
+defaults write com.apple.Safari ExcludePrivateWindowWhenRestoringSessionAtLaunch -bool true
+# Compact tab layout: tabs in the toolbar.
+defaults write com.apple.Safari ShowStandaloneTabBar -bool false
+# Empty start page: no sections, no background image, no sidebar.
+for key in ShowFavorites ShowFrequentlyVisitedSites ShowSiriSuggestionsPreference \
+  ShowHighlightsInFavorites ShowPrivacyReportInFavorites ShowReadingListInFavorites \
+  ShowCloudTabsInFavorites ShowRecentlyClosedTabsPreferenceKey \
+  ShowTabGroupFavoritesPreferenceKey ShowBackgroundImageInFavorites ShowSidebarInTopSites; do
+  defaults write com.apple.Safari "$key" -bool false
+done
 
 killall Dock Finder 2>/dev/null

@@ -104,6 +104,8 @@ cask "font-jetbrains-mono-nerd-font"
 cask "google-chrome"
 # AI-powered notepad for meetings
 cask "granola"
+# Speech to text application
+cask "handy"
 # Keyboard customiser
 cask "karabiner-elements"
 # VPN client
@@ -126,8 +128,6 @@ cask "vlc"
 cask "wezterm"
 # Multiplayer code editor
 cask "zed"
-# Gecko based web browser
-cask "zen"
 # Video communication and virtual meeting platform
 cask "zoom"
 vscode "aaron-bond.better-comments"

@@ -1,3 +1,7 @@
+## Never Leak PII — HARD RULE
+
+**NEVER send the user's personal data (name, email, phone, account IDs, …) to any external service**: no headers (including `User-Agent`), URLs, queries, request bodies, or public issues and PRs. Use generic values instead. The only exception is an explicit request from the user.
+
 ## Source Your Claims — MANDATORY
 
 **ALWAYS SEARCH FIRST, ANSWER SECOND** whenever the answer depends on the world outside this repository — how a tool works, whether something is supported, current versions, maintenance status, or config options. Verify before you answer.

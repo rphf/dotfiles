@@ -62,12 +62,15 @@ defaults write com.apple.Safari OpenPrivateWindowWhenNotRestoringSessionAtLaunch
 defaults write com.apple.Safari ExcludePrivateWindowWhenRestoringSessionAtLaunch -bool true
 # Compact tab layout: tabs in the toolbar.
 defaults write com.apple.Safari ShowStandaloneTabBar -bool false
-# Empty start page: no sections, no background image, no sidebar.
+# Empty start page: no sections, no sidebar.
 for key in ShowFavorites ShowFrequentlyVisitedSites ShowSiriSuggestionsPreference \
   ShowHighlightsInFavorites ShowPrivacyReportInFavorites ShowReadingListInFavorites \
   ShowCloudTabsInFavorites ShowRecentlyClosedTabsPreferenceKey \
-  ShowTabGroupFavoritesPreferenceKey ShowBackgroundImageInFavorites ShowSidebarInTopSites; do
+  ShowTabGroupFavoritesPreferenceKey ShowSidebarInTopSites; do
   defaults write com.apple.Safari "$key" -bool false
 done
+# Start page background image. The image itself is chosen in Safari (start page >
+# customize > Background Image); Safari keeps a copy in its container.
+defaults write com.apple.Safari ShowBackgroundImageInFavorites -bool true
 
 killall Dock Finder 2>/dev/null

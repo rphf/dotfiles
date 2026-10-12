@@ -7,7 +7,7 @@ local config = {}
 
 -- Appearance Settings
 config.font = wezterm.font("JetBrainsMonoNL Nerd Font Mono")
-config.font_size = 12.5
+config.font_size = 17
 config.color_scheme = "Github Dark (Gogh)"
 config.macos_window_background_blur = 15
 config.window_background_opacity = 0.9

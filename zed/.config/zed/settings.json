@@ -35,7 +35,7 @@
   "vim_mode": true,
   "cursor_blink": false,
   "show_signature_help_after_edits": true,
-  "diff_view_style": "unified", // show diffs inline (full width) instead of split side-by-side
+  "diff_view_style": "split",
   "excerpt_context_lines": 5, // lines of context shown around each change in the unified diff (default 2)
   "indent_guides": {
     "coloring": "indent_aware",

@@ -1,9 +1,8 @@
 
-# <scope>: <message>
+# <type>: <message>
 #
-# Example: zsh: add new alias
+# Example: chore: shorten section titles
 #
-# Scope:   any stow package in the repo (zsh, wezterm, skhd, mise, git,
-#          scripts, macos, docs, …) or a new one introduced by the commit.
-# Rules:   imperative mood, concise, one line.
+# Type:    Conventional Commits type (feat, fix, chore, docs, refactor, perf, …).
+# Rules:   no scope, imperative mood, concise, one line.
 #

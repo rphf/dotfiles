@@ -1,12 +1,12 @@
 prSections:
-- title: My Pull Requests
+- title: Mine
   filters: is:open author:@me
-- title: Agent Pull Requests
+- title: Agents
   filters: is:open author:app/rphf-zm-agent author:app/rphf-agent
-- title: Review Requested
+- title: To review
   filters: is:open user-review-requested:@me -author:@me -author:app/rphf-zm-agent -author:app/rphf-agent
 issuesSections:
-- title: My Issues
+- title: Mine
   filters: is:open author:@me
 - title: Assigned
   filters: is:open assignee:@me
@@ -73,5 +73,11 @@ theme:
 pager:
   diff: ""
 confirmQuit: false
-showAuthorIcons: true
+showAuthorIcons: false
 smartFilteringAtLaunch: true
+stacks:
+  enabled: true
+attention:
+  myAuthors:
+  - app/rphf-zm-agent
+  - app/rphf-agent

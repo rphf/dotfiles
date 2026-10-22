@@ -61,3 +61,5 @@
 	assignees = rphf
 [spice "merge"]
 	method = squash
+[spice "shorthand"]
+	stack-pull = !git-stack-pull \"$@\"

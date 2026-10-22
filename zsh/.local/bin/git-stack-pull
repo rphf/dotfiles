@@ -1,0 +1,92 @@
+#!/usr/bin/env zsh
+# git-stack-pull: Reset every branch of a git-spice stack to its remote version
+#
+# Use it after GitHub rewrote the stack (e.g. the "Rebase stack" button) and the local
+# branches diverged. git-spice notices the new history on its next run and updates its
+# base hashes ("branch was restacked externally"), so no restack is needed.
+#
+# Before it moves anything, it checks the commits each branch adds on top of the base
+# commit git-spice recorded for it with `git cherry`. That base commit stays correct when
+# the base branch was squash-merged and deleted. A commit that has no equivalent patch on the remote branch
+# blocks the reset, unless -f is given. The old tips are printed, and stay in the reflog.
+#
+# Usage:
+#   git stack-pull [-f] [branch]   Branch is any branch of the stack (default: current)
+#
+# Options:
+#   -f, --force   Reset even when branches have local-only commits
+#
+# Examples:
+#   git stack-pull
+#   git stack-pull feat-customer-portal-requests-2-models
+
+main() {
+  local force=false
+  if [[ $1 == -f || $1 == --force ]]; then
+    force=true
+    shift
+  fi
+  local current=$(git branch --show-current)
+  local target=${1:-$current}
+  local remote=$(git show refs/spice/data:repo | jq -r .remote)
+  local trunk=$(git show refs/spice/data:repo | jq -r .trunk)
+
+  git fetch --prune "$remote" || return 1
+
+  local -a branches=("${(@f)$(git-spice log short -a --json | jq -rs --arg b "$target" --arg trunk "$trunk" '
+    (map({key: .name, value: .}) | from_entries) as $m
+    | def downs($n): if $n != null and $n != $trunk and $m[$n] then downs($m[$n].down.name) + [$n] else [] end;
+      def ups($n): [$n] + ([$m[$n].ups[]?.name | ups(.)] | add // []);
+    if $b != $trunk and $m[$b] then downs($b) + ups($b)[1:] | .[] else empty end
+  ')}")
+  if [[ -z ${branches[1]} ]]; then
+    print -u2 "$target is not a branch tracked by git-spice"
+    return 1
+  fi
+
+  local b blocked=false
+  for b in $branches; do
+    if ! git rev-parse -q --verify "refs/remotes/$remote/$b" >/dev/null; then
+      print -u2 "$b: no $remote/$b"
+      blocked=true
+      continue
+    fi
+    local base_hash=$(git show "refs/spice/data:branches/$b" | jq -r .base.hash)
+    local -a local_only=(${(f)"$(git cherry -v --abbrev "$remote/$b" "$b" "$base_hash" | grep '^+')"})
+    if (( $#local_only > 0 )); then
+      print -u2 "$b: $#local_only local commit(s) not on $remote/$b:"
+      print -lu2 -- ${local_only#+ }
+      $force || blocked=true
+    fi
+  done
+  if [[ " $branches " == *" $current "* ]] && [[ -n $(git status --porcelain --untracked-files=no) ]]; then
+    print -u2 "$current has uncommitted changes"
+    blocked=true
+  fi
+  if $blocked; then
+    print -u2 "Nothing reset. Use -f to reset branches with local-only commits."
+    return 1
+  fi
+
+  if [[ $current != $trunk ]]; then
+    git fetch -q "$remote" "$trunk:$trunk" 2>/dev/null || print -u2 "$trunk: not fast-forwarded"
+  fi
+
+  for b in $branches; do
+    local old=$(git rev-parse --short "$b") new=$(git rev-parse --short "$remote/$b")
+    if [[ $old == $new ]]; then
+      print "$b: up to date"
+      continue
+    fi
+    if [[ $b == $current ]]; then
+      git reset -q --hard "$remote/$b" || return 1
+    else
+      git branch -f "$b" "$remote/$b" >/dev/null || return 1
+    fi
+    print "$b: $old -> $new"
+  done
+
+  git-spice log short
+}
+
+main "$@"

@@ -489,7 +489,7 @@ Examples:
   }
 
   // Search once per author (multiple author: qualifiers are ANDed) and merge
-  ghListByAuthors(kind, repo, state, search, fields, dateField) {
+  ghListByAuthors(kind, repo, state, search, fields) {
     const seen = new Map();
     for (const author of this.authors()) {
       for (const item of this.ghList(
@@ -502,17 +502,21 @@ Examples:
         seen.set(item.number, item);
       }
     }
-    return this.toItems([...seen.values()], dateField);
+    return [...seen.values()];
+  }
+
+  toItem(item, dateField) {
+    return {
+      number: String(item.number),
+      title: item.title?.replace(/[\t\r\n]/g, " "),
+      url: item.url,
+      date: item[dateField],
+    };
   }
 
   toItems(list, dateField) {
     return list
-      .map((item) => ({
-        number: String(item.number),
-        title: item.title?.replace(/[\t\r\n]/g, " "),
-        url: item.url,
-        date: item[dateField],
-      }))
+      .map((item) => this.toItem(item, dateField))
       .sort((a, b) => new Date(a.date) - new Date(b.date));
   }
 
@@ -546,28 +550,102 @@ Examples:
     return this.toItems(reviewed, "reviewedAt");
   }
 
+  // Open PRs created inside the week, or created before it and given new
+  // commits during it. Author dates survive a rebase, so a rebase alone does
+  // not count. Returns groups: standalone PRs ({ prs: [pr] }) first, then
+  // stacks ({ name, prs }) ordered bottom to top.
+  fetchOpenPRs(repo) {
+    const prs = this.ghListByAuthors(
+      "pr",
+      repo,
+      "open",
+      `is:pr state:open updated:>=${this.config.sinceDate}`,
+      "number,title,url,createdAt,baseRefName,headRefName"
+    );
+    const inRange = (date) => this.isDateInWeekRange(new Date(date));
+    const active = (pr) =>
+      inRange(pr.createdAt) || this.authorDates(repo, pr.number).some(inRange);
+
+    const singles = [];
+    const stacks = [];
+    for (const chain of this.stackChains(prs)) {
+      const kept = chain
+        .filter(active)
+        .map((pr) => this.toItem(pr, "createdAt"));
+      if (kept.length === 0) continue;
+      if (chain.length === 1) singles.push({ prs: kept });
+      else stacks.push({ name: this.stackName(chain), prs: kept });
+    }
+    return [...singles, ...stacks];
+  }
+
+  // Split PRs into stacks ordered bottom to top: a PR sits on the PR whose
+  // head branch is its base branch
+  stackChains(prs) {
+    const heads = new Set(prs.map((pr) => pr.headRefName));
+    const walk = (pr, chain) => {
+      chain.push(pr);
+      prs
+        .filter((child) => child.baseRefName === pr.headRefName)
+        .forEach((child) => walk(child, chain));
+      return chain;
+    };
+    return prs
+      .filter((pr) => !heads.has(pr.baseRefName))
+      .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
+      .map((root) => walk(root, []));
+  }
+
+  // Name a stack after the longest branch-name prefix shared by the most
+  // PRs: "feat/comms-dialog-invoice" + "feat/comms-dialog-tip" -> "Comms dialog"
+  stackName(prs) {
+    const counts = new Map();
+    for (const pr of prs) {
+      const words = pr.headRefName
+        .replace(/^[\w.-]+\//, "")
+        .replace(/^(feat|fix|chore|refactor|docs|test)-/, "")
+        .split(/[-_]/);
+      for (let i = 1; i <= words.length; i++) {
+        const prefix = words.slice(0, i).join(" ");
+        counts.set(prefix, (counts.get(prefix) || 0) + 1);
+      }
+    }
+    let best = "";
+    for (const [prefix, n] of counts) {
+      const bestCount = counts.get(best) || 0;
+      if (n > bestCount || (n === bestCount && prefix.length > best.length)) {
+        best = prefix;
+      }
+    }
+    if ((counts.get(best) || 0) < 2) return "Stack";
+    return `${best.charAt(0).toUpperCase()}${best.slice(1)} stack`;
+  }
+
+  // Fetched per PR: `commits` in a list query exceeds GitHub's node limit
+  authorDates(repo, number) {
+    const cmd = `gh pr view ${number} -R "${repo}" --json commits --jq '[.commits[].authoredDate]'`;
+    return JSON.parse(
+      execSync(cmd, { encoding: "utf8", stdio: ["pipe", "pipe", "ignore"] })
+    );
+  }
+
   // Fetch GitHub activity for a repository
   fetchRepoActivity(repo) {
     const range = this.config.dateRange;
     const activities = { merged: [], opened: [], reviewed: [] };
 
     try {
-      activities.merged = this.ghListByAuthors(
-        "pr",
-        repo,
-        "merged",
-        `is:pr is:merged merged:${range}`,
-        "number,title,url,mergedAt",
+      activities.merged = this.toItems(
+        this.ghListByAuthors(
+          "pr",
+          repo,
+          "merged",
+          `is:pr is:merged merged:${range}`,
+          "number,title,url,mergedAt"
+        ),
         "mergedAt"
       );
-      activities.opened = this.ghListByAuthors(
-        "pr",
-        repo,
-        "open",
-        `is:pr state:open created:${range}`,
-        "number,title,url,createdAt",
-        "createdAt"
-      );
+      activities.opened = this.fetchOpenPRs(repo);
       activities.reviewed = this.fetchReviewedPRs(repo);
     } catch (error) {
       this.log(`Failed to fetch activity for ${repo}: ${error.message}`);
@@ -585,11 +663,17 @@ Examples:
 
   // Render one repo as a Slack-ready list of PRs
   renderRepo(repo, { merged, opened, reviewed }) {
-    const lines = [`${this.repoLabel(repo)}:`];
+    const lines = [
+      `${this.repoLabel(repo)} (merged, opened and iterated on this week):`,
+    ];
     const link = (pr) => `[${pr.title.trim()}](${pr.url})`;
 
     merged.forEach((pr) => lines.push(` - ${link(pr)} :merged:`));
-    opened.forEach((pr) => lines.push(` - ${link(pr)} :opened:`));
+    opened.forEach(({ name, prs }) => {
+      if (name) lines.push(` - ${name}:`);
+      const bullet = name ? "    - " : " - ";
+      prs.forEach((pr) => lines.push(`${bullet}${link(pr)} :opened:`));
+    });
 
     if (reviewed.length > 0) {
       const refs = reviewed.map((pr) => `[#${pr.number}](${pr.url})`);
@@ -608,6 +692,7 @@ Examples:
 
     const blocks = [];
     const reviewedTitles = [];
+    const iteratedTitles = [];
     for (const repo of repos) {
       const activities = this.fetchRepoActivity(repo);
       const { merged, opened, reviewed } = activities;
@@ -616,19 +701,26 @@ Examples:
       reviewed.forEach((pr) =>
         reviewedTitles.push(`- ${this.repoLabel(repo)} #${pr.number}: ${pr.title.trim()}`)
       );
+      opened
+        .flatMap((group) => group.prs)
+        .filter((pr) => !this.isDateInWeekRange(new Date(pr.date)))
+        .forEach((pr) =>
+          iteratedTitles.push(`- ${this.repoLabel(repo)} #${pr.number}: ${pr.title.trim()}`)
+        );
     }
 
-    return { list: blocks.join("\n\n"), reviewedTitles };
+    return { list: blocks.join("\n\n"), reviewedTitles, iteratedTitles };
   }
 
   // Build the output: a prompt for the agent, then the PR list
-  buildPrompt(remindersText, { list, reviewedTitles }) {
+  buildPrompt(remindersText, { list, reviewedTitles, iteratedTitles }) {
     if (!list && !remindersText) {
       return `(No activity found for ${this.config.sinceDate} → ${this.config.untilDate}.)`;
     }
 
     let prompt = `Below are my PRs for this week (${this.config.sinceDate} → ${this.config.untilDate}), grouped by repo. Summarize what I did as a short bullet list:
-- One short line per bullet, a handful of bullets in total. Group related PRs into one bullet.
+- One short line per bullet, a handful of bullets in total. Group related PRs into one bullet, and a stack into one bullet.
+- For the open PRs created before this week, say I iterated on them and addressed review feedback.
 - Plain text only: no links, no PR numbers, no emojis, no bold, no sub-bullets.
 - Do not repeat or reformat the PR list; I paste it myself.
 - Output only the bullet list, nothing else.
@@ -636,6 +728,10 @@ Examples:
 
     if (remindersText) {
       prompt += `\nAlso include these completed non-code tasks, skipping any already covered by a PR:\n${remindersText}\n`;
+    }
+
+    if (iteratedTitles.length > 0) {
+      prompt += `\nOpen PRs created before this week:\n${iteratedTitles.join("\n")}\n`;
     }
 
     if (reviewedTitles.length > 0) {

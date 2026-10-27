@@ -5,17 +5,15 @@ description: Work with stacked PRs managed by git-spice and mirrored as a native
 
 # Stacked PRs with git-spice
 
-git-spice manages the stack locally. When the `gh stack` CLI is available
-(`gh extension list` shows `github/gh-stack`), GitHub must always have the
-matching native stack: same PRs, same order, each PR based on the one below.
+git-spice manages the stack locally. Its submit commands also register the PRs
+as a native GitHub stack (same PRs, same order, each PR based on the one below),
+and its merge commands merge that stack atomically.
 
 ## Rules
 
 - Call the `git-spice` binary with `--no-prompt`. Do not use the `gs` alias.
-- Nothing leaves the machine without explicit approval: no `submit`, `git push`,
-  `gh stack link`, `gh stack unstack`. Work locally, then show what you would
-  run and wait. `gh stack link` also pushes branches and opens PRs for branches
-  that have none.
+- Nothing leaves the machine without explicit approval: no `submit`, `merge`,
+  `git push`. Work locally, then show what you would run and wait.
 - When the user asks for "the command", give it and do not run it.
 - Do not rename a branch that has a PR. GitHub cannot rename the head branch.
 - Commit format: follow the repo's `commitlint` config, else Conventional
@@ -72,18 +70,9 @@ and bodies. Ask; proceed only on an explicit yes.
 - Push changes to existing PRs: `git-spice upstack submit --no-prompt --no-web
   --update-only` (or `stack submit`).
 
-Then sync the native stack:
-
-- New stack: `gh stack link <bottom-pr> ... <top-pr>`.
-- New PR on top: `gh stack link <stack-number> <new-pr>`.
-- New PR in the middle, or any base change: GitHub refuses to change the base of
-  a stacked PR and adds PRs only at the top. Do these steps in order; if you
-  submit first, git-spice fails with "Cannot change the base branch because the
-  pull request is part of a stack" after it has pushed some branches.
-  1. `gh stack unstack <stack-number>` (the PRs stay open).
-  2. Submit the new PR.
-  3. From the branch above it: `git-spice upstack submit --no-prompt --no-web --update-only`.
-  4. `gh stack link <pr-1> ... <pr-n>`, bottom to top. The stack gets a new number.
+Submit also creates or rebuilds the native stack, also for a PR inserted in the
+middle or a changed base. A PR that is queued or has auto-merge on can block
+the rebuild; git-spice then prints a warning. Tell the user about it.
 
 Check every PR, its base and its position:
 
@@ -91,11 +80,15 @@ Check every PR, its base and its position:
 gh api repos/<owner>/<repo>/pulls/<n> --jq '"\(.base.ref) \(.stack.number) \(.stack.position)/\(.stack.size)"'
 ```
 
-If the repo has no native stacks (`.stack` is missing, or `gh extension list`
-has no `github/gh-stack`), skip the native stack steps and say so.
+## Stack changed on GitHub
+
+After GitHub rewrote the branches (for example the "Rebase stack" button),
+run `git stack-pull` before you change anything locally. It resets each branch
+of the stack to its remote version and stops if a branch has local-only commits.
+`git-spice repo sync` updates only trunk and does not pull these branches.
 
 ## Reference
 
 - https://abhinav.github.io/git-spice/cli/reference/
+- https://abhinav.github.io/git-spice/guide/cr/#native-stacks
 - https://docs.github.com/en/pull-requests/how-tos/stacked-pull-requests
-- `gh stack link --help`

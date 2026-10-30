@@ -41,6 +41,28 @@ defaults write NSGlobalDomain QLPanelAnimationDuration -float 0
 # Finder: no animations (window open, Get Info, ...).
 defaults write com.apple.finder DisableAllAnimations -bool true
 
+# --- Privacy -------------------------------------------------------------------
+# Do not share Mac analytics or crash data with Apple or with app developers.
+sudo defaults write "/Library/Application Support/CrashReporter/DiagnosticMessagesHistory.plist" AutoSubmit -bool false
+sudo defaults write "/Library/Application Support/CrashReporter/DiagnosticMessagesHistory.plist" ThirdPartyDataSubmit -bool false
+# Do not share Siri and Dictation audio with Apple (2 = opted out).
+defaults write com.apple.assistant.support "Siri Data Sharing Opt-In Status" -int 2
+# No personalized ads from Apple (App Store, News, Stocks), no advertising identifier.
+defaults write com.apple.AdLib allowApplePersonalizedAdvertising -bool false
+defaults write com.apple.AdLib allowIdentifierForAdvertising -bool false
+# GitHub CLI and Go telemetry, also when they run outside zsh (DO_NOT_TRACK is set in .zshenv).
+command -v gh >/dev/null && gh config set telemetry disabled
+command -v go >/dev/null && go telemetry off
+# Docker Desktop: no usage statistics, diagnostics or crash reports. Quit Docker first,
+# or it writes its old value back.
+docker_settings="$HOME/Library/Group Containers/group.com.docker/settings-store.json"
+[[ -f "$docker_settings" ]] && sed -i '' 's/"AnalyticsEnabled": true/"AnalyticsEnabled": false/' "$docker_settings"
+# AirDrop: visible to contacts only.
+defaults write com.apple.sharingd DiscoverableMode -string "Contacts Only"
+# Firewall stealth mode: no answer to pings and port scans.
+sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setglobalstate on
+sudo /usr/libexec/ApplicationFirewall/socketfilterfw --setstealthmode on
+
 # --- Safari --------------------------------------------------------------------
 # Quit Safari first so it does not write its old values back.
 osascript -e 'quit app "Safari"'
@@ -50,6 +72,8 @@ osascript -e 'quit app "Safari"'
 defaults write com.apple.Safari EnableEnhancedPrivacyInRegularBrowsing -bool true
 # No Safari Suggestions: what is typed in the address bar is not sent to Apple.
 defaults write com.apple.Safari UniversalSearchEnabled -bool false
+# No search engine suggestions: what is typed is not sent to the search engine before Enter.
+defaults write com.apple.Safari SuppressSearchSuggestions -bool true
 # Do not open "safe" files after downloading.
 defaults write com.apple.Safari AutoOpenSafeDownloads -bool false
 # Develop menu and Web Inspector.

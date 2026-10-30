@@ -72,7 +72,7 @@
   "eslint.workingDirectories": [{ "mode": "auto" }],
 
   // ===== TELEMETRY =====
-  "telemetry.telemetryLevel": "crash",
+  "telemetry.telemetryLevel": "off",
 
   // ===== LANGUAGE-SPECIFIC SETTINGS =====
   "[javascriptreact]": {

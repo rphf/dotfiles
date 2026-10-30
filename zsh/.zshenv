@@ -11,6 +11,12 @@ export EDITOR='nvim'
 # https://donottrack.sh/
 export DO_NOT_TRACK=1
 export HOMEBREW_NO_ANALYTICS=1
+# Telemetry opt-outs for tools that ignore DO_NOT_TRACK.
+export EXPO_NO_TELEMETRY=1
+export MAESTRO_CLI_NO_ANALYTICS=1
+export COCOAPODS_DISABLE_STATS=true
+export NEXT_TELEMETRY_DISABLED=1
+export ASTRO_TELEMETRY_DISABLED=1
 # Delete cached downloads after 30 days (default 120); brew only reuses them to reinstall the same version.
 export HOMEBREW_CLEANUP_MAX_AGE_DAYS=30
 

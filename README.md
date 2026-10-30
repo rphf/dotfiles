@@ -100,6 +100,13 @@ Set these by hand, in System Settings or the app:
   the indexed items (code, `node_modules`, app data, Android SDK). The list is root-only, and a
   `.metadata_never_index` file in a folder does not stop indexing. Check the result with
   `mdfind -count -onlyin ~/Workspace 'kMDItemContentTypeTree == "public.item"'` (expect `0`).
+- **Privacy & Security → Analytics & Improvements:** turn off "Share iCloud Analytics" and
+  "Improve Assistive Voice Features".
+- **Privacy & Security → Location Services → System Services:** turn off "Significant
+  Locations & Routes", "Location-based suggestions" and "Improve Maps".
+- **Spotlight:** turn off "Help Apple Improve Search" and Siri/Spotlight suggestions.
+- **Apps:** turn off usage data and crash reports in Docker Desktop, Android Studio, Raycast,
+  Slack, Zoom, Discord and Granola. Their settings are not in `defaults`.
 - **Safari → Settings → Websites:** Pop-up Windows "Block and Notify", Notifications without
   "Allow websites to ask for permission", Auto-Play "Stop Media with Sound". Per-site settings are
   not in Safari's `defaults`.

@@ -1,0 +1,55 @@
+#!/usr/bin/env zsh
+# shrink-video: Compress videos to small MP4s next to the originals using ffmpeg
+# Run with -h for usage.
+
+main() {
+  local -a files
+
+  while [[ $# -gt 0 ]]; do
+    case "$1" in
+      -h|--help)
+        cat << 'EOF'
+shrink-video - Compress videos to small MP4s using ffmpeg
+
+Usage:
+  shrink-video <file>...    Compress each file to <name>-compressed.mp4
+
+Accepts any format ffmpeg reads (mov, mp4, mkv, webm, avi, ...).
+Output: H.264, max 1920px wide, 30 fps, CRF 28, no audio.
+Requires ffmpeg.
+
+Examples:
+  shrink-video screen-recording.mov
+  shrink-video ~/Desktop/*.mov
+EOF
+        return 0
+        ;;
+      -*)
+        echo "Unknown option: $1" >&2
+        return 1
+        ;;
+      *)
+        files+=("$1")
+        shift
+        ;;
+    esac
+  done
+
+  if [[ ${#files[@]} -lt 1 ]]; then
+    echo "Error: at least one file required" >&2
+    echo "Usage: shrink-video <file>..." >&2
+    return 1
+  fi
+
+  if ! command -v ffmpeg &>/dev/null; then
+    echo "Error: ffmpeg not found" >&2
+    return 1
+  fi
+
+  local f
+  for f in $files; do
+    ffmpeg -i "$f" -vf "scale='min(1920,iw)':-2,fps=30" -c:v libx264 -crf 28 -preset slow -pix_fmt yuv420p -an -movflags +faststart "${f:r}-compressed.mp4"
+  done
+}
+
+main "$@"

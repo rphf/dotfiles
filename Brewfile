@@ -129,7 +129,6 @@ cask "zed"
 # Video communication and virtual meeting platform
 cask "zoom"
 vscode "aaron-bond.better-comments"
-vscode "anthropic.claude-code"
 vscode "anysphere.remote-containers"
 vscode "asvetliakov.vscode-neovim"
 vscode "bradlc.vscode-tailwindcss"

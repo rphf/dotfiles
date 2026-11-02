@@ -1,5 +1,4 @@
 aaron-bond.better-comments
-anthropic.claude-code
 anysphere.remote-containers
 asvetliakov.vscode-neovim
 bradlc.vscode-tailwindcss

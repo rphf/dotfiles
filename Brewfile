@@ -28,6 +28,10 @@ brew "git-delta"
 brew "git-spice"
 # Audit git repos for secrets
 brew "gitleaks"
+# GNU multiple precision arithmetic library
+brew "gmp"
+# Agent multiplexer that lives in your terminal
+brew "herdr"
 # Command-line benchmarking tool
 brew "hyperfine"
 # Tools and libraries to manipulate images in select formats
@@ -50,6 +54,8 @@ brew "openjdk"
 brew "openjpeg"
 # Object-relational database system
 brew "postgresql@18"
+# Tools for and transforming and inspecting PDF files
+brew "qpdf"
 # Persistent key-value database, with built-in net interface
 brew "redis"
 # Search tool like grep and The Silver Searcher
@@ -80,14 +86,12 @@ brew "mobile-dev-inc/tap/maestro"
 cask "android-platform-tools"
 # Tools for building Android applications
 cask "android-studio"
-# App for managing battery charging. (Also installs a CLI on first use.)
-cask "battery"
 # Configuration tool for the Betaflight firmware
 cask "betaflight-configurator"
-# Anthropic's official Claude AI desktop app
-cask "claude"
 # Terminal-based AI coding assistant
 cask "claude-code@latest"
+# Ghostty-based terminal with vertical tabs and notifications for AI coding agents
+cask "cmux"
 # Write, edit, and chat about your code with AI
 cask "cursor"
 # Music player
@@ -130,6 +134,7 @@ cask "zed"
 cask "zoom"
 vscode "aaron-bond.better-comments"
 vscode "anysphere.remote-containers"
+vscode "anysphere.remote-ssh"
 vscode "asvetliakov.vscode-neovim"
 vscode "bradlc.vscode-tailwindcss"
 vscode "chakrounanas.turbo-console-log"
@@ -148,5 +153,6 @@ vscode "streetsidesoftware.code-spell-checker-french"
 vscode "tamasfe.even-better-toml"
 vscode "usernamehw.errorlens"
 vscode "yoavbls.pretty-ts-errors"
+cargo "cargo-deny"
 cargo "gelatyx"
 npm "corepack"

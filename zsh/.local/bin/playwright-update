@@ -1,0 +1,20 @@
+#!/usr/bin/env zsh
+# playwright-update: Update the shared Playwright install to the latest release
+#
+# The install in ~/.local/share/playwright serves the Playwright MCP server of every
+# agent and the qa-proof recording script.
+
+set -euo pipefail
+
+cd ~/.local/share/playwright
+
+previous=$(node -p "require('playwright-core/package.json').version")
+npm install --save-exact playwright-core@latest
+node node_modules/playwright-core/cli.js install webkit chromium firefox
+current=$(node -p "require('playwright-core/package.json').version")
+
+if [[ "$previous" == "$current" ]]; then
+  echo "Playwright is up to date ($current)."
+else
+  echo "Playwright updated: $previous -> $current. Restart the agents to load the new MCP server."
+fi

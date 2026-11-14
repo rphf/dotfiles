@@ -1,0 +1,7 @@
+#!/usr/bin/env zsh
+# playwright-cli: Drive a browser from the terminal with the shared Playwright install
+#
+# Same commands as the Playwright MCP tools. Pick the engine per session:
+#   playwright-cli -s=fx open --browser=firefox http://localhost:3000
+
+exec node ~/.local/share/playwright/node_modules/playwright-core/cli.js cli "$@"

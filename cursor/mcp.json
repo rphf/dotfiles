@@ -1,3 +1,13 @@
 {
-  "mcpServers": {}
+  "mcpServers": {
+    "playwright": {
+      "command": "node",
+      "args": [
+        "/Users/raphael/.local/share/playwright/node_modules/playwright-core/cli.js",
+        "mcp",
+        "--browser",
+        "webkit"
+      ]
+    }
+  }
 }

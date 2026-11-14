@@ -233,6 +233,7 @@ unstaged
 Unstow
 untrunc
 uppy
+Upsell
 urssaf
 usehooks
 uuidv

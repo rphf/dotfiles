@@ -7,10 +7,8 @@ Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 
 | Package     | Target                 | Purpose                                                                                                                        |
 | ----------- | ---------------------- | ------------------------------------------------------------------------------------------------------------------------------ |
-| `agentbox`  | `~/.config/agentbox/`  | Settings and home overlay for agentbox sandboxes (see `agentbox/README.md`)                                                    |
-| `agents`    | `~/.agents/`           | Canonical AI agent config (rules, skills, MCP notes)                                                                           |
+| `agentbox`  | `~/.config/agentbox/`  | Settings for agentbox sandboxes (see `agentbox/README.md`)                                                                     |
 | `bat`       | `~/.config/bat/`       | `bat` pager theme/config                                                                                                       |
-| `claude`    | `~/.claude/`           | Claude Code bridge (symlinks into `agents/`)                                                                                   |
 | `cursor`    | *(two targets)*        | Cursor settings/keybindings → `~/Library/Application Support/Cursor/User/`; `mcp.json` → `~/.cursor/` (see `cursor/README.md`) |
 | `gh`        | *(manual)*             | GitHub CLI extensions manifest (`extensions.txt`, see `gh/README.md`)                                                          |
 | `gh-dash`   | `~/.config/gh-dash/`   | `gh dash` PR/issue dashboard config                                                                                            |
@@ -44,10 +42,9 @@ stow --adopt <package> # absorb existing target files into the package (see belo
 
 ### Handling existing files in the target
 
-Stow ignores anything that isn't in the package. For example, `stow claude`
-only touches the files listed under `claude/.claude/`; the rest of
-`~/.claude/` (runtime state like `projects/`, `todos/`, `history.jsonl`,
-`plugins/`, etc.) is left alone.
+Stow ignores anything that isn't in the package. For example, `stow zsh`
+only touches the files listed under `zsh/`; the rest of the home directory
+is left alone.
 
 If a target path already exists as a real file (not a stow-owned symlink),
 stow aborts with a conflict. Two ways to resolve:
@@ -74,7 +71,7 @@ are managed with one-off manual symlinks where needed.
 
 ```sh
 cd ~/dotfiles
-stow agentbox agents bat claude gh-dash git karabiner lazygit mise node nvim skhd wezterm zed zsh
+stow agentbox bat gh-dash git karabiner lazygit mise node nvim skhd wezterm zed zsh
 # Install mise (official build, not the Homebrew formula) and its toolchains
 curl https://mise.run | sh
 mise install

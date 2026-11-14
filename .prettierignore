@@ -1,3 +1,0 @@
-# Agent skills use YAML frontmatter; Prettier-on-save can break `name:` /
-# `description:` (e.g. `## name:`). See agents/README.md.
-agents/.agents/skills/**/*.md

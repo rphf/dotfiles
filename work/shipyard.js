@@ -552,48 +552,93 @@ Examples:
 
   // Open PRs created inside the week, or created before it and given new
   // commits during it. Author dates survive a rebase, so a rebase alone does
-  // not count. Returns groups: standalone PRs ({ prs: [pr] }) first, then
-  // stacks ({ name, prs }) ordered bottom to top.
+  // not count.
   fetchOpenPRs(repo) {
     const prs = this.ghListByAuthors(
       "pr",
       repo,
       "open",
       `is:pr state:open updated:>=${this.config.sinceDate}`,
-      "number,title,url,createdAt,baseRefName,headRefName"
+      "number,title,url,createdAt"
     );
     const inRange = (date) => this.isDateInWeekRange(new Date(date));
-    const active = (pr) =>
-      inRange(pr.createdAt) || this.authorDates(repo, pr.number).some(inRange);
-
-    const singles = [];
-    const stacks = [];
-    for (const chain of this.stackChains(prs)) {
-      const kept = chain
-        .filter(active)
-        .map((pr) => this.toItem(pr, "createdAt"));
-      if (kept.length === 0) continue;
-      if (chain.length === 1) singles.push({ prs: kept });
-      else stacks.push({ name: this.stackName(chain), prs: kept });
-    }
-    return [...singles, ...stacks];
+    const active = prs.filter(
+      (pr) =>
+        inRange(pr.createdAt) ||
+        this.authorDates(repo, pr.number).some(inRange)
+    );
+    return this.groupByStack(repo, active, "createdAt");
   }
 
-  // Split PRs into stacks ordered bottom to top: a PR sits on the PR whose
-  // head branch is its base branch
-  stackChains(prs) {
-    const heads = new Set(prs.map((pr) => pr.headRefName));
-    const walk = (pr, chain) => {
-      chain.push(pr);
-      prs
-        .filter((child) => child.baseRefName === pr.headRefName)
-        .forEach((child) => walk(child, chain));
-      return chain;
-    };
-    return prs
-      .filter((pr) => !heads.has(pr.baseRefName))
-      .sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt))
-      .map((root) => walk(root, []));
+  // The native GitHub stack of each PR, keyed by PR number, from one GraphQL
+  // query (`gh pr list` has no stack field). PRs outside a stack, or alone in
+  // one, are absent.
+  fetchStacks(repo, numbers) {
+    const stacks = new Map();
+    if (numbers.length === 0) return stacks;
+
+    const [owner, name] = repo.split("/");
+    const fields = numbers
+      .map(
+        (n) => `pr${n}: pullRequest(number: ${n}) {
+          stack { number entries(first: 100) {
+            nodes { position pullRequest { headRefName } }
+          } }
+          stackEntry { position }
+        }`
+      )
+      .join("\n");
+    const query = `query { repository(owner: "${owner}", name: "${name}") { ${fields} } }`;
+    const { data } = JSON.parse(
+      execSync("gh api graphql -F query=@-", {
+        input: query,
+        encoding: "utf8",
+        stdio: ["pipe", "pipe", "ignore"],
+      })
+    );
+
+    for (const n of numbers) {
+      const pr = data.repository[`pr${n}`];
+      if (!pr?.stack || pr.stack.entries.nodes.length < 2) continue;
+      stacks.set(Number(n), {
+        number: pr.stack.number,
+        position: pr.stackEntry.position,
+        entries: pr.stack.entries.nodes
+          .sort((a, b) => a.position - b.position)
+          .map((entry) => entry.pullRequest),
+      });
+    }
+    return stacks;
+  }
+
+  // Returns groups: standalone PRs ({ prs: [pr] }) first, then stacks
+  // ({ name, url, prs }) with PRs ordered bottom to top.
+  groupByStack(repo, prs, dateField) {
+    const stackOf = this.fetchStacks(
+      repo,
+      prs.map((pr) => pr.number)
+    );
+    const singles = [];
+    const stacks = new Map();
+    for (const pr of this.toItems(prs, dateField)) {
+      const stack = stackOf.get(Number(pr.number));
+      if (!stack) {
+        singles.push({ prs: [pr] });
+        continue;
+      }
+      if (!stacks.has(stack.number)) {
+        stacks.set(stack.number, {
+          name: this.stackName(stack.entries),
+          url: `https://github.com/${repo}/stack/${stack.number}`,
+          prs: [],
+        });
+      }
+      stacks.get(stack.number).prs.push({ ...pr, position: stack.position });
+    }
+    for (const stack of stacks.values()) {
+      stack.prs.sort((a, b) => a.position - b.position);
+    }
+    return [...singles, ...stacks.values()];
   }
 
   // Name a stack after the longest branch-name prefix shared by the most
@@ -635,7 +680,8 @@ Examples:
     const activities = { merged: [], opened: [], reviewed: [] };
 
     try {
-      activities.merged = this.toItems(
+      activities.merged = this.groupByStack(
+        repo,
         this.ghListByAuthors(
           "pr",
           repo,
@@ -668,12 +714,14 @@ Examples:
     ];
     const link = (pr) => `[${pr.title.trim()}](${pr.url})`;
 
-    merged.forEach((pr) => lines.push(` - ${link(pr)} :merged:`));
-    opened.forEach(({ name, prs }) => {
-      if (name) lines.push(` - ${name}:`);
-      const bullet = name ? "    - " : " - ";
-      prs.forEach((pr) => lines.push(`${bullet}${link(pr)} :opened:`));
-    });
+    const renderGroups = (groups, emoji) =>
+      groups.forEach(({ name, url, prs }) => {
+        if (name) lines.push(` - [${name}](${url}):`);
+        const bullet = name ? "    - " : " - ";
+        prs.forEach((pr) => lines.push(`${bullet}${link(pr)} ${emoji}`));
+      });
+    renderGroups(merged, ":merged:");
+    renderGroups(opened, ":opened:");
 
     if (reviewed.length > 0) {
       const refs = reviewed.map((pr) => `[#${pr.number}](${pr.url})`);

@@ -1,17 +1,17 @@
 prSections:
-- title: Mine
-  filters: is:open author:@me
-- title: Agents
-  filters: is:open author:app/rphf-zm-agent author:app/rphf-agent
-- title: To review
-  filters: is:open user-review-requested:@me -author:@me -author:app/rphf-zm-agent -author:app/rphf-agent
+  - title: Mine
+    filters: is:open author:@me
+  - title: Agents
+    filters: is:open author:app/rphf-zm-agent author:app/rphf-agent
+  - title: To review
+    filters: is:open user-review-requested:@me -author:@me -author:app/rphf-zm-agent -author:app/rphf-agent draft:false
 issuesSections:
-- title: Mine
-  filters: is:open author:@me
-- title: Assigned
-  filters: is:open assignee:@me
-- title: Involved
-  filters: is:open involves:@me -author:@me
+  - title: Mine
+    filters: is:open author:@me
+  - title: Assigned
+    filters: is:open assignee:@me
+  - title: Involved
+    filters: is:open involves:@me -author:@me
 repo:
   branchesRefetchIntervalSeconds: 30
   prsRefetchIntervalSeconds: 60
@@ -79,5 +79,5 @@ stacks:
   enabled: true
 attention:
   myAuthors:
-  - app/rphf-zm-agent
-  - app/rphf-agent
+    - app/rphf-zm-agent
+    - app/rphf-agent
